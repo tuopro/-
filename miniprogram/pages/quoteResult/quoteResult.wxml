@@ -1,0 +1,177 @@
+<!-- ==================== pages/quoteResult/quoteResult.wxml ==================== -->
+<view class="page">
+
+  <!-- 加载中 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text>正在计算报价…</text>
+  </view>
+
+  <!-- 省份未配置异常（仅含运费时报） -->
+  <view class="error-card" wx:if="{{errorMsg}}">
+    <text class="error-icon">!</text>
+    <text class="error-text">{{errorMsg}}</text>
+  </view>
+
+  <!-- ======== 广告语 ======== -->
+  <view class="slogan-bar" wx:if="{{!loading && !errorMsg}}">
+    <text>品质线槽，选择CNDES德赛</text>
+  </view>
+
+  <!-- ======== 产品明细表格 ======== -->
+  <view class="card" wx:if="{{!loading && !errorMsg}}">
+    <view class="card-title">产品明细</view>
+
+    <view class="table-header">
+      <text class="col-spec">规格</text>
+      <text class="col-price">单价</text>
+      <text class="col-qty">数量</text>
+      <text class="col-weight">重量</text>
+      <text class="col-sub">原价小计</text>
+      <text class="col-dsub" wx:if="{{discount !== 1}}">折后小计</text>
+    </view>
+
+    <view class="table-row" wx:for="{{productList}}" wx:key="index">
+      <text class="col-spec">{{item.spec}}</text>
+      <text class="col-price">¥{{item.unitPrice}}</text>
+      <text class="col-qty">{{item.quantity}}</text>
+      <text class="col-weight">{{item.weight * item.quantity}}kg</text>
+      <text class="col-sub">¥{{item.subtotal}}</text>
+      <text class="col-dsub" wx:if="{{discount !== 1}}">¥{{item.dsubtotal}}</text>
+    </view>
+
+    <view class="table-footer">
+      <block wx:if="{{discount !== 1}}">
+        <view class="total-line total-line-original">
+          <text class="total-label">产品原价合计</text>
+          <text class="total-value original">¥{{productTotal}}</text>
+        </view>
+        <view class="total-line">
+          <text class="total-label">产品折后合计</text>
+          <text class="total-value">¥{{discountedTotal}}</text>
+        </view>
+      </block>
+      <view class="total-line" wx:else>
+        <text class="total-label">产品总价</text>
+        <text class="total-value">¥{{productTotal}}</text>
+      </view>
+
+      <!-- 产品不含税总价 -->
+      <view class="total-line total-line-notax">
+        <text class="total-label">产品不含税总价</text>
+        <text class="total-value">¥{{noTaxTotal}}</text>
+      </view>
+
+      <view class="total-line total-line-sub">
+        <text class="total-label">总重量</text>
+        <text class="total-value">{{totalWeight}} kg</text>
+      </view>
+      <view class="total-line total-line-sub">
+        <text class="total-label">总件数</text>
+        <text class="total-value">{{totalPieces}} 件</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ======== 不含运费：报价总价大号显示 ======== -->
+  <view class="big-total-card" wx:if="{{!loading && !errorMsg && !includeFreight}}">
+    <text class="big-total-label">报价总价（含税）</text>
+    <text class="big-total-value">¥{{discountedTotal}}</text>
+    <text class="big-total-notax">不含税 ¥{{noTaxTotal}}</text>
+  </view>
+
+  <!-- ======== 运费对比区（仅含运费时） ======== -->
+  <view class="freight-compare" wx:if="{{!loading && !errorMsg && includeFreight}}">
+    <view class="freight-card">
+      <view class="freight-header freight-express">📦 快递配送</view>
+      <view class="freight-body" wx:if="{{expressConfigured}}">
+        <view class="freight-row">
+          <text class="fr-label">总重量</text>
+          <text class="fr-value">{{totalWeight}} kg</text>
+        </view>
+        <view class="freight-row">
+          <text class="fr-label">起步价</text>
+          <text class="fr-value">¥{{freightRule.startPrice}}</text>
+        </view>
+        <view class="freight-row">
+          <text class="fr-label">续重单价</text>
+          <text class="fr-value">¥{{freightRule.pricePerKg}}/kg</text>
+        </view>
+        <view class="freight-row freight-highlight">
+          <text class="fr-label">运费</text>
+          <text class="fr-value">¥{{expressFreight}}</text>
+        </view>
+        <view class="freight-total">
+          <text class="ft-label">快递总价（含税）</text>
+          <text class="ft-value">¥{{expressTotal}}</text>
+        </view>
+        <view class="freight-total freight-total-notax">
+          <text class="ft-label">快递总价（不含税）</text>
+          <text class="ft-value-notax">¥{{expressTotalNoTax}}</text>
+        </view>
+      </view>
+      <view class="freight-body freight-empty" wx:else>
+        <text class="fr-empty">暂未配置</text>
+      </view>
+    </view>
+
+    <view class="freight-card">
+      <view class="freight-header freight-logistics">🚛 物流自提</view>
+      <view class="freight-body" wx:if="{{logisticsConfigured}}">
+        <view class="freight-row">
+          <text class="fr-label">总件数</text>
+          <text class="fr-value">{{totalPieces}} 件</text>
+        </view>
+        <view class="freight-row">
+          <text class="fr-label">单件价格</text>
+          <text class="fr-value">¥{{logisticsRule.pricePerPiece}}/件</text>
+        </view>
+        <view class="freight-row freight-placeholder" wx:if="{{expressConfigured}}">
+          <text class="fr-label"></text>
+          <text class="fr-value"></text>
+        </view>
+        <view class="freight-row freight-highlight">
+          <text class="fr-label">运费</text>
+          <text class="fr-value">¥{{logisticsFreight}}</text>
+        </view>
+        <view class="freight-total">
+          <text class="ft-label">自提总价（含税）</text>
+          <text class="ft-value">¥{{logisticsTotal}}</text>
+        </view>
+        <view class="freight-total freight-total-notax">
+          <text class="ft-label">自提总价（不含税）</text>
+          <text class="ft-value-notax">¥{{logisticsTotalNoTax}}</text>
+        </view>
+      </view>
+      <view class="freight-body freight-empty" wx:else>
+        <text class="fr-empty">暂未配置</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ======== 折扣信息 + 地址 ======== -->
+  <view class="info-bar" wx:if="{{!loading && !errorMsg}}">
+    <view class="info-row">
+      <text class="info-icon">🏷️</text>
+      <text wx:if="{{discount === 1}}">客户折扣：无</text>
+      <text wx:else>客户折扣：{{discountDisplay}}折</text>
+    </view>
+    <view class="info-row" wx:if="{{includeFreight}}">
+      <text class="info-icon">📍</text>
+      <text>收货地址：{{province}} {{city}}</text>
+    </view>
+  </view>
+
+  <!-- ======== 复制按钮 ======== -->
+  <view class="copy-area" wx:if="{{!loading && !errorMsg}}">
+    <button class="copy-btn" bindtap="onCopy">📋 复制报价单</button>
+  </view>
+
+  <!-- ======== 生成图片按钮 ======== -->
+  <view class="copy-area" wx:if="{{!loading && !errorMsg}}">
+    <button class="image-btn" bindtap="onGenerateImage">🖼️ 生成报价单图片</button>
+  </view>
+
+  <!-- ======== 隐藏 Canvas ======== -->
+  <canvas type="2d" id="quoteCanvas" class="hidden-canvas"></canvas>
+
+</view>

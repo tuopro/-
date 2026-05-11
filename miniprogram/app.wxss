@@ -1,0 +1,17 @@
+/* ==================== app.wxss ==================== */
+/* 全局样式 — 简约商务风 */
+page {
+  background-color: #f5f5f5;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 通用卡片 */
+.card {
+  margin: 24rpx;
+  padding: 32rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}

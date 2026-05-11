@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/password/password",
+    "pages/quote/quote",
+    "pages/quoteResult/quoteResult"
+  ],
+  "window": {
+    "navigationBarTitleText": "德赛线槽快速报价",
+    "navigationBarBackgroundColor": "#1D4ED8",
+    "navigationBarTextStyle": "white"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
