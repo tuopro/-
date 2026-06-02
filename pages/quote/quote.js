@@ -52,7 +52,15 @@ Page({
 
   onLoad() {
     const heights = [...new Set(products.map(p => p.specHeight))].sort((a, b) => a - b)
-    this.setData({ heightList: heights })
+    const defaultHeight = heights.includes(20) ? 20 : heights[0]
+    const defaultWidths = defaultHeight
+      ? [...new Set(products.filter(p => p.specHeight === defaultHeight).map(p => p.specWidth))].sort((a, b) => a - b)
+      : []
+    this.setData({
+      heightList: heights,
+      selectedHeight: defaultHeight || 0,
+      widthList: defaultWidths
+    })
 
     const app = getApp()
     this.setData({ isAdmin: app.globalData.isAdmin })
