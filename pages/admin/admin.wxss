@@ -1,0 +1,201 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: 80rpx;
+  box-sizing: border-box;
+}
+
+.header {
+  margin: 24rpx;
+  padding: 34rpx 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  background: linear-gradient(135deg, #0F3D75 0%, #0A84FF 72%, #4BA3FF 100%);
+  border-radius: 34rpx;
+  box-shadow: 0 20rpx 52rpx rgba(10, 64, 130, 0.22);
+}
+
+.header-kicker {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 4rpx;
+}
+
+.header-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 850;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.header-count {
+  padding: 10rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 25rpx;
+  color: #fff;
+  font-weight: 700;
+}
+
+.toolbar {
+  padding: 0 24rpx 20rpx;
+}
+
+.refresh-btn {
+  width: 100%;
+  height: 76rpx;
+  line-height: 76rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #0A67CC;
+  background: #FFFFFF;
+  border: 1rpx solid #CFE3FF;
+  border-radius: 22rpx;
+}
+
+.refresh-btn:active {
+  background: #EAF4FF;
+}
+
+.list {
+  padding: 0 24rpx;
+}
+
+.apply-card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1rpx solid rgba(255, 255, 255, 0.9);
+  border-radius: 28rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 14rpx 36rpx rgba(31, 41, 55, 0.06);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20rpx;
+}
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-company {
+  display: block;
+  font-size: 31rpx;
+  font-weight: 850;
+  color: #1D1D1F;
+  margin-bottom: 6rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-contact {
+  display: block;
+  font-size: 26rpx;
+  color: #6E6E73;
+  margin-bottom: 4rpx;
+}
+
+.card-time {
+  display: block;
+  font-size: 24rpx;
+  color: #A4A8B0;
+}
+
+.card-status {
+  flex-shrink: 0;
+}
+
+.status-tag {
+  padding: 7rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.status-pending {
+  background: #FFF4D6;
+  color: #B26A00;
+}
+
+.status-approved {
+  background: #DCF8EA;
+  color: #078B57;
+}
+
+.status-rejected {
+  background: #F1F2F4;
+  color: #8E8E93;
+}
+
+.card-remark {
+  margin-top: 18rpx;
+  padding: 16rpx 18rpx;
+  background: #F7F8FA;
+  border-radius: 18rpx;
+  font-size: 26rpx;
+  color: #6E6E73;
+}
+
+.card-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 22rpx;
+  padding-top: 22rpx;
+  border-top: 1rpx solid #EEF0F4;
+}
+
+.action-btn {
+  flex: 1;
+  height: 68rpx;
+  line-height: 68rpx;
+  font-size: 26rpx;
+  font-weight: 800;
+  border-radius: 18rpx;
+  border: none;
+  padding: 0;
+}
+
+.action-approve {
+  background: linear-gradient(135deg, #0A84FF, #0066CC);
+  color: #fff;
+}
+
+.action-approve:active {
+  opacity: 0.86;
+}
+
+.action-reject {
+  background: #FFF1F0;
+  color: #D92D20;
+  border: 1rpx solid #FFD0CC;
+}
+
+.action-reject:active {
+  background: #FFE4E1;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 160rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #A4A8B0;
+}

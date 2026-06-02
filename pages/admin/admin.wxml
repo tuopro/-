@@ -1,0 +1,51 @@
+<view class="page">
+  <view class="header">
+    <view>
+      <text class="header-kicker">CNDES 德赛</text>
+      <text class="header-title">申请管理</text>
+    </view>
+    <text class="header-count">共 {{totalCount}} 条</text>
+  </view>
+
+  <view class="toolbar">
+    <button class="refresh-btn" bindtap="onRefresh">刷新</button>
+  </view>
+
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="apply-card"
+          wx:for="{{list}}"
+          wx:key="_id"
+          wx:for-item="item">
+      <view class="card-top">
+        <view class="card-info">
+          <text class="card-company">{{item.companyName}}</text>
+          <text class="card-contact">{{item.contactName}} · {{item.phone}}</text>
+          <text class="card-time">{{item.createTimeText}}</text>
+        </view>
+        <view class="card-status">
+          <view class="status-tag status-pending" wx:if="{{item.status === 'pending'}}">待审核</view>
+          <view class="status-tag status-approved" wx:if="{{item.status === 'approved'}}">已通过</view>
+          <view class="status-tag status-rejected" wx:if="{{item.status === 'rejected'}}">已拒绝</view>
+        </view>
+      </view>
+
+      <view class="card-remark" wx:if="{{item.remark}}">
+        <text>{{item.remark}}</text>
+      </view>
+
+      <view class="card-actions" wx:if="{{item.status === 'pending'}}">
+        <button class="action-btn action-approve"
+                bindtap="onApprove"
+                data-id="{{item._id}}">同意</button>
+        <button class="action-btn action-reject"
+                bindtap="onReject"
+                data-id="{{item._id}}">拒绝</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{list.length === 0 && !loading}}">
+    <text class="empty-icon">📭</text>
+    <text class="empty-text">暂无申请记录</text>
+  </view>
+</view>

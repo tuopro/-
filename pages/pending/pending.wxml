@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="waiting-card">
+    <view class="waiting-icon">D</view>
+    <text class="waiting-title">申请审核中</text>
+    <text class="waiting-desc">您的企业信息已提交，管理员审核通过后即可使用 CNDES 德赛报价工具</text>
+
+    <view class="action-btns">
+      <button class="action-btn action-btn-primary"
+              bindtap="onRefresh"
+              loading="{{checking}}">
+        {{checking ? '检查中...' : '刷新状态'}}
+      </button>
+      <button class="action-btn action-btn-secondary"
+              open-type="contact">
+        联系管理员
+      </button>
+    </view>
+  </view>
+</view>

@@ -1,12 +1,14 @@
 {
   "pages": [
-    "pages/password/password",
+    "pages/apply/apply",
+    "pages/pending/pending",
+    "pages/admin/admin",
     "pages/quote/quote",
     "pages/quoteResult/quoteResult"
   ],
   "window": {
     "navigationBarTitleText": "德赛线槽快速报价",
-    "navigationBarBackgroundColor": "#1D4ED8",
+    "navigationBarBackgroundColor": "#0F3D75",
     "navigationBarTextStyle": "white"
   },
   "style": "v2",

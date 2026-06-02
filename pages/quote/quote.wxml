@@ -1,0 +1,299 @@
+<view class="page">
+
+  <view class="taste-shell">
+    <view class="top-nav">
+      <view class="brand-copy">
+        <text class="brand-name">CNDES 德赛线槽</text>
+        <text class="brand-sub">线槽厂家报价工具</text>
+      </view>
+      <view class="admin-entry" wx:if="{{isAdmin}}" bindtap="goAdmin">
+        <text class="admin-entry-icon">管理</text>
+      </view>
+    </view>
+
+    <view class="brand-hero">
+      <view class="hero-copy">
+        <text class="hero-kicker">CNDES FACTORY</text>
+        <text class="hero-title">好线槽选德赛</text>
+        <text class="hero-desc">选规格，填数量，算运费，得报价</text>
+      </view>
+      <view class="hero-product-card">
+        <image class="hero-product" src="/assets/product-hero.png" mode="aspectFill"></image>
+      </view>
+    </view>
+
+    <view class="spec-overview" wx:if="{{sampleSpec && selectedTeeth}}">
+      <view>
+        <text class="overview-label">当前规格</text>
+        <text class="overview-spec">{{sampleSpec}} {{selectedTeeth}}{{selectedColor ? ' ' + selectedColor : ''}}</text>
+      </view>
+      <view class="overview-price-wrap">
+        <text class="overview-label">单价</text>
+        <text class="overview-price">¥{{samplePrice}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="quote-bento {{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1) ? 'quote-bento-active' : ''}}">
+  <view class="card spec-card {{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1) ? 'spec-card-compact' : 'spec-card-full'}}">
+    <view class="card-title">规格选择</view>
+
+    <view class="step-label">选择高度（mm）</view>
+    <scroll-view class="btn-scroll" scroll-x>
+      <view class="btn-scroll-inner">
+        <view class="spec-btn {{selectedHeight === item ? 'spec-btn-active' : ''}}"
+              wx:for="{{heightList}}"
+              wx:key="*this"
+              data-value="{{item}}"
+              bindtap="onHeightTap">{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <view class="step-label" wx:if="{{widthList.length > 0}}">选择宽度（mm）</view>
+    <scroll-view class="btn-scroll" scroll-x wx:if="{{widthList.length > 0}}">
+      <view class="btn-scroll-inner">
+        <view class="spec-btn {{selectedWidth === item ? 'spec-btn-active' : ''}}"
+              wx:for="{{widthList}}"
+              wx:key="*this"
+              data-value="{{item}}"
+              bindtap="onWidthTap">{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <view class="step-label" wx:if="{{sampleTeeth.length > 0}}">选择齿形</view>
+    <scroll-view class="btn-scroll" scroll-x wx:if="{{sampleTeeth.length > 0}}">
+      <view class="btn-scroll-inner">
+        <view class="spec-btn {{selectedTeeth === item ? 'spec-btn-active' : ''}}"
+              wx:for="{{sampleTeeth}}"
+              wx:key="*this"
+              data-value="{{item}}"
+              bindtap="onTeethTap">{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <view class="step-label" wx:if="{{sampleColors.length > 1}}">选择颜色</view>
+    <view class="color-row" wx:if="{{sampleColors.length > 1}}">
+      <view class="color-item {{selectedColor === item ? 'color-item-active' : ''}}"
+            wx:for="{{sampleColors}}"
+            wx:key="*this"
+            data-value="{{item}}"
+            bindtap="onColorTap">{{item}}</view>
+    </view>
+
+  </view>
+
+  <view class="card quantity-card" wx:if="{{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1)}}">
+    <view class="card-title">输入数量</view>
+    <view class="meter-input-row">
+      <text class="meter-label">米数</text>
+      <input class="meter-input"
+             type="digit"
+             value="{{sampleMeters}}"
+             placeholder="请输入米数"
+             bindinput="onMetersInput"/>
+    </view>
+    <view class="meter-hint" wx:if="{{sampleMeterHint}}">{{sampleMeterHint}}</view>
+    <view class="box-info">整箱 {{sampleBoxMeters}} 米</view>
+
+    <view class="add-cart-btn" bindtap="addToCart">+ 加入报价清单</view>
+  </view>
+  </view>
+
+  <view class="card" wx:if="{{cart.length > 0}}">
+    <view class="card-title">报价清单</view>
+    <view class="cart-table">
+      <view class="table-header">
+        <text class="tcol-spec">规格</text>
+        <text class="tcol-price">单价</text>
+        <text class="tcol-meters">米数</text>
+        <text class="tcol-sub">小计</text>
+        <text class="tcol-del"></text>
+      </view>
+      <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
+            wx:for="{{cart}}"
+            wx:key="id">
+        <text class="tcol-spec">{{item.spec}}</text>
+        <text class="tcol-price">¥{{item.unitPrice}}</text>
+        <input class="tcol-meters cart-meters-input"
+               type="digit"
+               value="{{item.meters}}"
+               data-id="{{item.id}}"
+               bindblur="onCartMetersInput"/>
+        <text class="tcol-sub">¥{{item.subtotal}}</text>
+        <view class="tcol-del" data-id="{{item.id}}" bindtap="removeCartItem">×</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <picker mode="selector"
+            range="{{discountOptions}}"
+            range-key="label"
+            value="{{discountTypeIndex}}"
+            bindchange="onDiscountTypeChange">
+      <view class="discount-row">
+        <text class="discount-label">客户折扣</text>
+        <view class="discount-value-wrap">
+          <text class="discount-value">{{discountOptions[discountTypeIndex].label}}</text>
+          <text class="arrow">▸</text>
+        </view>
+      </view>
+    </picker>
+
+    <view class="discount-input-wrap" wx:if="{{discountOptions[discountTypeIndex].value === -1}}">
+      <input class="discount-input"
+             type="digit"
+             value="{{discountInput}}"
+             placeholder="请输入折扣，例如 9.5 表示 9.5折"
+             bindblur="onDiscountBlur"/>
+      <text class="discount-hint" wx:if="{{discountCoefficient < 1}}">
+        折后系数：{{discountCoefficient}}
+      </text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="switch-row">
+      <text class="switch-label">含运费</text>
+      <switch checked="{{includeFreight}}"
+              bindchange="onFreightSwitch"
+              color="#0A84FF"/>
+    </view>
+
+    <view class="transport-row" wx:if="{{includeFreight}}">
+      <text class="switch-label">运输方式</text>
+      <radio-group class="radio-group" bindchange="onTransportChange">
+        <label class="radio-label">
+          <radio value="express" checked="{{transportType === 'express'}}" color="#0A84FF"/>
+          <text>快运（送货上门）</text>
+        </label>
+        <label class="radio-label">
+          <radio value="logistics" checked="{{transportType === 'logistics'}}" color="#0A84FF"/>
+          <text>物流自提</text>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{includeFreight}}">
+    <view class="card-title">收货地址</view>
+    <picker mode="region"
+            value="{{region}}"
+            bindchange="onRegionChange">
+      <view class="region-display {{province ? '' : 'region-placeholder'}}">
+        <text>{{province ? province + ' ' + city : '请选择省/市'}}</text>
+        <text class="arrow">▸</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="card" wx:if="{{cart.length > 0}}">
+    <view class="card-title">报价结果</view>
+
+    <view class="result-table">
+      <view class="table-header">
+        <text class="rcol-spec">规格</text>
+        <text class="rcol-price">单价</text>
+        <text class="rcol-meters">米数</text>
+        <text class="rcol-sub">小计</text>
+      </view>
+      <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
+            wx:for="{{cart}}"
+            wx:key="id">
+        <text class="rcol-spec">{{item.spec}}</text>
+        <text class="rcol-price">¥{{item.unitPrice}}</text>
+        <text class="rcol-meters">{{item.meters}}</text>
+        <text class="rcol-sub">¥{{item.subtotal}}</text>
+      </view>
+    </view>
+
+    <view class="result-summary">
+      <view class="summary-row" wx:if="{{discountCoefficient < 1}}">
+        <text class="summary-label">产品原价合计</text>
+        <text class="summary-value original">¥{{productTotal}}</text>
+      </view>
+      <view class="summary-row summary-main">
+        <text class="summary-label">{{discountCoefficient < 1 ? '产品折后合计' : '产品总价（含税）'}}</text>
+        <text class="summary-value summary-value-main">¥{{discountedTotal}}</text>
+      </view>
+      <view class="summary-row summary-sub">
+        <text class="summary-label">产品不含税总价</text>
+        <text class="summary-value summary-value-sub">¥{{noTaxTotal}}</text>
+      </view>
+    </view>
+
+    <view class="freight-compare" wx:if="{{includeFreight && province}}">
+      <view class="freight-card freight-card-express">
+        <view class="freight-header freight-express">快递配送</view>
+        <view class="freight-body">
+          <view class="freight-row">
+            <text class="fr-label">总重量</text>
+            <text class="fr-value">{{totalWeight}} kg</text>
+          </view>
+          <view class="freight-row">
+            <text class="fr-label">起步价</text>
+            <text class="fr-value">¥{{freightRule.startPrice}}</text>
+          </view>
+          <view class="freight-row">
+            <text class="fr-label">续重单价</text>
+            <text class="fr-value">¥{{freightRule.pricePerKg}}/kg</text>
+          </view>
+          <view class="freight-row freight-highlight">
+            <text class="fr-label">运费</text>
+            <text class="fr-value">¥{{expressFreight}}</text>
+          </view>
+          <view class="freight-total">
+            <text class="ft-label">快递总价（含税）</text>
+            <text class="ft-value">¥{{expressTotal}}</text>
+          </view>
+          <view class="freight-total freight-total-notax">
+            <text class="ft-label">快递总价（不含税）</text>
+            <text class="ft-value-notax">¥{{expressTotalNoTax}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="freight-card freight-card-logistics">
+        <view class="freight-header freight-logistics">物流自提</view>
+        <view class="freight-body">
+          <view class="freight-row">
+            <text class="fr-label">总件数</text>
+            <text class="fr-value">{{totalPieces}} 件</text>
+          </view>
+          <view class="freight-row">
+            <text class="fr-label">单件价格</text>
+            <text class="fr-value">¥{{logisticsRule.pricePerPiece}}/件</text>
+          </view>
+          <view class="freight-row freight-row-placeholder">
+            <text class="fr-label">占位</text>
+            <text class="fr-value">占位</text>
+          </view>
+          <view class="freight-row freight-highlight">
+            <text class="fr-label">运费</text>
+            <text class="fr-value">¥{{logisticsFreight}}</text>
+          </view>
+          <view class="freight-total">
+            <text class="ft-label">自提总价（含税）</text>
+            <text class="ft-value">¥{{logisticsTotal}}</text>
+          </view>
+          <view class="freight-total freight-total-notax">
+            <text class="ft-label">自提总价（不含税）</text>
+            <text class="ft-value-notax">¥{{logisticsTotalNoTax}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="freight-empty-hint" wx:if="{{includeFreight && !province}}">
+      <text>请选择收货地址后自动计算运费</text>
+    </view>
+  </view>
+
+  <view class="slogan-bar" wx:if="{{cart.length > 0}}">
+    <text>品质线槽，选择 CNDES 德赛</text>
+  </view>
+
+  <view class="submit-area">
+    <button class="submit-btn" bindtap="onSubmit">查看完整报价单</button>
+  </view>
+</view>

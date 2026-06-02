@@ -1,0 +1,31 @@
+/* ==================== app.wxss ==================== */
+/* 全局样式 — CNDES 商务高级风 */
+page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F8FAFD 0%, #EEF3F8 46%, #F5F5F7 100%);
+  font-size: 28rpx;
+  color: #1D1D1F;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* 通用卡片 */
+.card {
+  margin: 24rpx;
+  padding: 32rpx 30rpx;
+  background: rgba(255, 255, 255, 0.74);
+  border: 1rpx solid rgba(255, 255, 255, 0.96);
+  border-radius: 28rpx;
+  box-shadow: 0 22rpx 56rpx rgba(31, 41, 55, 0.1);
+  box-sizing: border-box;
+  backdrop-filter: blur(22rpx);
+  -webkit-backdrop-filter: blur(22rpx);
+}
+
+button {
+  font-family: inherit;
+}
+
+button::after {
+  border: none;
+}

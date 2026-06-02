@@ -1,6 +1,5 @@
 {
   "description": "德赛线槽快速报价",
-  "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "setting": {
     "urlCheck": false,
@@ -30,7 +29,6 @@
       "outputPath": ""
     }
   },
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "appid": "wx081bd682d688ab9e",
   "projectname": "desai-quote",
   "compileType": "miniprogram",
