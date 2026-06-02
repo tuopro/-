@@ -12,3 +12,6 @@ Thumbs.db
 # 日志
 *.log
 npm-debug.log*
+
+# Superpowers 本地设计预览
+.superpowers/
