@@ -431,6 +431,25 @@ Page({
     this.setData({ cart }, () => this.recalc())
   },
 
+  onCartFixedQuantityInput(e) {
+    const id = e.currentTarget.dataset.id
+    const val = parseInt(e.detail.value, 10)
+    if (isNaN(val) || val <= 0 || String(val) !== String(e.detail.value).trim()) {
+      wx.showToast({ title: '请输入正确数量', icon: 'none' })
+      return
+    }
+    const cart = this.data.cart.map(item => {
+      if (item.id !== id || item.quoteType !== 'fixed') return item
+      const quantity = val
+      const meters = parseFloat((item.fixedLength * quantity).toFixed(2))
+      const subtotal = parseFloat((item.unitPrice * quantity).toFixed(2))
+      const rowWeight = parseFloat((item.weightPerPiece * quantity).toFixed(2))
+      const boxCount = item.boxMeters ? parseFloat((meters / item.boxMeters).toFixed(4)) : item.boxCount
+      return { ...item, quantity, meters, subtotal, rowWeight, boxCount, pieces: quantity }
+    })
+    this.setData({ cart }, () => this.recalc())
+  },
+
   removeCartItem(e) {
     const id = e.currentTarget.dataset.id
     const cart = this.data.cart.filter(item => item.id !== id)

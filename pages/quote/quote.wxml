@@ -155,7 +155,14 @@
                bindblur="onCartMetersInput"/>
         <view wx:else class="tcol-meters fixed-qty-cell">
           <text class="fixed-length-text">{{item.fixedLength}}米/根</text>
-          <text class="fixed-qty-text">{{item.quantity}}根</text>
+          <view class="fixed-qty-input-wrap">
+            <input class="fixed-qty-input"
+                   type="number"
+                   value="{{item.quantity}}"
+                   data-id="{{item.id}}"
+                   bindblur="onCartFixedQuantityInput"/>
+            <text class="fixed-qty-unit">根</text>
+          </view>
         </view>
         <text class="tcol-sub">¥{{item.subtotal}}</text>
         <view class="tcol-del" data-id="{{item.id}}" bindtap="removeCartItem">×</view>
