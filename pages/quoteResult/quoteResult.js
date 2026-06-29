@@ -8,6 +8,7 @@ Page({
   data: {
     loading: true,
     productList: [],
+    quoteMode: 'standard',
     province: '',
     city: '',
     discount: 1,
@@ -60,6 +61,7 @@ Page({
       discount = 1,
       discountDisplay = '',
       includeFreight = true,
+      quoteMode = '',
       freightRule = null,
       expressFreight = 0,
       expressTotal = 0,
@@ -70,6 +72,7 @@ Page({
       logisticsTotalNoTax = 0
     } = data
 
+    const resolvedQuoteMode = quoteMode || (cart[0] && cart[0].quoteType === 'fixed' ? 'fixed' : 'standard')
     const productList = cart.map(item => {
       const dsubtotal = parseFloat((item.subtotal * discount).toFixed(2))
       return { ...item, dsubtotal }
@@ -78,6 +81,7 @@ Page({
     this.setData({
       loading: false,
       productList,
+      quoteMode: resolvedQuoteMode,
       province,
       city,
       discount,
@@ -97,7 +101,7 @@ Page({
       logisticsFreight,
       logisticsTotal,
       logisticsTotalNoTax,
-      logisticsConfigured: !!logisticsRule
+      logisticsConfigured: resolvedQuoteMode === 'fixed' ? false : !!logisticsRule
     })
   },
 
@@ -105,14 +109,19 @@ Page({
     const d = this.data
     let productLines = ''
     d.productList.forEach(item => {
-      productLines += `${item.spec}  ¥${item.unitPrice}/米 × ${item.meters}米  = ¥${item.subtotal}`
+      if (item.quoteType === 'fixed') {
+        productLines += `${item.spec}  ¥${item.unitPrice}/根 × ${item.quantity}根（${item.fixedLength}米/根） = ¥${item.subtotal}`
+      } else {
+        productLines += `${item.spec}  ¥${item.unitPrice}/米 × ${item.meters}米  = ¥${item.subtotal}`
+      }
       if (d.discount !== 1) {
         productLines += ` → 折后 ¥${item.dsubtotal}`
       }
       productLines += '\n'
     })
 
-    let text = `【CNDES德赛线槽报价单】
+    const title = d.quoteMode === 'fixed' ? 'CNDES德赛线槽定长报价单' : 'CNDES德赛线槽报价单'
+    let text = `【${title}】
 ${productLines}`
     if (d.discount !== 1) {
       text += `产品原价合计：¥${d.productTotal}
@@ -123,7 +132,7 @@ ${productLines}`
       text += `产品总价：¥${d.productTotal}
 `
     }
-    text += `总重量：${d.totalWeight}kg  总件数：${d.totalPieces}件
+    text += `总重量：${d.totalWeight}kg  ${d.quoteMode === 'fixed' ? '总根数' : '总件数'}：${d.totalPieces}${d.quoteMode === 'fixed' ? '根' : '件'}
 产品不含税总价：¥${d.noTaxTotal}`
 
     if (d.includeFreight) {
@@ -134,10 +143,10 @@ ${productLines}`
         text += `
 【快递配送】暂未配置`
       }
-      if (d.logisticsConfigured) {
+      if (d.quoteMode !== 'fixed' && d.logisticsConfigured) {
         text += `
 【物流自提】${d.totalPieces}件 × ¥${d.logisticsRule.pricePerPiece}/件，运费¥${d.logisticsFreight}，总价（含税）¥${d.logisticsTotal}，不含税¥${d.logisticsTotalNoTax}`
-      } else {
+      } else if (d.quoteMode !== 'fixed') {
         text += `
 【物流自提】暂未配置`
       }
@@ -162,7 +171,7 @@ ${productLines}`
     wx.showLoading({ title: '生成图片…' })
 
     const rowCount = d.productList.length
-    const canvasH = this.calcCanvasHeight(rowCount)
+    const canvasH = this.calcCanvasHeight(rowCount, d.quoteMode)
     const dpr = wx.getSystemInfoSync().pixelRatio
 
     const canvas = wx.createOffscreenCanvas({
@@ -191,12 +200,14 @@ ${productLines}`
     })
   },
 
-  calcCanvasHeight(rowCount) {
+  calcCanvasHeight(rowCount, quoteMode) {
     let h = 4 + 16 + 26 + 26 + 14 + 20
     h += rowCount * 26
     h += 14 + 30 + 22 + 24
     h += 14 + 24 + 20 * 2 + 24 + 26 + 28
-    h += 24 + 20 * 2 + 24 + 26 + 28
+    if (quoteMode !== 'fixed') {
+      h += 24 + 20 * 2 + 24 + 26 + 28
+    }
     h += 14 + 20 + 22 + 8
     h += 14 + 20 + 20 + 16
     return Math.max(h, 550)
@@ -226,7 +237,7 @@ ${productLines}`
 
     ctx.fillStyle = '#333'
     ctx.font = 'bold 18px sans-serif'
-    ctx.fillText('客户报价单', CANVAS_W / 2, y)
+    ctx.fillText(d.quoteMode === 'fixed' ? '定长客户报价单' : '客户报价单', CANVAS_W / 2, y)
     y += 26
 
     y = this.drawSep(ctx, y)
@@ -236,9 +247,9 @@ ${productLines}`
     ctx.textAlign = 'left'
     ctx.fillText('规格', X_SPEC, y)
     ctx.textAlign = 'right'
-    ctx.fillText('单价', X_PRICE, y)
+    ctx.fillText(d.quoteMode === 'fixed' ? '单根价' : '单价', X_PRICE, y)
     ctx.textAlign = 'center'
-    ctx.fillText('米数', X_METERS, y)
+    ctx.fillText(d.quoteMode === 'fixed' ? '数量' : '米数', X_METERS, y)
     ctx.textAlign = 'right'
     ctx.fillText('小计', X_SUB, y)
     y += 20
@@ -260,14 +271,15 @@ ${productLines}`
 
       ctx.fillStyle = '#333'
       ctx.textAlign = 'left'
-      const spec = item.spec.length > 10 ? item.spec.slice(0, 9) + '…' : item.spec
+      const fullSpec = item.quoteType === 'fixed' ? item.spec + ' ' + item.fixedLength + '米/根' : item.spec
+      const spec = fullSpec.length > 10 ? fullSpec.slice(0, 9) + '…' : fullSpec
       ctx.fillText(spec, X_SPEC, ty)
 
       ctx.textAlign = 'right'
       ctx.fillText('¥' + item.unitPrice, X_PRICE, ty)
 
       ctx.textAlign = 'center'
-      ctx.fillText('' + item.meters, X_METERS, ty)
+      ctx.fillText(item.quoteType === 'fixed' ? item.quantity + '根' : '' + item.meters, X_METERS, ty)
 
       ctx.textAlign = 'right'
       const showSub = d.discount !== 1 ? item.dsubtotal : item.subtotal
@@ -298,7 +310,8 @@ ${productLines}`
     ctx.font = '13px sans-serif'
     ctx.fillStyle = '#86868B'
     ctx.textAlign = 'left'
-    ctx.fillText('总重 ' + d.totalWeight + 'kg    总件数 ' + d.totalPieces + '件', X_SPEC, y)
+    const piecesLabel = d.quoteMode === 'fixed' ? '总根数 ' + d.totalPieces + '根' : '总件数 ' + d.totalPieces + '件'
+    ctx.fillText('总重 ' + d.totalWeight + 'kg    ' + piecesLabel, X_SPEC, y)
     y += 24
 
     y = this.drawSep(ctx, y, '#E5E7EB')
@@ -306,7 +319,7 @@ ${productLines}`
     ctx.fillStyle = '#2563EB'
     ctx.font = 'bold 14px sans-serif'
     ctx.textAlign = 'left'
-    ctx.fillText('快递配送', X_SPEC, y)
+    ctx.fillText(d.quoteMode === 'fixed' ? '快运配送' : '快递配送', X_SPEC, y)
     y += 24
 
     if (d.expressConfigured) {
@@ -343,42 +356,44 @@ ${productLines}`
       y += 24
     }
 
-    ctx.fillStyle = '#059669'
-    ctx.font = 'bold 14px sans-serif'
-    ctx.textAlign = 'left'
-    ctx.fillText('物流自提', X_SPEC, y)
-    y += 24
-
-    if (d.logisticsConfigured) {
-      ctx.font = '13px sans-serif'
-      ctx.fillStyle = '#86868B'
-      ctx.textAlign = 'left'
-      ctx.fillText('总件数 ' + d.totalPieces + '件', X_SPEC, y)
-      ctx.textAlign = 'right'
-      ctx.fillText('¥' + d.logisticsRule.pricePerPiece + '/件', X_SUB, y)
-      y += 22
-
-      ctx.textAlign = 'right'
-      ctx.fillStyle = '#333'
+    if (d.quoteMode !== 'fixed') {
+      ctx.fillStyle = '#059669'
       ctx.font = 'bold 14px sans-serif'
-      ctx.fillText('运费 ¥' + d.logisticsFreight, X_SUB, y)
+      ctx.textAlign = 'left'
+      ctx.fillText('物流自提', X_SPEC, y)
       y += 24
 
-      ctx.font = 'bold 16px sans-serif'
-      ctx.fillStyle = '#2563EB'
-      ctx.fillText('总价（含税） ¥' + d.logisticsTotal, X_SUB, y)
-      y += 26
+      if (d.logisticsConfigured) {
+        ctx.font = '13px sans-serif'
+        ctx.fillStyle = '#86868B'
+        ctx.textAlign = 'left'
+        ctx.fillText('总件数 ' + d.totalPieces + '件', X_SPEC, y)
+        ctx.textAlign = 'right'
+        ctx.fillText('¥' + d.logisticsRule.pricePerPiece + '/件', X_SUB, y)
+        y += 22
 
-      ctx.fillStyle = '#86868B'
-      ctx.font = 'bold 13px sans-serif'
-      ctx.fillText('不含税 ¥' + d.logisticsTotalNoTax, X_SUB, y)
-      y += 28
-    } else {
-      ctx.font = '13px sans-serif'
-      ctx.fillStyle = '#86868B'
-      ctx.textAlign = 'center'
-      ctx.fillText('暂未配置', CANVAS_W / 2, y)
-      y += 24
+        ctx.textAlign = 'right'
+        ctx.fillStyle = '#333'
+        ctx.font = 'bold 14px sans-serif'
+        ctx.fillText('运费 ¥' + d.logisticsFreight, X_SUB, y)
+        y += 24
+
+        ctx.font = 'bold 16px sans-serif'
+        ctx.fillStyle = '#2563EB'
+        ctx.fillText('总价（含税） ¥' + d.logisticsTotal, X_SUB, y)
+        y += 26
+
+        ctx.fillStyle = '#86868B'
+        ctx.font = 'bold 13px sans-serif'
+        ctx.fillText('不含税 ¥' + d.logisticsTotalNoTax, X_SUB, y)
+        y += 28
+      } else {
+        ctx.font = '13px sans-serif'
+        ctx.fillStyle = '#86868B'
+        ctx.textAlign = 'center'
+        ctx.fillText('暂未配置', CANVAS_W / 2, y)
+        y += 24
+      }
     }
 
     y = this.drawSep(ctx, y, '#E5E7EB')

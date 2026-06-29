@@ -22,13 +22,22 @@
       </view>
     </view>
 
+    <view class="quote-mode-tabs">
+      <view class="quote-mode-tab {{quoteMode === 'standard' ? 'quote-mode-tab-active' : ''}}"
+            data-mode="standard"
+            bindtap="onQuoteModeTap">标准报价</view>
+      <view class="quote-mode-tab {{quoteMode === 'fixed' ? 'quote-mode-tab-active' : ''}}"
+            data-mode="fixed"
+            bindtap="onQuoteModeTap">定长报价</view>
+    </view>
+
     <view class="spec-overview" wx:if="{{sampleSpec && selectedTeeth}}">
       <view>
         <text class="overview-label">当前规格</text>
         <text class="overview-spec">{{sampleSpec}} {{selectedTeeth}}{{selectedColor ? ' ' + selectedColor : ''}}</text>
       </view>
       <view class="overview-price-wrap">
-        <text class="overview-label">单价</text>
+        <text class="overview-label">{{quoteMode === 'fixed' ? '米价' : '单价'}}</text>
         <text class="overview-price">¥{{samplePrice}}</text>
       </view>
     </view>
@@ -83,19 +92,43 @@
   </view>
 
   <view class="card quantity-card" wx:if="{{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1)}}">
-    <view class="card-title">输入数量</view>
-    <view class="meter-input-row">
-      <text class="meter-label">米数</text>
-      <input class="meter-input"
-             type="digit"
-             value="{{sampleMeters}}"
-             placeholder="请输入米数"
-             bindinput="onMetersInput"/>
-    </view>
-    <view class="meter-hint" wx:if="{{sampleMeterHint}}">{{sampleMeterHint}}</view>
-    <view class="box-info">整箱 {{sampleBoxMeters}} 米</view>
+    <block wx:if="{{quoteMode === 'standard'}}">
+      <view class="card-title">输入数量</view>
+      <view class="meter-input-row">
+        <text class="meter-label">米数</text>
+        <input class="meter-input"
+               type="digit"
+               value="{{sampleMeters}}"
+               placeholder="请输入米数"
+               bindinput="onMetersInput"/>
+      </view>
+      <view class="meter-hint" wx:if="{{sampleMeterHint}}">{{sampleMeterHint}}</view>
+      <view class="box-info">整箱 {{sampleBoxMeters}} 米</view>
+    </block>
 
-    <view class="add-cart-btn" bindtap="addToCart">+ 加入报价清单</view>
+    <block wx:else>
+      <view class="card-title">定长输入</view>
+      <view class="meter-input-row fixed-input-row">
+        <text class="meter-label">长度</text>
+        <input class="meter-input"
+               type="digit"
+               value="{{fixedLength}}"
+               placeholder="米/根"
+               bindinput="onFixedLengthInput"/>
+      </view>
+      <view class="meter-input-row fixed-input-row fixed-input-row-second">
+        <text class="meter-label">数量</text>
+        <input class="meter-input"
+               type="number"
+               value="{{fixedQuantity}}"
+               placeholder="根"
+               bindinput="onFixedQuantityInput"/>
+      </view>
+      <view class="meter-hint fixed-hint" wx:if="{{fixedLengthHint}}">{{fixedLengthHint}}</view>
+      <view class="box-info">单根长度不超过 2 米</view>
+    </block>
+
+    <view class="add-cart-btn" bindtap="addToCart">{{quoteMode === 'fixed' ? '+ 加入定长报价' : '+ 加入报价清单'}}</view>
   </view>
   </view>
 
@@ -105,7 +138,7 @@
       <view class="table-header">
         <text class="tcol-spec">规格</text>
         <text class="tcol-price">单价</text>
-        <text class="tcol-meters">米数</text>
+        <text class="tcol-meters">{{quoteMode === 'fixed' ? '数量' : '米数'}}</text>
         <text class="tcol-sub">小计</text>
         <text class="tcol-del"></text>
       </view>
@@ -114,11 +147,13 @@
             wx:key="id">
         <text class="tcol-spec">{{item.spec}}</text>
         <text class="tcol-price">¥{{item.unitPrice}}</text>
-        <input class="tcol-meters cart-meters-input"
+        <input wx:if="{{item.quoteType !== 'fixed'}}"
+               class="tcol-meters cart-meters-input"
                type="digit"
                value="{{item.meters}}"
                data-id="{{item.id}}"
                bindblur="onCartMetersInput"/>
+        <text wx:else class="tcol-meters">{{item.quantity}}根</text>
         <text class="tcol-sub">¥{{item.subtotal}}</text>
         <view class="tcol-del" data-id="{{item.id}}" bindtap="removeCartItem">×</view>
       </view>
@@ -160,7 +195,7 @@
               color="#0A84FF"/>
     </view>
 
-    <view class="transport-row" wx:if="{{includeFreight}}">
+    <view class="transport-row" wx:if="{{includeFreight && quoteMode !== 'fixed'}}">
       <text class="switch-label">运输方式</text>
       <radio-group class="radio-group" bindchange="onTransportChange">
         <label class="radio-label">
@@ -172,6 +207,10 @@
           <text>物流自提</text>
         </label>
       </radio-group>
+    </view>
+    <view class="transport-row fixed-transport-row" wx:if="{{includeFreight && quoteMode === 'fixed'}}">
+      <text class="switch-label">运输方式</text>
+      <text class="fixed-transport">快运（送货上门）</text>
     </view>
   </view>
 
@@ -194,7 +233,7 @@
       <view class="table-header">
         <text class="rcol-spec">规格</text>
         <text class="rcol-price">单价</text>
-        <text class="rcol-meters">米数</text>
+        <text class="rcol-meters">{{quoteMode === 'fixed' ? '数量' : '米数'}}</text>
         <text class="rcol-sub">小计</text>
       </view>
       <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
@@ -202,7 +241,7 @@
             wx:key="id">
         <text class="rcol-spec">{{item.spec}}</text>
         <text class="rcol-price">¥{{item.unitPrice}}</text>
-        <text class="rcol-meters">{{item.meters}}</text>
+        <text class="rcol-meters">{{item.quoteType === 'fixed' ? item.quantity + '根' : item.meters}}</text>
         <text class="rcol-sub">¥{{item.subtotal}}</text>
       </view>
     </view>
@@ -253,7 +292,7 @@
         </view>
       </view>
 
-      <view class="freight-card freight-card-logistics">
+      <view class="freight-card freight-card-logistics" wx:if="{{quoteMode !== 'fixed'}}">
         <view class="freight-header freight-logistics">物流自提</view>
         <view class="freight-body">
           <view class="freight-row">

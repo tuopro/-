@@ -15,6 +15,10 @@ Page({
     sampleBasePrice: 0,
     sampleMeters: '',
     sampleMeterHint: '',
+    quoteMode: 'standard',
+    fixedLength: '',
+    fixedQuantity: '',
+    fixedLengthHint: '',
     heightList: [],
     widthList: [],
     selectedHeight: 0,
@@ -83,6 +87,24 @@ Page({
 
   goAdmin() {
     wx.navigateTo({ url: '/pages/admin/admin' })
+  },
+
+  onQuoteModeTap(e) {
+    const mode = e.currentTarget.dataset.mode
+    if (!mode || mode === this.data.quoteMode) return
+    if (this.data.cart.length > 0) {
+      wx.showToast({ title: '请先完成或清空当前报价清单', icon: 'none' })
+      return
+    }
+    this.setData({
+      quoteMode: mode,
+      transportType: mode === 'fixed' ? 'express' : this.data.transportType,
+      sampleMeters: '',
+      sampleMeterHint: '',
+      fixedLength: '',
+      fixedQuantity: '',
+      fixedLengthHint: ''
+    })
   },
 
   onHeightTap(e) {
@@ -158,6 +180,26 @@ Page({
     this.updateMeterHint(val)
   },
 
+  onFixedLengthInput(e) {
+    const val = e.detail.value
+    this.setData({ fixedLength: val })
+    const lengthM = parseFloat(val)
+    if (isNaN(lengthM) || lengthM <= 0) {
+      this.setData({ fixedLengthHint: '' })
+      return
+    }
+    if (lengthM > 2) {
+      this.setData({ fixedLengthHint: '单根长度不能超过 2米' })
+      return
+    }
+    const pieces = Math.floor(2 / lengthM)
+    this.setData({ fixedLengthHint: '每根 2米线槽可切 ' + pieces + ' 根' })
+  },
+
+  onFixedQuantityInput(e) {
+    this.setData({ fixedQuantity: e.detail.value })
+  },
+
   updateMeterHint(val) {
     const m = parseFloat(val)
     const boxMeters = this.data.sampleBoxMeters
@@ -175,6 +217,11 @@ Page({
   },
 
   addToCart() {
+    if (this.data.quoteMode === 'fixed') {
+      this.addFixedToCart()
+      return
+    }
+
     const { selectedHeight, selectedWidth, selectedTeeth, selectedColor, sampleSpec, samplePrice, sampleMeters, sampleBoxMeters, sampleBoxWeight, sampleBoxWeightFullSeal, sampleBasePrice } = this.data
     if (!selectedHeight || !selectedWidth) {
       wx.showToast({ title: '请选择规格', icon: 'none' })
@@ -204,6 +251,7 @@ Page({
 
     const cart = [...this.data.cart, {
       id: Date.now(),
+      quoteType: 'standard',
       spec,
       height: selectedHeight,
       width: selectedWidth,
@@ -242,11 +290,132 @@ Page({
     })
   },
 
+  calculateFixedQuote({ unitPrice, lengthM, quantity, boxMeters, boxWeight, boxWeightFullSeal, teeth }) {
+    const cuttingRate = 1.2
+    const piecesPerTwoMeter = Math.floor(2 / lengthM)
+    const twoMeterCutPrice = unitPrice * 2 * cuttingRate
+    const fixedUnitPrice = parseFloat((twoMeterCutPrice / piecesPerTwoMeter).toFixed(2))
+    const subtotal = parseFloat((fixedUnitPrice * quantity).toFixed(2))
+    const effectiveBoxWeight = teeth === '全封闭' && boxWeightFullSeal ? boxWeightFullSeal : boxWeight
+    const weightPerMeter = effectiveBoxWeight / boxMeters
+    const weightPerPiece = parseFloat((weightPerMeter * lengthM).toFixed(4))
+    const rowWeight = parseFloat((weightPerPiece * quantity).toFixed(2))
+    return {
+      cuttingRate,
+      piecesPerTwoMeter,
+      twoMeterCutPrice: parseFloat(twoMeterCutPrice.toFixed(2)),
+      fixedUnitPrice,
+      subtotal,
+      weightPerMeter: parseFloat(weightPerMeter.toFixed(4)),
+      weightPerPiece,
+      rowWeight
+    }
+  },
+
+  addFixedToCart() {
+    const { selectedHeight, selectedWidth, selectedTeeth, selectedColor, sampleSpec, samplePrice, fixedLength, fixedQuantity, sampleBoxMeters, sampleBoxWeight, sampleBoxWeightFullSeal } = this.data
+    if (!selectedHeight || !selectedWidth) {
+      wx.showToast({ title: '请选择规格', icon: 'none' })
+      return
+    }
+    if (!selectedTeeth) {
+      wx.showToast({ title: '请选择齿形', icon: 'none' })
+      return
+    }
+    if (!selectedColor && this.data.sampleColors.length > 0) {
+      wx.showToast({ title: '请选择颜色', icon: 'none' })
+      return
+    }
+
+    const lengthM = parseFloat(fixedLength)
+    if (isNaN(lengthM) || lengthM <= 0) {
+      wx.showToast({ title: '请输入单根长度', icon: 'none' })
+      return
+    }
+    if (lengthM > 2) {
+      wx.showToast({ title: '单根长度不能超过 2米', icon: 'none' })
+      return
+    }
+
+    const quantity = parseInt(fixedQuantity, 10)
+    if (isNaN(quantity) || quantity <= 0 || String(quantity) !== String(fixedQuantity).trim()) {
+      wx.showToast({ title: '请输入正确数量', icon: 'none' })
+      return
+    }
+
+    const piecesPerTwoMeter = Math.floor(2 / lengthM)
+    if (piecesPerTwoMeter < 1) {
+      wx.showToast({ title: '单根长度不能超过 2米', icon: 'none' })
+      return
+    }
+
+    const fixed = this.calculateFixedQuote({
+      unitPrice: samplePrice,
+      lengthM,
+      quantity,
+      boxMeters: sampleBoxMeters,
+      boxWeight: sampleBoxWeight,
+      boxWeightFullSeal: sampleBoxWeightFullSeal,
+      teeth: selectedTeeth
+    })
+    const spec = sampleSpec + ' ' + selectedTeeth + (selectedColor ? ' ' + selectedColor : '')
+
+    const cart = [...this.data.cart, {
+      id: Date.now(),
+      quoteType: 'fixed',
+      spec,
+      height: selectedHeight,
+      width: selectedWidth,
+      teeth: selectedTeeth,
+      color: selectedColor || this.data.sampleColors[0] || '',
+      unitPrice: fixed.fixedUnitPrice,
+      baseMeterPrice: samplePrice,
+      fixedLength: lengthM,
+      quantity,
+      meters: parseFloat((lengthM * quantity).toFixed(2)),
+      boxMeters: sampleBoxMeters,
+      boxWeight: sampleBoxWeight,
+      boxWeightFullSeal: sampleBoxWeightFullSeal,
+      subtotal: fixed.subtotal,
+      boxCount: parseFloat(((lengthM * quantity) / sampleBoxMeters).toFixed(4)),
+      rowWeight: fixed.rowWeight,
+      weightPerMeter: fixed.weightPerMeter,
+      weightPerPiece: fixed.weightPerPiece,
+      pieces: quantity,
+      piecesPerTwoMeter: fixed.piecesPerTwoMeter,
+      twoMeterCutPrice: fixed.twoMeterCutPrice,
+      cuttingRate: fixed.cuttingRate
+    }]
+
+    this.setData({
+      cart,
+      selectedHeight: 0,
+      selectedWidth: 0,
+      selectedTeeth: '',
+      selectedColor: '',
+      sampleTeeth: [],
+      sampleColors: [],
+      sampleSpec: '',
+      samplePrice: 0,
+      sampleBasePrice: 0,
+      sampleBoxMeters: 0,
+      sampleBoxWeight: 0,
+      sampleBoxWeightFullSeal: null,
+      fixedLength: '',
+      fixedQuantity: '',
+      fixedLengthHint: '',
+      widthList: []
+    }, () => {
+      this.recalc()
+    })
+  },
+
   onCartMetersInput(e) {
     const id = e.currentTarget.dataset.id
     const val = parseFloat(e.detail.value)
     if (isNaN(val) || val <= 0) return
     const cart = this.data.cart.map(item => {
+      if (item.quoteType === 'fixed') return item
       if (item.id === id) {
         const meters = val
         const subtotal = parseFloat((meters * item.unitPrice).toFixed(2))
@@ -282,6 +451,10 @@ Page({
   },
 
   onTransportChange(e) {
+    if (this.data.quoteMode === 'fixed') {
+      this.setData({ transportType: 'express' })
+      return
+    }
     this.setData({ transportType: e.detail.value })
   },
 
@@ -441,7 +614,8 @@ Page({
       discount: this.data.discountCoefficient,
       discountDisplay: this.data.discountCoefficient === 1 ? '' : String(this.data.discountCoefficient * 10).replace(/\.?0+$/, ''),
       includeFreight: this.data.includeFreight,
-      transportType: this.data.transportType,
+      quoteMode: this.data.quoteMode,
+      transportType: this.data.quoteMode === 'fixed' ? 'express' : this.data.transportType,
       expressFreight: this.data.expressFreight,
       expressTotal: this.data.expressTotal,
       expressTotalNoTax: this.data.expressTotalNoTax,

@@ -14,8 +14,8 @@
         <text class="brand-sub">线槽正式报价单</text>
       </view>
     </view>
-    <view class="quote-hero-title">客户报价明细</view>
-    <view class="quote-hero-desc">含税价、不含税价、重量件数与运输方案已汇总。</view>
+    <view class="quote-hero-title">{{quoteMode === 'fixed' ? '定长报价明细' : '客户报价明细'}}</view>
+    <view class="quote-hero-desc">{{quoteMode === 'fixed' ? '单根价格、根数、重量与快运费已汇总。' : '含税价、不含税价、重量件数与运输方案已汇总。'}}</view>
   </view>
 
   <view class="card" wx:if="{{!loading}}">
@@ -23,8 +23,8 @@
 
     <view class="table-header">
       <text class="col-spec">规格</text>
-      <text class="col-price">单价</text>
-      <text class="col-meters">米数</text>
+      <text class="col-price">{{quoteMode === 'fixed' ? '单根价' : '单价'}}</text>
+      <text class="col-meters">{{quoteMode === 'fixed' ? '数量' : '米数'}}</text>
       <text class="col-weight">重量</text>
       <text class="col-sub">小计</text>
       <text class="col-dsub" wx:if="{{discount !== 1}}">折后</text>
@@ -33,9 +33,9 @@
     <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
           wx:for="{{productList}}"
           wx:key="id">
-      <text class="col-spec">{{item.spec}}</text>
+      <text class="col-spec">{{item.spec}}{{item.quoteType === 'fixed' ? ' ' + item.fixedLength + '米/根' : ''}}</text>
       <text class="col-price">¥{{item.unitPrice}}</text>
-      <text class="col-meters">{{item.meters}}</text>
+      <text class="col-meters">{{item.quoteType === 'fixed' ? item.quantity + '根' : item.meters}}</text>
       <text class="col-weight">{{item.rowWeight}}kg</text>
       <text class="col-sub">¥{{item.subtotal}}</text>
       <text class="col-dsub" wx:if="{{discount !== 1}}">¥{{item.dsubtotal}}</text>
@@ -67,8 +67,8 @@
         <text class="total-value">{{totalWeight}} kg</text>
       </view>
       <view class="total-line total-line-sub">
-        <text class="total-label">总件数</text>
-        <text class="total-value">{{totalPieces}} 件</text>
+        <text class="total-label">{{quoteMode === 'fixed' ? '总根数' : '总件数'}}</text>
+        <text class="total-value">{{totalPieces}} {{quoteMode === 'fixed' ? '根' : '件'}}</text>
       </view>
     </view>
   </view>
@@ -81,7 +81,7 @@
 
   <view class="freight-compare" wx:if="{{!loading && includeFreight}}">
     <view class="freight-card freight-card-express">
-      <view class="freight-header freight-express">快递配送</view>
+      <view class="freight-header freight-express">{{quoteMode === 'fixed' ? '快运配送' : '快递配送'}}</view>
       <view class="freight-body" wx:if="{{expressConfigured}}">
         <view class="freight-row">
           <text class="fr-label">总重量</text>
@@ -113,7 +113,7 @@
       </view>
     </view>
 
-    <view class="freight-card freight-card-logistics">
+    <view class="freight-card freight-card-logistics" wx:if="{{quoteMode !== 'fixed'}}">
       <view class="freight-header freight-logistics">物流自提</view>
       <view class="freight-body" wx:if="{{logisticsConfigured}}">
         <view class="freight-row">
