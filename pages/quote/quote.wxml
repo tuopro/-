@@ -145,7 +145,7 @@
       <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
             wx:for="{{cart}}"
             wx:key="id">
-        <text class="tcol-spec">{{item.spec}}</text>
+        <text class="tcol-spec">{{item.spec}}{{item.quoteType === 'fixed' ? ' ' + item.fixedLength + '米/根' : ''}}</text>
         <text class="tcol-price">¥{{item.unitPrice}}</text>
         <input wx:if="{{item.quoteType !== 'fixed'}}"
                class="tcol-meters cart-meters-input"
@@ -239,7 +239,7 @@
       <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
             wx:for="{{cart}}"
             wx:key="id">
-        <text class="rcol-spec">{{item.spec}}</text>
+        <text class="rcol-spec">{{item.spec}}{{item.quoteType === 'fixed' ? ' ' + item.fixedLength + '米/根' : ''}}</text>
         <text class="rcol-price">¥{{item.unitPrice}}</text>
         <text class="rcol-meters">{{item.quoteType === 'fixed' ? item.quantity + '根' : item.meters}}</text>
         <text class="rcol-sub">¥{{item.subtotal}}</text>
