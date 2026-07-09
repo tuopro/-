@@ -7,7 +7,6 @@ Page({
     phone: '',
     remark: '',
     submitting: false,
-    showPrivacy: false,
     privacyChecked: false,
     serviceAgreement: '《CNDES德赛线槽快速报价微信小程序用户服务协议》\n\n生效日期：2026年5月18日\n\n欢迎使用 CNDES德赛线槽快速报价 微信小程序（以下简称"本小程序"）。\n\n一、服务内容\n本小程序为用户提供线槽产品的规格选择、在线报价生成及业务咨询等服务。\n\n二、用户行为规范\n您在使用本小程序时，承诺遵守中华人民共和国相关法律法规，不利用本服务从事违法活动。\n\n三、个人信息保护\n我们将依据《隐私政策》收集和使用您的个人信息，以保障服务的正常运行。我们承诺对您的信息严格保密。\n\n四、免责声明\n因不可抗力或第三方原因导致的服务中断，我们不承担责任。\n\n五、联系我们\n如有疑问，请联系：郑晓拓，18267876677。',
     privacyPolicy: '《CNDES德赛线槽快速报价微信小程序隐私政策》\n\n生效日期：2026年5月18日\n\n我们深知个人信息对您的重要性。本政策将说明我们如何收集、使用和保护您的信息。\n\n一、我们收集的信息\n为生成报价和提供业务咨询，我们需要收集：\n- 公司名称：用于生成正式的报价单抬头。\n- 联系人姓名：用于在报价与业务沟通中辨识您的身份。\n- 手机号码：用于向您反馈报价结果及后续的必要业务联系。\n\n二、我们如何使用信息\n- 生成并向您展示产品报价单。\n- 通过手机号与您联系，沟通业务详情。\n\n三、信息的存储与保护\n您的信息仅存储在微信云开发环境中，我们采用加密等安全措施保护您的信息。\n\n四、您的权利\n您有权联系我们查阅、更正或删除您的个人信息。\n\n五、联系我们\n如对本政策有任何疑问，请联系：郑晓拓，18267876677。'
@@ -84,11 +83,21 @@ Page({
       return
     }
 
-    if (wx.getStorageSync('privacy_agreed')) {
-      this.doSubmit()
-    } else {
-      this.setData({ showPrivacy: true, privacyChecked: false })
+    if (!this.data.privacyChecked) {
+      wx.showToast({ title: '请先阅读并同意协议', icon: 'none' })
+      return
     }
+
+    if (typeof wx.requirePrivacyAuthorize === 'function') {
+      wx.requirePrivacyAuthorize({
+        success: () => this.doSubmit(),
+        fail: () => {
+          wx.showToast({ title: '请先同意用户隐私保护指引', icon: 'none' })
+        }
+      })
+      return
+    }
+    this.doSubmit()
   },
 
   doSubmit() {
@@ -151,18 +160,21 @@ Page({
   },
 
   showPrivacyPolicy() {
+    if (typeof wx.openPrivacyContract !== 'function') {
+      this.showPrivacyPolicyFallback()
+      return
+    }
+    wx.openPrivacyContract({
+      fail: () => this.showPrivacyPolicyFallback()
+    })
+  },
+
+  showPrivacyPolicyFallback() {
     wx.showModal({
-      title: '隐私政策',
+      title: '用户隐私保护指引',
       content: this.data.privacyPolicy,
       showCancel: false,
       confirmText: '我知道了'
     })
-  },
-
-  onPrivacyConfirm() {
-    if (!this.data.privacyChecked) return
-    wx.setStorageSync('privacy_agreed', true)
-    this.setData({ showPrivacy: false })
-    this.doSubmit()
   }
 })

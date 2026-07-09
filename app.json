@@ -6,6 +6,7 @@
     "pages/quote/quote",
     "pages/quoteResult/quoteResult"
   ],
+  "__usePrivacyCheck__": true,
   "window": {
     "navigationBarTitleText": "德赛线槽快速报价",
     "navigationBarBackgroundColor": "#0F3D75",

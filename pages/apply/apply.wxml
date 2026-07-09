@@ -41,39 +41,25 @@
                 auto-height/>
     </view>
 
-    <button class="submit-btn"
-            bindtap="onSubmit"
-            loading="{{submitting}}"
-            disabled="{{submitting}}">
-      {{submitting ? '提交中...' : '提交申请'}}
-    </button>
-  </view>
-</view>
-
-<view class="privacy-overlay" wx:if="{{showPrivacy}}" catchtouchmove="noop">
-  <view class="privacy-popup">
-    <view class="privacy-title">用户隐私与协议授权</view>
-
-    <view class="privacy-body">
-      <text class="privacy-text">为了更好地为您提供报价服务，我们将收集您的公司名称、联系人姓名及手机号码。上述信息仅用于生成报价单及后续业务联系，不会用于其他用途。</text>
-
-      <text class="privacy-text privacy-text-gap">请您在使用前阅读并同意以下协议：</text>
-
-      <view class="privacy-links">
-        <text class="privacy-link" bindtap="showServiceAgreement">《用户服务协议》</text>
-        <text class="privacy-link" bindtap="showPrivacyPolicy">《隐私政策》</text>
-      </view>
-
+    <view class="privacy-agreement-card">
       <view class="privacy-check-row" bindtap="onAgreeCheck">
         <view class="privacy-checkbox {{privacyChecked ? 'privacy-checkbox-checked' : ''}}">
           <text wx:if="{{privacyChecked}}">✓</text>
         </view>
-        <text class="privacy-check-label">我已阅读并同意《用户服务协议》与《隐私政策》</text>
+        <text class="privacy-check-label">我已阅读并同意以下协议</text>
       </view>
-
-      <button class="privacy-confirm-btn {{privacyChecked ? 'privacy-confirm-active' : ''}}"
-              bindtap="onPrivacyConfirm"
-              disabled="{{!privacyChecked}}">同意并提交</button>
+      <view class="privacy-links">
+        <text class="privacy-link" catchtap="showServiceAgreement">《用户服务协议》</text>
+        <text class="privacy-link" catchtap="showPrivacyPolicy">《用户隐私保护指引》</text>
+      </view>
+      <text class="privacy-summary">我们将收集公司名称、联系人姓名和手机号码，仅用于用户审核、生成报价及必要的业务联系。</text>
     </view>
+
+    <button class="submit-btn"
+            bindtap="onSubmit"
+            loading="{{submitting}}"
+            disabled="{{submitting || !privacyChecked}}">
+      {{submitting ? '提交中...' : '提交申请'}}
+    </button>
   </view>
 </view>

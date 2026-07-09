@@ -116,65 +116,23 @@
   opacity: 0.86;
 }
 
-.privacy-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-  background: rgba(15, 23, 42, 0.46);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 64rpx 48rpx;
-  box-sizing: border-box;
-}
-
-.privacy-popup {
-  width: 100%;
-  max-height: 80vh;
-  background: #fff;
-  border-radius: 30rpx;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 24rpx 60rpx rgba(15, 23, 42, 0.18);
-}
-
-.privacy-title {
-  padding: 38rpx 32rpx 24rpx;
-  font-size: 34rpx;
-  font-weight: 850;
-  color: #1D1D1F;
-  text-align: center;
-}
-
-.privacy-body {
-  padding: 0 32rpx 36rpx;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.privacy-text {
-  font-size: 26rpx;
-  color: #6E6E73;
-  line-height: 1.7;
-}
-
-.privacy-text-gap {
-  display: block;
+.privacy-agreement-card {
   margin-top: 24rpx;
+  padding: 24rpx;
+  border: 1rpx solid #D7E7FB;
+  border-radius: 22rpx;
+  background: #F5F9FF;
 }
 
 .privacy-links {
   display: flex;
-  gap: 36rpx;
-  margin-top: 24rpx;
+  flex-wrap: wrap;
+  gap: 12rpx 24rpx;
+  margin-top: 16rpx;
 }
 
 .privacy-link {
-  font-size: 28rpx;
+  font-size: 25rpx;
   color: #0A67CC;
   font-weight: 700;
 }
@@ -183,7 +141,6 @@
   display: flex;
   align-items: center;
   gap: 14rpx;
-  margin-top: 32rpx;
 }
 
 .privacy-checkbox {
@@ -210,24 +167,10 @@
   flex: 1;
 }
 
-.privacy-confirm-btn {
-  width: 100%;
-  height: 88rpx;
-  line-height: 88rpx;
-  margin-top: 32rpx;
-  font-size: 30rpx;
-  font-weight: 800;
-  border-radius: 22rpx;
-  border: none;
-  background: #C7C7CC;
-  color: #fff;
-}
-
-.privacy-confirm-active {
-  background: linear-gradient(135deg, #0A84FF, #0066CC);
-  box-shadow: 0 12rpx 26rpx rgba(10, 132, 255, 0.22);
-}
-
-.privacy-confirm-active:active {
-  opacity: 0.86;
+.privacy-summary {
+  display: block;
+  margin-top: 18rpx;
+  color: #6E6E73;
+  font-size: 23rpx;
+  line-height: 1.6;
 }
