@@ -2,6 +2,11 @@ const app = getApp()
 const products = require('../../data/products')
 const freightRules = require('../../data/freightRules')
 const logisticsRules = require('../../data/logisticsRules')
+const {
+  recalculateForeignCart,
+  translateTeeth,
+  translateColor
+} = require('../../utils/foreignQuote')
 
 Page({
   data: {
@@ -19,6 +24,16 @@ Page({
     fixedLength: '',
     fixedQuantity: '',
     fixedLengthHint: '',
+    foreignExchangeRate: '6.7',
+    foreignDiscountOptions: [
+      { label: '8.8折', value: 0.88 },
+      { label: '无折扣', value: 1 },
+      { label: '自定义折扣', value: -1 }
+    ],
+    foreignDiscountTypeIndex: 0,
+    foreignDiscountInput: '',
+    foreignDiscountCoefficient: 0.88,
+    foreignTotalUsd: '0.00',
     heightList: [],
     widthList: [],
     selectedHeight: 0,
@@ -55,6 +70,10 @@ Page({
   },
 
   onLoad() {
+    const savedRate = parseFloat(wx.getStorageSync('foreignExchangeRate'))
+    if (Number.isFinite(savedRate) && savedRate > 0) {
+      this.setData({ foreignExchangeRate: String(savedRate) })
+    }
     const heights = [...new Set(products.map(p => p.specHeight))].sort((a, b) => a - b)
     const defaultHeight = heights.includes(20) ? 20 : heights[0]
     const defaultWidths = defaultHeight
@@ -93,17 +112,43 @@ Page({
     const mode = e.currentTarget.dataset.mode
     if (!mode || mode === this.data.quoteMode) return
     if (this.data.cart.length > 0) {
-      wx.showToast({ title: '请先完成或清空当前报价清单', icon: 'none' })
+      wx.showModal({
+        title: '切换报价模式',
+        content: '切换报价模式将清空当前清单',
+        confirmText: '继续切换',
+        success: res => {
+          if (res.confirm) this.applyQuoteMode(mode)
+        }
+      })
       return
     }
+    this.applyQuoteMode(mode)
+  },
+
+  applyQuoteMode(mode) {
     this.setData({
       quoteMode: mode,
+      cart: [],
       transportType: mode === 'fixed' ? 'express' : this.data.transportType,
       sampleMeters: '',
       sampleMeterHint: '',
       fixedLength: '',
       fixedQuantity: '',
-      fixedLengthHint: ''
+      fixedLengthHint: '',
+      productTotal: 0,
+      discountedTotal: 0,
+      noTaxTotal: 0,
+      totalWeight: 0,
+      totalPieces: 0,
+      expressFreight: 0,
+      expressTotal: 0,
+      expressTotalNoTax: 0,
+      logisticsFreight: 0,
+      logisticsTotal: 0,
+      logisticsTotalNoTax: 0,
+      freightRule: null,
+      logisticsRule: null,
+      foreignTotalUsd: '0.00'
     })
   },
 
@@ -217,6 +262,10 @@ Page({
   },
 
   addToCart() {
+    if (this.data.quoteMode === 'foreign') {
+      this.addForeignToCart()
+      return
+    }
     if (this.data.quoteMode === 'fixed') {
       this.addFixedToCart()
       return
@@ -410,6 +459,77 @@ Page({
     })
   },
 
+  addForeignToCart() {
+    const {
+      selectedHeight, selectedWidth, selectedTeeth, selectedColor,
+      sampleSpec, samplePrice, sampleMeters, sampleBoxMeters
+    } = this.data
+    if (!selectedHeight || !selectedWidth) {
+      wx.showToast({ title: '请选择规格', icon: 'none' })
+      return
+    }
+    if (!selectedTeeth) {
+      wx.showToast({ title: '请选择齿形', icon: 'none' })
+      return
+    }
+    if (!selectedColor && this.data.sampleColors.length > 0) {
+      wx.showToast({ title: '请选择颜色', icon: 'none' })
+      return
+    }
+    const meters = parseFloat(sampleMeters)
+    if (!Number.isFinite(meters) || meters <= 0) {
+      wx.showToast({ title: '请输入米数', icon: 'none' })
+      return
+    }
+    if (!(sampleBoxMeters > 0)) {
+      wx.showToast({ title: '该规格缺少装箱数据', icon: 'none' })
+      return
+    }
+
+    let typeEn
+    let colorEn
+    try {
+      typeEn = translateTeeth(selectedTeeth)
+      colorEn = translateColor(selectedColor || this.data.sampleColors[0] || '')
+    } catch (err) {
+      wx.showToast({ title: err.message, icon: 'none' })
+      return
+    }
+
+    const cart = [...this.data.cart, {
+      id: Date.now(),
+      quoteType: 'foreign',
+      specification: sampleSpec,
+      typeEn,
+      colorEn,
+      teeth: selectedTeeth,
+      color: selectedColor || this.data.sampleColors[0] || '',
+      rmbUnitPrice: samplePrice,
+      unitPrice: samplePrice,
+      boxMeters: sampleBoxMeters,
+      meters
+    }]
+
+    this.setData({
+      cart,
+      selectedHeight: 0,
+      selectedWidth: 0,
+      selectedTeeth: '',
+      selectedColor: '',
+      sampleTeeth: [],
+      sampleColors: [],
+      sampleSpec: '',
+      samplePrice: 0,
+      sampleBasePrice: 0,
+      sampleBoxMeters: 0,
+      sampleBoxWeight: 0,
+      sampleBoxWeightFullSeal: null,
+      sampleMeters: '',
+      sampleMeterHint: '',
+      widthList: []
+    }, () => this.recalc())
+  },
+
   onCartMetersInput(e) {
     const id = e.currentTarget.dataset.id
     const val = parseFloat(e.detail.value)
@@ -418,6 +538,7 @@ Page({
       if (item.quoteType === 'fixed') return item
       if (item.id === id) {
         const meters = val
+        if (item.quoteType === 'foreign') return { ...item, meters }
         const subtotal = parseFloat((meters * item.unitPrice).toFixed(2))
         const boxCount = meters / item.boxMeters
         const rowWeight = item.teeth === '全封闭' && item.boxWeightFullSeal
@@ -503,7 +624,47 @@ Page({
     this.setData({ discountInput: raw, discountCoefficient: coeff }, () => this.recalc())
   },
 
+  onForeignExchangeRateBlur(e) {
+    const value = String(e.detail.value || '').trim()
+    const rate = parseFloat(value)
+    if (!Number.isFinite(rate) || rate <= 0) {
+      wx.showToast({ title: '请输入正确汇率', icon: 'none' })
+      return
+    }
+    const normalized = String(rate)
+    wx.setStorageSync('foreignExchangeRate', normalized)
+    this.setData({ foreignExchangeRate: normalized }, () => this.recalc())
+  },
+
+  onForeignDiscountTypeChange(e) {
+    const index = parseInt(e.detail.value, 10)
+    const option = this.data.foreignDiscountOptions[index]
+    const coefficient = option.value === -1 ? 1 : option.value
+    this.setData({
+      foreignDiscountTypeIndex: index,
+      foreignDiscountInput: '',
+      foreignDiscountCoefficient: coefficient
+    }, () => this.recalc())
+  },
+
+  onForeignDiscountBlur(e) {
+    const raw = String(e.detail.value || '').trim()
+    const val = parseFloat(raw)
+    if (!raw || !Number.isFinite(val) || val <= 0 || val > 100) {
+      wx.showToast({ title: '折扣需在 0~100 之间', icon: 'none' })
+      return
+    }
+    this.setData({
+      foreignDiscountInput: raw,
+      foreignDiscountCoefficient: parseFloat((val / 10).toFixed(4))
+    }, () => this.recalc())
+  },
+
   recalc() {
+    if (this.data.quoteMode === 'foreign') {
+      this.recalcForeign()
+      return
+    }
     const { cart, includeFreight, province, discountCoefficient } = this.data
     if (cart.length === 0) {
       this.setData({
@@ -575,6 +736,29 @@ Page({
     this.setData(updateData)
   },
 
+  recalcForeign() {
+    const { cart, foreignDiscountCoefficient, foreignExchangeRate } = this.data
+    if (cart.length === 0) {
+      this.setData({ foreignTotalUsd: '0.00' })
+      return
+    }
+    const rate = parseFloat(foreignExchangeRate)
+    if (!Number.isFinite(rate) || rate <= 0) return
+    try {
+      const result = recalculateForeignCart(
+        cart,
+        foreignDiscountCoefficient,
+        rate
+      )
+      this.setData({
+        cart: result.lines,
+        foreignTotalUsd: result.totalUsd
+      })
+    } catch (err) {
+      wx.showToast({ title: err.message, icon: 'none' })
+    }
+  },
+
   matchRule(rules, pickerProvince) {
     for (const r of rules) {
       if (r.province === pickerProvince) return r
@@ -607,6 +791,36 @@ Page({
   onSubmit() {
     if (this.data.cart.length === 0) {
       wx.showToast({ title: '请先添加产品到报价清单', icon: 'none' })
+      return
+    }
+    if (this.data.quoteMode === 'foreign') {
+      const rate = parseFloat(this.data.foreignExchangeRate)
+      if (!Number.isFinite(rate) || rate <= 0) {
+        wx.showToast({ title: '请输入正确汇率', icon: 'none' })
+        return
+      }
+      const option = this.data.foreignDiscountOptions[
+        this.data.foreignDiscountTypeIndex
+      ]
+      if (option && option.value === -1 && !this.data.foreignDiscountInput) {
+        wx.showToast({ title: '请输入自定义折扣', icon: 'none' })
+        return
+      }
+      const quoteData = {
+        quoteMode: 'foreign',
+        cart: this.data.cart.map(item => ({
+          id: item.id,
+          specification: item.specification,
+          typeEn: item.typeEn,
+          colorEn: item.colorEn,
+          meters: item.meters,
+          fobUnitPriceUsd: item.fobUnitPriceUsd,
+          amountUsd: item.amountUsd,
+          amountUsdRaw: item.amountUsdRaw
+        })),
+        foreignTotalUsd: this.data.foreignTotalUsd
+      }
+      this.navigateToResult(quoteData)
       return
     }
     if (this.data.includeFreight && !this.data.province) {
@@ -645,6 +859,10 @@ Page({
       logisticsRule: this.data.logisticsRule
     }
 
+    this.navigateToResult(quoteData)
+  },
+
+  navigateToResult(quoteData) {
     wx.navigateTo({
       url: '/pages/quoteResult/quoteResult',
       success: res => {

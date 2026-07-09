@@ -29,6 +29,9 @@
       <view class="quote-mode-tab {{quoteMode === 'fixed' ? 'quote-mode-tab-active' : ''}}"
             data-mode="fixed"
             bindtap="onQuoteModeTap">定长报价</view>
+      <view class="quote-mode-tab {{quoteMode === 'foreign' ? 'quote-mode-tab-active' : ''}}"
+            data-mode="foreign"
+            bindtap="onQuoteModeTap">外贸报价</view>
     </view>
 
     <view class="spec-overview" wx:if="{{sampleSpec && selectedTeeth}}">
@@ -37,7 +40,7 @@
         <text class="overview-spec">{{sampleSpec}} {{selectedTeeth}}{{selectedColor ? ' ' + selectedColor : ''}}</text>
       </view>
       <view class="overview-price-wrap">
-        <text class="overview-label">{{quoteMode === 'fixed' ? '米价' : '单价'}}</text>
+        <text class="overview-label">{{quoteMode === 'foreign' ? '人民币内部米价' : (quoteMode === 'fixed' ? '米价' : '单价')}}</text>
         <text class="overview-price">¥{{samplePrice}}</text>
       </view>
     </view>
@@ -92,7 +95,7 @@
   </view>
 
   <view class="card quantity-card" wx:if="{{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1)}}">
-    <block wx:if="{{quoteMode === 'standard'}}">
+    <block wx:if="{{quoteMode !== 'fixed'}}">
       <view class="card-title">输入数量</view>
       <view class="meter-input-row">
         <text class="meter-label">米数</text>
@@ -104,6 +107,7 @@
       </view>
       <view class="meter-hint" wx:if="{{sampleMeterHint}}">{{sampleMeterHint}}</view>
       <view class="box-info">整箱 {{sampleBoxMeters}} 米</view>
+      <view class="box-info foreign-port-note" wx:if="{{quoteMode === 'foreign'}}">宁波港口运费 ¥20/箱，按每箱米数摊入单价</view>
     </block>
 
     <block wx:else>
@@ -128,7 +132,7 @@
       <view class="box-info">单根长度不超过 2 米</view>
     </block>
 
-    <view class="add-cart-btn" bindtap="addToCart">{{quoteMode === 'fixed' ? '+ 加入定长报价' : '+ 加入报价清单'}}</view>
+    <view class="add-cart-btn" bindtap="addToCart">{{quoteMode === 'fixed' ? '+ 加入定长报价' : (quoteMode === 'foreign' ? '+ Add to FOB Quote' : '+ 加入报价清单')}}</view>
   </view>
   </view>
 
@@ -137,16 +141,16 @@
     <view class="cart-table">
       <view class="table-header">
         <text class="tcol-spec">规格</text>
-        <text class="tcol-price">单价</text>
+        <text class="tcol-price">{{quoteMode === 'foreign' ? 'USD/m' : '单价'}}</text>
         <text class="tcol-meters">{{quoteMode === 'fixed' ? '长度/数量' : '米数'}}</text>
-        <text class="tcol-sub">小计</text>
+        <text class="tcol-sub">{{quoteMode === 'foreign' ? 'Amount' : '小计'}}</text>
         <text class="tcol-del"></text>
       </view>
       <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
             wx:for="{{cart}}"
             wx:key="id">
-        <text class="tcol-spec">{{item.spec}}</text>
-        <text class="tcol-price">¥{{item.unitPrice}}</text>
+        <text class="tcol-spec">{{quoteMode === 'foreign' ? item.specification + ' ' + item.typeEn : item.spec}}</text>
+        <text class="tcol-price">{{quoteMode === 'foreign' ? '$' + item.fobUnitPriceUsd : '¥' + item.unitPrice}}</text>
         <input wx:if="{{item.quoteType !== 'fixed'}}"
                class="tcol-meters cart-meters-input"
                type="digit"
@@ -164,13 +168,13 @@
             <text class="fixed-qty-unit">根</text>
           </view>
         </view>
-        <text class="tcol-sub">¥{{item.subtotal}}</text>
+        <text class="tcol-sub">{{quoteMode === 'foreign' ? '$' + item.amountUsd : '¥' + item.subtotal}}</text>
         <view class="tcol-del" data-id="{{item.id}}" bindtap="removeCartItem">×</view>
       </view>
     </view>
   </view>
 
-  <view class="card">
+  <view class="card" wx:if="{{quoteMode !== 'foreign'}}">
     <picker mode="selector"
             range="{{discountOptions}}"
             range-key="label"
@@ -197,7 +201,43 @@
     </view>
   </view>
 
-  <view class="card">
+  <view class="card" wx:if="{{quoteMode === 'foreign'}}">
+    <view class="card-title">外贸内部参数</view>
+    <view class="foreign-rate-row">
+      <text class="discount-label">美元兑人民币汇率</text>
+      <view class="foreign-rate-input-wrap">
+        <text>1 USD =</text>
+        <input class="foreign-rate-input"
+               type="digit"
+               value="{{foreignExchangeRate}}"
+               bindblur="onForeignExchangeRateBlur"/>
+        <text>RMB</text>
+      </view>
+    </view>
+    <picker mode="selector"
+            range="{{foreignDiscountOptions}}"
+            range-key="label"
+            value="{{foreignDiscountTypeIndex}}"
+            bindchange="onForeignDiscountTypeChange">
+      <view class="discount-row foreign-discount-row">
+        <text class="discount-label">客户折扣（内部）</text>
+        <view class="discount-value-wrap">
+          <text class="discount-value">{{foreignDiscountOptions[foreignDiscountTypeIndex].label}}</text>
+          <text class="arrow">▸</text>
+        </view>
+      </view>
+    </picker>
+    <view class="discount-input-wrap" wx:if="{{foreignDiscountOptions[foreignDiscountTypeIndex].value === -1}}">
+      <input class="discount-input"
+             type="digit"
+             value="{{foreignDiscountInput}}"
+             placeholder="请输入折扣，例如 8.8 表示 8.8折"
+             bindblur="onForeignDiscountBlur"/>
+    </view>
+    <view class="foreign-private-note">汇率、折扣及人民币价格不会显示在客户报价单中</view>
+  </view>
+
+  <view class="card" wx:if="{{quoteMode !== 'foreign'}}">
     <view class="switch-row">
       <text class="switch-label">含运费</text>
       <switch checked="{{includeFreight}}"
@@ -224,7 +264,7 @@
     </view>
   </view>
 
-  <view class="card" wx:if="{{includeFreight}}">
+  <view class="card" wx:if="{{quoteMode !== 'foreign' && includeFreight}}">
     <view class="card-title">收货地址</view>
     <picker mode="region"
             value="{{region}}"
@@ -242,25 +282,32 @@
     <view class="result-table">
       <view class="table-header">
         <text class="rcol-spec">规格</text>
-        <text class="rcol-price">单价</text>
+        <text class="rcol-price">{{quoteMode === 'foreign' ? 'USD/m' : '单价'}}</text>
         <text class="rcol-meters">{{quoteMode === 'fixed' ? '长度/数量' : '米数'}}</text>
-        <text class="rcol-sub">小计</text>
+        <text class="rcol-sub">{{quoteMode === 'foreign' ? 'Amount' : '小计'}}</text>
       </view>
       <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
             wx:for="{{cart}}"
             wx:key="id">
-        <text class="rcol-spec">{{item.spec}}</text>
-        <text class="rcol-price">¥{{item.unitPrice}}</text>
+        <text class="rcol-spec">{{quoteMode === 'foreign' ? item.specification + ' ' + item.typeEn : item.spec}}</text>
+        <text class="rcol-price">{{quoteMode === 'foreign' ? '$' + item.fobUnitPriceUsd : '¥' + item.unitPrice}}</text>
         <view wx:if="{{item.quoteType === 'fixed'}}" class="rcol-meters fixed-qty-cell">
           <text class="fixed-length-text">{{item.fixedLength}}米/根</text>
           <text class="fixed-qty-text">{{item.quantity}}根</text>
         </view>
         <text wx:else class="rcol-meters">{{item.meters}}</text>
-        <text class="rcol-sub">¥{{item.subtotal}}</text>
+        <text class="rcol-sub">{{quoteMode === 'foreign' ? '$' + item.amountUsd : '¥' + item.subtotal}}</text>
       </view>
     </view>
 
-    <view class="result-summary">
+    <view class="result-summary" wx:if="{{quoteMode === 'foreign'}}">
+      <view class="summary-row summary-main">
+        <text class="summary-label">FOB Ningbo Total (USD)</text>
+        <text class="summary-value summary-value-main">${{foreignTotalUsd}}</text>
+      </view>
+    </view>
+
+    <view class="result-summary" wx:else>
       <view class="summary-row" wx:if="{{discountCoefficient < 1}}">
         <text class="summary-label">产品原价合计</text>
         <text class="summary-value original">¥{{productTotal}}</text>
@@ -275,7 +322,7 @@
       </view>
     </view>
 
-    <view class="freight-compare" wx:if="{{includeFreight && province}}">
+    <view class="freight-compare" wx:if="{{quoteMode !== 'foreign' && includeFreight && province}}">
       <view class="freight-card freight-card-express">
         <view class="freight-header freight-express">快递配送</view>
         <view class="freight-body">
@@ -337,13 +384,13 @@
       </view>
     </view>
 
-    <view class="freight-empty-hint" wx:if="{{includeFreight && !province}}">
+    <view class="freight-empty-hint" wx:if="{{quoteMode !== 'foreign' && includeFreight && !province}}">
       <text>请选择收货地址后自动计算运费</text>
     </view>
   </view>
 
   <view class="slogan-bar" wx:if="{{cart.length > 0}}">
-    <text>品质线槽，选择 CNDES 德赛</text>
+    <text>{{quoteMode === 'foreign' ? 'CNDES PVC Wiring Duct · FOB Ningbo' : '品质线槽，选择 CNDES 德赛'}}</text>
   </view>
 
   <view class="submit-area">
