@@ -1,5 +1,7 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
+const fs = require('node:fs')
+const path = require('node:path')
 const { loadMiniProgramPage } = require('./helpers/loadMiniProgramPage')
 
 const foreignData = {
@@ -16,6 +18,15 @@ const foreignData = {
   }],
   foreignTotalUsd: '99.04'
 }
+
+test('result page only requires the Mini Program bundled foreign quote module', () => {
+  const source = fs.readFileSync(
+    path.resolve(__dirname, '../pages/quoteResult/quoteResult.js'),
+    'utf8'
+  )
+  assert.equal(source.includes("require('../../utils/foreignQuoteText')"), false)
+  assert.equal(source.includes("require('../../utils/foreignQuote')"), true)
+})
 
 test('foreign init keeps the sanitized rows and USD total', () => {
   const page = loadMiniProgramPage('pages/quoteResult/quoteResult.js')

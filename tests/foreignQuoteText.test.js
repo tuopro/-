@@ -1,6 +1,6 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { buildForeignQuoteText } = require('../utils/foreignQuoteText')
+const { buildForeignQuoteText } = require('../utils/foreignQuote')
 
 test('builds a fully English FOB Ningbo customer quote', () => {
   const text = buildForeignQuoteText({

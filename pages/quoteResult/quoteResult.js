@@ -1,5 +1,5 @@
 const app = getApp()
-const { buildForeignQuoteText } = require('../../utils/foreignQuoteText')
+const { buildForeignQuoteText } = require('../../utils/foreignQuote')
 
 const CANVAS_W = 375
 const PAD_X = 15
