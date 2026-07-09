@@ -1,4 +1,5 @@
 const app = getApp()
+const { buildForeignQuoteText } = require('../../utils/foreignQuoteText')
 
 const CANVAS_W = 375
 const PAD_X = 15
@@ -28,7 +29,8 @@ Page({
     logisticsFreight: 0,
     logisticsTotal: 0,
     logisticsTotalNoTax: 0,
-    logisticsConfigured: false
+    logisticsConfigured: false,
+    foreignTotalUsd: '0.00'
   },
 
   onLoad() {
@@ -48,6 +50,16 @@ Page({
 
   initData(data) {
     if (!data || this.data.productList.length > 0) return
+    if (data.quoteMode === 'foreign') {
+      this.setData({
+        loading: false,
+        quoteMode: 'foreign',
+        productList: data.cart || [],
+        foreignTotalUsd: data.foreignTotalUsd || '0.00',
+        includeFreight: false
+      })
+      return
+    }
 
     const {
       cart = [],
@@ -107,6 +119,19 @@ Page({
 
   onCopy() {
     const d = this.data
+    if (d.quoteMode === 'foreign') {
+      const text = buildForeignQuoteText({
+        productList: d.productList,
+        foreignTotalUsd: d.foreignTotalUsd
+      })
+      wx.setClipboardData({
+        data: text,
+        success: () => {
+          wx.showToast({ title: 'Quotation copied', icon: 'success' })
+        }
+      })
+      return
+    }
     let productLines = ''
     d.productList.forEach(item => {
       if (item.quoteType === 'fixed') {
@@ -182,7 +207,7 @@ ${productLines}`
     const ctx = canvas.getContext('2d')
     ctx.scale(dpr, dpr)
 
-    this.drawQuote(ctx, d, canvasH)
+    this.drawQuoteByMode(ctx, d, canvasH)
 
     wx.canvasToTempFilePath({
       canvas,
@@ -201,6 +226,9 @@ ${productLines}`
   },
 
   calcCanvasHeight(rowCount, quoteMode) {
+    if (quoteMode === 'foreign') {
+      return Math.max(310 + rowCount * 42, 430)
+    }
     let h = 4 + 16 + 26 + 26 + 14 + 20
     h += rowCount * 26
     h += 14 + 30 + 22 + 24
@@ -211,6 +239,94 @@ ${productLines}`
     h += 14 + 20 + 22 + 8
     h += 14 + 20 + 20 + 16
     return Math.max(h, 550)
+  },
+
+  drawQuoteByMode(ctx, data, canvasH) {
+    if (data.quoteMode === 'foreign') {
+      this.drawForeignQuote(ctx, data, canvasH)
+      return
+    }
+    this.drawQuote(ctx, data, canvasH)
+  },
+
+  drawForeignQuote(ctx, d, canvasH) {
+    ctx.textBaseline = 'top'
+    ctx.fillStyle = '#FFFFFF'
+    ctx.fillRect(0, 0, CANVAS_W, canvasH)
+    ctx.fillStyle = '#2563EB'
+    ctx.fillRect(0, 0, CANVAS_W, 4)
+
+    let y = 22
+    ctx.textAlign = 'center'
+    ctx.fillStyle = '#1D4ED8'
+    ctx.font = 'bold 18px sans-serif'
+    ctx.fillText('CNDES PVC Wiring Duct', CANVAS_W / 2, y)
+    y += 27
+    ctx.fillStyle = '#333333'
+    ctx.font = 'bold 15px sans-serif'
+    ctx.fillText('FOB Ningbo Quotation', CANVAS_W / 2, y)
+    y += 30
+    y = this.drawSep(ctx, y)
+
+    const xSpec = PAD_X
+    const xDetails = 95
+    const xUnit = 246
+    const xQty = 292
+    const xAmount = CANVAS_W - PAD_X
+
+    ctx.fillStyle = '#86868B'
+    ctx.font = '9px sans-serif'
+    ctx.textAlign = 'left'
+    ctx.fillText('Specification', xSpec, y)
+    ctx.fillText('Type / Color', xDetails, y)
+    ctx.textAlign = 'right'
+    ctx.fillText('USD/m', xUnit, y)
+    ctx.fillText('Qty(m)', xQty, y)
+    ctx.fillText('Amount', xAmount, y)
+    y += 19
+
+    d.productList.forEach((item, index) => {
+      if (index % 2 === 0) {
+        ctx.fillStyle = '#F7F9FC'
+        ctx.fillRect(PAD_X, y, CONTENT_W, 36)
+      }
+      const rowY = y + 6
+      ctx.fillStyle = '#222222'
+      ctx.font = '11px sans-serif'
+      ctx.textAlign = 'left'
+      ctx.fillText(item.specification, xSpec, rowY)
+      ctx.font = '9px sans-serif'
+      ctx.fillText(`${item.typeEn} / ${item.colorEn}`, xDetails, rowY)
+      ctx.textAlign = 'right'
+      ctx.font = '11px sans-serif'
+      ctx.fillText(`$${item.fobUnitPriceUsd}`, xUnit, rowY)
+      ctx.fillText(String(item.meters), xQty, rowY)
+      ctx.font = 'bold 11px sans-serif'
+      ctx.fillText(`$${item.amountUsd}`, xAmount, rowY)
+      y += 36
+    })
+
+    y = this.drawSep(ctx, y)
+    ctx.fillStyle = '#333333'
+    ctx.font = 'bold 14px sans-serif'
+    ctx.textAlign = 'left'
+    ctx.fillText('FOB Ningbo Total (USD)', PAD_X, y)
+    ctx.fillStyle = '#1D4ED8'
+    ctx.font = 'bold 20px sans-serif'
+    ctx.textAlign = 'right'
+    ctx.fillText(`$${d.foreignTotalUsd}`, CANVAS_W - PAD_X, y - 3)
+    y += 40
+
+    y = this.drawSep(ctx, y, '#E5E7EB')
+    const today = new Date()
+    const dateStr = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0')
+    ctx.fillStyle = '#86868B'
+    ctx.font = '10px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.fillText('CNDES PVC Wiring Duct', CANVAS_W / 2, y)
+    ctx.fillText(dateStr, CANVAS_W / 2, y + 16)
   },
 
   drawQuote(ctx, d, canvasH) {

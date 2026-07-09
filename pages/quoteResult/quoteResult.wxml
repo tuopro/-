@@ -10,15 +10,45 @@
         <image class="brand-product" src="/assets/product-hero.png" mode="aspectFill"></image>
       </view>
       <view class="brand-copy">
-        <text class="brand-name">CNDES 德赛线槽</text>
-        <text class="brand-sub">线槽正式报价单</text>
+        <text class="brand-name">{{quoteMode === 'foreign' ? 'CNDES PVC Wiring Duct' : 'CNDES 德赛线槽'}}</text>
+        <text class="brand-sub">{{quoteMode === 'foreign' ? 'Professional Wiring Management' : '线槽正式报价单'}}</text>
       </view>
     </view>
-    <view class="quote-hero-title">{{quoteMode === 'fixed' ? '定长报价明细' : '客户报价明细'}}</view>
-    <view class="quote-hero-desc">{{quoteMode === 'fixed' ? '单根价格、根数、重量与快运费已汇总。' : '含税价、不含税价、重量件数与运输方案已汇总。'}}</view>
+    <view class="quote-hero-title">{{quoteMode === 'foreign' ? 'FOB Ningbo Quotation' : (quoteMode === 'fixed' ? '定长报价明细' : '客户报价明细')}}</view>
+    <view class="quote-hero-desc">{{quoteMode === 'foreign' ? 'Prices quoted in USD per meter.' : (quoteMode === 'fixed' ? '单根价格、根数、重量与快运费已汇总。' : '含税价、不含税价、重量件数与运输方案已汇总。')}}</view>
   </view>
 
-  <view class="card" wx:if="{{!loading}}">
+  <view class="card foreign-result-card" wx:if="{{!loading && quoteMode === 'foreign'}}">
+    <view class="card-title">Product Details</view>
+    <scroll-view scroll-x class="foreign-table-scroll">
+      <view class="foreign-table">
+        <view class="foreign-table-header">
+          <text class="foreign-col-spec">Specification</text>
+          <text class="foreign-col-type">Type</text>
+          <text class="foreign-col-color">Color</text>
+          <text class="foreign-col-unit">Unit Price (USD/m)</text>
+          <text class="foreign-col-qty">Quantity (m)</text>
+          <text class="foreign-col-amount">Amount (USD)</text>
+        </view>
+        <view class="foreign-table-row {{index % 2 === 1 ? 'foreign-table-row-even' : ''}}"
+              wx:for="{{productList}}"
+              wx:key="id">
+          <text class="foreign-col-spec">{{item.specification}}</text>
+          <text class="foreign-col-type">{{item.typeEn}}</text>
+          <text class="foreign-col-color">{{item.colorEn}}</text>
+          <text class="foreign-col-unit">${{item.fobUnitPriceUsd}}</text>
+          <text class="foreign-col-qty">{{item.meters}}</text>
+          <text class="foreign-col-amount">${{item.amountUsd}}</text>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="foreign-total-row">
+      <text>FOB Ningbo Total (USD)</text>
+      <text class="foreign-total-value">${{foreignTotalUsd}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{!loading && quoteMode !== 'foreign'}}">
     <view class="card-title">产品明细</view>
 
     <view class="table-header">
@@ -73,13 +103,13 @@
     </view>
   </view>
 
-  <view class="big-total-card" wx:if="{{!loading && !includeFreight}}">
+  <view class="big-total-card" wx:if="{{!loading && quoteMode !== 'foreign' && !includeFreight}}">
     <text class="big-total-label">报价总价（含税）</text>
     <text class="big-total-value">¥{{discountedTotal}}</text>
     <text class="big-total-notax">不含税 ¥{{noTaxTotal}}</text>
   </view>
 
-  <view class="freight-compare" wx:if="{{!loading && includeFreight}}">
+  <view class="freight-compare" wx:if="{{!loading && quoteMode !== 'foreign' && includeFreight}}">
     <view class="freight-card freight-card-express">
       <view class="freight-header freight-express">{{quoteMode === 'fixed' ? '快运配送' : '快递配送'}}</view>
       <view class="freight-body" wx:if="{{expressConfigured}}">
@@ -147,7 +177,7 @@
     </view>
   </view>
 
-  <view class="info-bar" wx:if="{{!loading}}">
+  <view class="info-bar" wx:if="{{!loading && quoteMode !== 'foreign'}}">
     <view class="info-row">
       <text class="info-icon">折</text>
       <text wx:if="{{discount === 1}}">客户折扣：无</text>
@@ -160,8 +190,8 @@
   </view>
 
   <view class="action-area" wx:if="{{!loading}}">
-    <button class="copy-btn" bindtap="onCopy">复制报价单</button>
-    <button class="image-btn" bindtap="onGenerateImage">生成报价单图片</button>
+    <button class="copy-btn" bindtap="onCopy">{{quoteMode === 'foreign' ? 'Copy Quotation' : '复制报价单'}}</button>
+    <button class="image-btn" bindtap="onGenerateImage">{{quoteMode === 'foreign' ? 'Generate Image' : '生成报价单图片'}}</button>
   </view>
 
   <canvas type="2d" id="quoteCanvas" class="hidden-canvas"></canvas>
