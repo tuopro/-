@@ -455,67 +455,76 @@
   overflow: hidden;
 }
 
-.foreign-table-scroll {
+.foreign-product-list {
   width: 100%;
 }
 
-.foreign-table {
-  min-width: 1050rpx;
-}
-
-.foreign-table-header,
-.foreign-table-row {
-  display: flex;
-  align-items: center;
-  min-height: 74rpx;
-  padding: 0 18rpx;
-  box-sizing: border-box;
-}
-
-.foreign-table-header {
-  color: #667085;
-  background: #F7F9FC;
-  font-size: 22rpx;
-  font-weight: 700;
-}
-
-.foreign-table-row {
-  color: #101828;
+.foreign-product-item {
+  padding: 24rpx 22rpx;
   border-bottom: 1rpx solid #EEF0F4;
-  font-size: 24rpx;
 }
 
-.foreign-table-row-even {
+.foreign-product-item-even {
   background: rgba(247, 249, 252, 0.72);
 }
 
-.foreign-col-spec {
-  width: 160rpx;
+.foreign-product-identity,
+.foreign-product-pricing {
+  display: grid;
+  grid-template-columns: 1.05fr 1.25fr 0.8fr;
+  gap: 18rpx;
 }
 
-.foreign-col-type {
-  width: 180rpx;
+.foreign-product-pricing {
+  grid-template-columns: 1.2fr 0.8fr 1fr;
+  margin-top: 22rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #EEF0F4;
 }
 
-.foreign-col-color {
-  width: 120rpx;
+.foreign-product-field {
+  min-width: 0;
 }
 
-.foreign-col-unit {
-  width: 210rpx;
-  text-align: right;
+.foreign-field-label,
+.foreign-field-value,
+.foreign-price-value,
+.foreign-amount-value {
+  display: block;
 }
 
-.foreign-col-qty {
-  width: 160rpx;
-  text-align: right;
+.foreign-field-label {
+  color: #667085;
+  font-size: 21rpx;
+  font-weight: 600;
 }
 
-.foreign-col-amount {
-  width: 180rpx;
-  text-align: right;
+.foreign-field-value {
+  margin-top: 8rpx;
+  color: #101828;
+  font-size: 25rpx;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.foreign-price-value,
+.foreign-amount-value {
+  margin-top: 8rpx;
   color: #0A84FF;
-  font-weight: 700;
+  font-size: 28rpx;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.foreign-pricing-center {
+  text-align: center;
+}
+
+.foreign-pricing-right,
+.foreign-product-color {
+  text-align: right;
 }
 
 .foreign-total-row {

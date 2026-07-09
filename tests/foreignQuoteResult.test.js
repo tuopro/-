@@ -28,6 +28,15 @@ test('result page only requires the Mini Program bundled foreign quote module', 
   assert.equal(source.includes("require('../../utils/foreignQuote')"), true)
 })
 
+test('foreign result uses a phone-width layout without horizontal scrolling', () => {
+  const source = fs.readFileSync(
+    path.resolve(__dirname, '../pages/quoteResult/quoteResult.wxml'),
+    'utf8'
+  )
+  assert.equal(source.includes('<scroll-view scroll-x class="foreign-table-scroll">'), false)
+  assert.equal(source.includes('foreign-product-pricing'), true)
+})
+
 test('foreign init keeps the sanitized rows and USD total', () => {
   const page = loadMiniProgramPage('pages/quoteResult/quoteResult.js')
   page.initData(foreignData)

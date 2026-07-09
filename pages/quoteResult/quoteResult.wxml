@@ -20,28 +20,40 @@
 
   <view class="card foreign-result-card" wx:if="{{!loading && quoteMode === 'foreign'}}">
     <view class="card-title">Product Details</view>
-    <scroll-view scroll-x class="foreign-table-scroll">
-      <view class="foreign-table">
-        <view class="foreign-table-header">
-          <text class="foreign-col-spec">Specification</text>
-          <text class="foreign-col-type">Type</text>
-          <text class="foreign-col-color">Color</text>
-          <text class="foreign-col-unit">Unit Price (USD/m)</text>
-          <text class="foreign-col-qty">Quantity (m)</text>
-          <text class="foreign-col-amount">Amount (USD)</text>
+    <view class="foreign-product-list">
+      <view class="foreign-product-item {{index % 2 === 1 ? 'foreign-product-item-even' : ''}}"
+            wx:for="{{productList}}"
+            wx:key="id">
+        <view class="foreign-product-identity">
+          <view class="foreign-product-field">
+            <text class="foreign-field-label">Specification</text>
+            <text class="foreign-field-value">{{item.specification}}</text>
+          </view>
+          <view class="foreign-product-field">
+            <text class="foreign-field-label">Type</text>
+            <text class="foreign-field-value">{{item.typeEn}}</text>
+          </view>
+          <view class="foreign-product-field foreign-product-color">
+            <text class="foreign-field-label">Color</text>
+            <text class="foreign-field-value">{{item.colorEn}}</text>
+          </view>
         </view>
-        <view class="foreign-table-row {{index % 2 === 1 ? 'foreign-table-row-even' : ''}}"
-              wx:for="{{productList}}"
-              wx:key="id">
-          <text class="foreign-col-spec">{{item.specification}}</text>
-          <text class="foreign-col-type">{{item.typeEn}}</text>
-          <text class="foreign-col-color">{{item.colorEn}}</text>
-          <text class="foreign-col-unit">${{item.fobUnitPriceUsd}}</text>
-          <text class="foreign-col-qty">{{item.meters}}</text>
-          <text class="foreign-col-amount">${{item.amountUsd}}</text>
+        <view class="foreign-product-pricing">
+          <view class="foreign-product-field">
+            <text class="foreign-field-label">Unit Price</text>
+            <text class="foreign-price-value">${{item.fobUnitPriceUsd}}/m</text>
+          </view>
+          <view class="foreign-product-field foreign-pricing-center">
+            <text class="foreign-field-label">Quantity</text>
+            <text class="foreign-field-value">{{item.meters}} m</text>
+          </view>
+          <view class="foreign-product-field foreign-pricing-right">
+            <text class="foreign-field-label">Amount</text>
+            <text class="foreign-amount-value">${{item.amountUsd}}</text>
+          </view>
         </view>
       </view>
-    </scroll-view>
+    </view>
     <view class="foreign-total-row">
       <text>FOB Ningbo Total (USD)</text>
       <text class="foreign-total-value">${{foreignTotalUsd}}</text>
