@@ -108,7 +108,7 @@ test('calculates FOB USD per meter with discounted product and fixed per-box all
     meters: 150
   })
   assert.equal(formatUsdUnit(result.fobUnitPriceUsdRaw), '0.660')
-  assert.equal(formatUsdAmount(result.amountUsdRaw), '98.96')
+  assert.equal(formatUsdAmount(result.amountUsdRaw), '99.04')
 })
 
 test('non-full-box quantity does not change unit price', () => {
@@ -231,10 +231,10 @@ The submit payload may include only customer-visible foreign row fields:
     colorEn,
     meters,
     fobUnitPriceUsd: '0.660',
-    amountUsd: '98.96',
+    amountUsd: '99.04',
     amountUsdRaw
   }],
-  foreignTotalUsd: '98.96'
+  foreignTotalUsd: '99.04'
 }
 ```
 
@@ -362,7 +362,7 @@ Amount (USD)
 FOB Ningbo Total (USD)
 ```
 
-Use a row such as `40×40`, `Wide Slot`, `Grey`, `0.660`, `150`, `98.96`.
+Use a row such as `40×40`, `Wide Slot`, `Grey`, `0.660`, `150`, `99.04`.
 
 Assert the output does not contain:
 
@@ -554,7 +554,7 @@ Check these flows:
 
 1. Standard quote: 40×40, 150m, 9.8折, 浙江; compare all current totals with the regression fixture.
 2. Fixed quote: 40×40, 0.6m × 10; compare unit price, subtotal, and weight.
-3. Foreign quote: 40×40 Wide Slot Grey, 150m, 8.8折, rate 6.7; expect `$0.660/m` and `$98.96`.
+3. Foreign quote: 40×40 Wide Slot Grey, 150m, 8.8折, rate 6.7; expect `$0.660/m` and `$99.04`.
 4. Change foreign quantity to 200m; expect the same `$0.660/m`.
 5. Change rate, return to the page, and confirm the saved rate is restored.
 6. Switch modes with a non-empty list; cancel preserves data, confirm clears and switches.
