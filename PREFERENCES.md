@@ -3,7 +3,7 @@
 ## 项目背景
 
 - CNDES 德赛线槽报价小程序，服务 PVC 线槽工厂的国内标准报价、定长报价与 FOB Ningbo 外贸报价。
-- GitHub 远程 `origin` 为 `git@github.com:tuopro/-.git`，当前分支 `main`。本轮基线与当前 HEAD 均为 `e994214326df45de12c4c17899bd1f299fe6032e`。
+- GitHub 远程 `origin` 为 `git@github.com:tuopro/-.git`，当前分支 `main`。本轮安全基线为 `e994214326df45de12c4c17899bd1f299fe6032e`，UI 实施提交为 `2b14b84`。
 - 2026-09-14 已重新执行 `git fetch origin main`，远程 `main` 与本地基线一致。用户已明确授权把本轮 UI 新版本提交并推送至 GitHub。
 - 原有两张根目录 JPG、素材、`tmp_quote_preview.py`、旧 superpowers 方案和其他无关未跟踪文件继续保留，不纳入 UI 版本提交。
 
@@ -37,6 +37,7 @@
 - 报告：`docs/ui-proposals/2026-09-12/ui-refactor-report.md`。运行截图已归档至 `docs/ui-proposals/2026-09-12/qa-2026-09-13/`；原方案参考图仍只作为设计方向。
 - Mac 模拟器不弹出真实手机软键盘，输入焦点、滚动与底部栏状态已检查，自动测试覆盖 `keyboardheightchange`；提交前仍建议真机点验搜索框和数量输入的键盘像素遮挡。
 - 开发者工具本地自动化端口启用被自动审批拒绝；未更改该安全设置，未绕过。模拟器验收通过已打开的开发者工具完成。
+- UI 实施提交 `2b14b84` 已于 2026-09-14 推送至 `origin/main`；随后只补充发布状态文档，不改变运行代码。
 
 ## 下一步
 
