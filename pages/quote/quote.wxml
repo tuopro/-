@@ -55,10 +55,8 @@
           </block>
           <view wx:if="{{sampleSpec}}" class="dimension-note">当前规格：高 {{selectedHeight}} × 宽 {{selectedWidth}} mm</view>
         </view>
-        <block wx:if="{{sampleTeeth.length}}">
-          <text class="field-label">齿形</text>
-          <view class="teeth-options"><button wx:for="{{sampleTeeth}}" wx:key="*this" class="option {{selectedTeeth === item ? 'option-selected' : ''}}" data-value="{{item}}" bindtap="onTeethTap">{{item}}</button></view>
-        </block>
+        <view class="field-heading"><text class="field-label">齿形</text><button class="text-button" bindtap="onOpenToothGuide">齿型怎么选 ›</button></view>
+        <view wx:if="{{sampleTeeth.length}}" class="teeth-options"><button wx:for="{{sampleTeeth}}" wx:key="*this" class="option {{selectedTeeth === item ? 'option-selected' : ''}}" data-value="{{item}}" bindtap="onTeethTap">{{item}}</button></view>
         <view wx:if="{{sampleColors.length > 1}}">
           <text class="field-label">颜色</text>
           <view class="teeth-options"><button wx:for="{{sampleColors}}" wx:key="*this" class="option {{selectedColor === item ? 'option-selected' : ''}}" data-value="{{item}}" bindtap="onColorTap">{{item}}</button></view>
@@ -166,5 +164,30 @@
       </view>
       <button class="primary-button dock-button" bindtap="onSubmit">预览报价</button>
     </block>
+  </view>
+
+  <view wx:if="{{uiToothGuideOpen}}" class="tooth-guide-mask" bindtap="onCloseToothGuide" catchtouchmove="onToothGuideSheetTap">
+    <view class="tooth-guide-sheet" catchtap="onToothGuideSheetTap">
+      <view class="tooth-guide-header">
+        <view><text class="tooth-guide-title">齿型怎么选</text><text class="tooth-guide-subtitle">看侧面结构，快速判断出线方式</text></view>
+        <button class="tooth-guide-close" bindtap="onCloseToothGuide" aria-label="关闭齿型说明">×</button>
+      </view>
+      <view wx:if="{{uiToothGuideHasSpec}}" class="tooth-guide-current">当前规格：{{uiToothGuideSpec}}</view>
+      <view wx:else class="tooth-guide-prompt">请先选择规格，选择后会显示对应齿型和孔位参数。</view>
+      <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="tooth-guide-scroll">
+        <view wx:for="{{uiToothGuides}}" wx:key="type" class="tooth-guide-card">
+          <view wx:if="{{item.image}}" class="tooth-guide-image-wrap"><image class="tooth-guide-image" src="{{item.image}}" mode="widthFix"/></view>
+          <view class="tooth-guide-copy">
+            <text class="tooth-guide-name">{{item.type}}</text>
+            <text class="tooth-guide-description">{{item.description}}</text>
+            <view wx:if="{{uiToothGuideHasSpec && item.showParameters}}" class="tooth-guide-parameter">{{item.parameterText}}</view>
+            <view wx:elif="{{uiToothGuideHasSpec && item.parameterMissing}}" class="tooth-guide-parameter tooth-guide-missing">{{item.parameterText}}</view>
+          </view>
+        </view>
+        <text wx:if="{{uiToothGuideHasSpec}}" class="tooth-guide-footnote">不同规格支持的齿型可能不同，以上为当前规格可选类型。</text>
+        <text wx:else class="tooth-guide-footnote">选择规格后，仅显示该规格真正支持的齿型和对应孔位参数。</text>
+        <text class="tooth-guide-symbols">图中 Q 为出线孔宽度，P 为齿宽。</text>
+      </scroll-view>
+    </view>
   </view>
 </view>

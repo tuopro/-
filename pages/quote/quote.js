@@ -2,6 +2,7 @@ const app = getApp()
 const products = require('../../data/products')
 const freightRules = require('../../data/freightRules')
 const logisticsRules = require('../../data/logisticsRules')
+const { getToothGuides, getAllToothTypes } = require('../../data/toothTypeGuide')
 const { searchSpecs } = require('../../utils/specSearch')
 const {
   recalculateForeignCart,
@@ -17,6 +18,10 @@ Page({
     uiSearchActive: false,
     uiCompactSpec: false,
     uiDimensionsHelp: false,
+    uiToothGuideOpen: false,
+    uiToothGuideHasSpec: false,
+    uiToothGuideSpec: '',
+    uiToothGuides: [],
     uiDetailsOpen: false,
     uiKeyboardHeight: 0,
     uiPendingScroll: '',
@@ -116,6 +121,26 @@ Page({
   onToggleDimensionsHelp() {
     this.setData({ uiDimensionsHelp: !this.data.uiDimensionsHelp })
   },
+
+  onOpenToothGuide() {
+    const selectedProduct = this.data.sampleSpec
+      ? products.find(product => product.specHeight === this.data.selectedHeight && product.specWidth === this.data.selectedWidth)
+      : null
+    const hasSpec = Boolean(selectedProduct)
+    const types = hasSpec ? (selectedProduct.availableTeeth || []) : getAllToothTypes()
+    this.setData({
+      uiToothGuideOpen: true,
+      uiToothGuideHasSpec: hasSpec,
+      uiToothGuideSpec: hasSpec ? `高 ${this.data.selectedHeight} × 宽 ${this.data.selectedWidth} mm` : '',
+      uiToothGuides: getToothGuides(types, hasSpec ? this.data.selectedHeight : null)
+    })
+  },
+
+  onCloseToothGuide() {
+    this.setData({ uiToothGuideOpen: false })
+  },
+
+  onToothGuideSheetTap() {},
 
   onUIKeyboardChange(e) {
     this.setData({ uiKeyboardHeight: e.detail.height || 0 })
