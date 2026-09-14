@@ -1,210 +1,62 @@
 <view class="page">
+  <view wx:if="{{loading}}" class="loading-wrap"><text>正在计算报价…</text></view>
+  <block wx:else>
+    <view class="quote-brand"><text class="brand-name">{{quoteMode === 'foreign' ? 'CNDES PVC Wiring Duct' : 'CNDES 德赛线槽'}}</text><text class="brand-sub">{{quoteMode === 'foreign' ? 'FOB Ningbo Quotation' : (quoteMode === 'fixed' ? '定长客户报价单' : '客户报价单')}}</text></view>
 
-  <view class="loading-wrap" wx:if="{{loading}}">
-    <text>正在计算报价…</text>
-  </view>
-
-  <view class="quote-hero" wx:if="{{!loading}}">
-    <view class="brand-row">
-      <view class="brand-image-wrap">
-        <image class="brand-product" src="/assets/product-hero.png" mode="aspectFill"></image>
-      </view>
-      <view class="brand-copy">
-        <text class="brand-name">{{quoteMode === 'foreign' ? 'CNDES PVC Wiring Duct' : 'CNDES 德赛线槽'}}</text>
-        <text class="brand-sub">{{quoteMode === 'foreign' ? 'Professional Wiring Management' : '线槽正式报价单'}}</text>
-      </view>
+    <view class="total-panel">
+      <block wx:if="{{quoteMode === 'foreign'}}"><text class="total-label">FOB Ningbo Total (USD)</text><text class="total-value">${{foreignTotalUsd}}</text><text class="total-note">Prices quoted in USD per meter.</text></block>
+      <block wx:elif="{{!includeFreight}}"><text class="total-label">产品合计（含税，未含运费）</text><text class="total-value">¥{{discountedTotal}}</text><text class="total-note">产品不含税 ¥{{noTaxTotal}}</text></block>
+      <block wx:elif="{{uiTransportType === 'express' ? expressConfigured : logisticsConfigured}}"><text class="total-label">报价合计（含税含运费）</text><text class="total-value">¥{{uiTransportType === 'express' ? expressTotal : logisticsTotal}}</text><text class="total-note">不含税含运费 ¥{{uiTransportType === 'express' ? expressTotalNoTax : logisticsTotalNoTax}}</text></block>
+      <block wx:else><text class="total-label">产品合计（含税）</text><text class="total-value">¥{{discountedTotal}}</text><text class="total-note">所选配送方式运费暂未配置</text><text class="total-note">产品不含税 ¥{{noTaxTotal}}</text></block>
     </view>
-    <view class="quote-hero-title">{{quoteMode === 'foreign' ? 'FOB Ningbo Quotation' : (quoteMode === 'fixed' ? '定长报价明细' : '客户报价明细')}}</view>
-    <view class="quote-hero-desc">{{quoteMode === 'foreign' ? 'Prices quoted in USD per meter.' : (quoteMode === 'fixed' ? '单根价格、根数、重量与快运费已汇总。' : '含税价、不含税价、重量件数与运输方案已汇总。')}}</view>
-  </view>
 
-  <view class="card foreign-result-card" wx:if="{{!loading && quoteMode === 'foreign'}}">
-    <view class="card-title">Product Details</view>
-    <view class="foreign-product-list">
-      <view class="foreign-product-item {{index % 2 === 1 ? 'foreign-product-item-even' : ''}}"
-            wx:for="{{productList}}"
-            wx:key="id">
-        <view class="foreign-product-identity">
-          <view class="foreign-product-field">
-            <text class="foreign-field-label">Specification</text>
-            <text class="foreign-field-value">{{item.specification}}</text>
-          </view>
-          <view class="foreign-product-field">
-            <text class="foreign-field-label">Type</text>
-            <text class="foreign-field-value">{{item.typeEn}}</text>
-          </view>
-          <view class="foreign-product-field foreign-product-color">
-            <text class="foreign-field-label">Color</text>
-            <text class="foreign-field-value">{{item.colorEn}}</text>
-          </view>
-        </view>
-        <view class="foreign-product-pricing">
-          <view class="foreign-product-field">
-            <text class="foreign-field-label">Unit Price</text>
-            <text class="foreign-price-value">${{item.fobUnitPriceUsd}}/m</text>
-          </view>
-          <view class="foreign-product-field foreign-pricing-center">
-            <text class="foreign-field-label">Quantity</text>
-            <text class="foreign-field-value">{{item.meters}} m</text>
-          </view>
-          <view class="foreign-product-field foreign-pricing-right">
-            <text class="foreign-field-label">Amount</text>
-            <text class="foreign-amount-value">${{item.amountUsd}}</text>
+    <view wx:if="{{quoteMode !== 'foreign'}}" class="delivery-summary">
+      <view class="delivery-copy"><text class="delivery-name">{{!includeFreight ? '不计运费' : (uiTransportType === 'express' ? '快运送货' : '物流自提')}}</text><text wx:if="{{includeFreight}}" class="delivery-region">{{province}} {{city}}</text><text class="helper-text">{{!includeFreight ? '报价不包含运输费用' : (uiTransportType === 'express' ? '送货上门' : '到当地物流网点提货')}}</text></view>
+      <button class="text-button" data-target="delivery" bindtap="onReturnToEdit">修改 ›</button>
+    </view>
+
+    <view class="panel">
+      <view class="panel-heading"><text class="panel-title">{{quoteMode === 'foreign' ? 'Product Details' : '产品明细'}}</text><button class="text-button" data-target="items" bindtap="onReturnToEdit">{{quoteMode === 'foreign' ? 'Edit ›' : '修改清单 ›'}}</button></view>
+      <view wx:if="{{quoteMode === 'foreign'}}" class="foreign-product-list">
+        <view class="foreign-product-item" wx:for="{{productList}}" wx:key="id">
+          <view class="foreign-product-identity"><text class="product-spec">{{item.specification}} mm</text><text class="helper-text">{{item.typeEn}} · {{item.colorEn}}</text></view>
+          <view class="foreign-product-pricing">
+            <view><text class="helper-text">Unit Price</text><text>${{item.fobUnitPriceUsd}}/m</text></view>
+            <view><text class="helper-text">Quantity</text><text>{{item.meters}} m</text></view>
+            <view class="foreign-amount"><text class="helper-text">Amount</text><text class="amount">${{item.amountUsd}}</text></view>
           </view>
         </view>
       </view>
-    </view>
-    <view class="foreign-total-row">
-      <text>FOB Ningbo Total (USD)</text>
-      <text class="foreign-total-value">${{foreignTotalUsd}}</text>
-    </view>
-  </view>
-
-  <view class="card" wx:if="{{!loading && quoteMode !== 'foreign'}}">
-    <view class="card-title">产品明细</view>
-
-    <view class="table-header">
-      <text class="col-spec">规格</text>
-      <text class="col-price">{{quoteMode === 'fixed' ? '单根价' : '单价'}}</text>
-      <text class="col-meters">{{quoteMode === 'fixed' ? '数量' : '米数'}}</text>
-      <text class="col-weight">重量</text>
-      <text class="col-sub">小计</text>
-      <text class="col-dsub" wx:if="{{discount !== 1}}">折后</text>
-    </view>
-
-    <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
-          wx:for="{{productList}}"
-          wx:key="id">
-      <text class="col-spec">{{item.spec}}{{item.quoteType === 'fixed' ? ' ' + item.fixedLength + '米/根' : ''}}</text>
-      <text class="col-price">¥{{item.unitPrice}}</text>
-      <text class="col-meters">{{item.quoteType === 'fixed' ? item.quantity + '根' : item.meters}}</text>
-      <text class="col-weight">{{item.rowWeight}}kg</text>
-      <text class="col-sub">¥{{item.subtotal}}</text>
-      <text class="col-dsub" wx:if="{{discount !== 1}}">¥{{item.dsubtotal}}</text>
-    </view>
-
-    <view class="table-footer">
-      <block wx:if="{{discount !== 1}}">
-        <view class="total-line total-line-original">
-          <text class="total-label">产品原价合计</text>
-          <text class="total-value original">¥{{productTotal}}</text>
-        </view>
-        <view class="total-line">
-          <text class="total-label">产品折后合计</text>
-          <text class="total-value">¥{{discountedTotal}}</text>
-        </view>
-      </block>
-      <view class="total-line" wx:else>
-        <text class="total-label">产品总价</text>
-        <text class="total-value">¥{{productTotal}}</text>
-      </view>
-
-      <view class="total-line total-line-notax">
-        <text class="total-label">产品不含税总价</text>
-        <text class="total-value">¥{{noTaxTotal}}</text>
-      </view>
-
-      <view class="total-line total-line-sub">
-        <text class="total-label">总重量</text>
-        <text class="total-value">{{totalWeight}} kg</text>
-      </view>
-      <view class="total-line total-line-sub">
-        <text class="total-label">{{quoteMode === 'fixed' ? '总根数' : '总件数'}}</text>
-        <text class="total-value">{{totalPieces}} {{quoteMode === 'fixed' ? '根' : '件'}}</text>
-      </view>
-    </view>
-  </view>
-
-  <view class="big-total-card" wx:if="{{!loading && quoteMode !== 'foreign' && !includeFreight}}">
-    <text class="big-total-label">报价总价（含税）</text>
-    <text class="big-total-value">¥{{discountedTotal}}</text>
-    <text class="big-total-notax">不含税 ¥{{noTaxTotal}}</text>
-  </view>
-
-  <view class="freight-compare" wx:if="{{!loading && quoteMode !== 'foreign' && includeFreight}}">
-    <view class="freight-card freight-card-express">
-      <view class="freight-header freight-express">{{quoteMode === 'fixed' ? '快运配送' : '快递配送'}}</view>
-      <view class="freight-body" wx:if="{{expressConfigured}}">
-        <view class="freight-row">
-          <text class="fr-label">总重量</text>
-          <text class="fr-value">{{totalWeight}} kg</text>
-        </view>
-        <view class="freight-row">
-          <text class="fr-label">起步价</text>
-          <text class="fr-value">¥{{freightRule.startPrice}}</text>
-        </view>
-        <view class="freight-row">
-          <text class="fr-label">续重单价</text>
-          <text class="fr-value">¥{{freightRule.pricePerKg}}/kg</text>
-        </view>
-        <view class="freight-row freight-highlight">
-          <text class="fr-label">运费</text>
-          <text class="fr-value">¥{{expressFreight}}</text>
-        </view>
-        <view class="freight-total">
-          <text class="ft-label">快递总价（含税）</text>
-          <text class="ft-value">¥{{expressTotal}}</text>
-        </view>
-        <view class="freight-total freight-total-notax">
-          <text class="ft-label">快递总价（不含税）</text>
-          <text class="ft-value-notax">¥{{expressTotalNoTax}}</text>
+      <view wx:else class="product-list">
+        <view class="product-item" wx:for="{{productList}}" wx:key="id">
+          <text class="product-spec">{{item.spec}}</text>
+          <text wx:if="{{item.quoteType === 'fixed'}}" class="helper-text">{{item.fixedLength}} 米/根</text>
+          <view class="product-pricing"><view><text>{{item.quoteType === 'fixed' ? item.quantity + ' 根' : item.meters + ' 米'}}</text><text class="helper-text">¥{{item.unitPrice}} / {{item.quoteType === 'fixed' ? '根' : '米'}}</text></view><view class="amount-copy"><text class="helper-text">{{discount !== 1 ? '折后金额' : '小计'}}</text><text class="amount">¥{{discount !== 1 ? item.dsubtotal : item.subtotal}}</text></view></view>
         </view>
       </view>
-      <view class="freight-body freight-empty" wx:else>
-        <text class="fr-empty">暂未配置</text>
+      <view wx:if="{{quoteMode !== 'foreign'}}" class="totals-breakdown">
+        <view class="summary-row"><text>{{discount !== 1 ? '产品折后合计' : '产品含税合计'}}</text><text class="value">¥{{discountedTotal}}</text></view>
+        <view wx:if="{{includeFreight}}" class="summary-row"><text>{{uiTransportType === 'express' ? '快运送货运费' : '物流自提运费'}}</text><text class="value">{{(uiTransportType === 'express' ? expressConfigured : logisticsConfigured) ? '¥' + (uiTransportType === 'express' ? expressFreight : logisticsFreight) : '暂未配置'}}</text></view>
       </view>
     </view>
 
-    <view class="freight-card freight-card-logistics" wx:if="{{quoteMode !== 'fixed'}}">
-      <view class="freight-header freight-logistics">物流自提</view>
-      <view class="freight-body" wx:if="{{logisticsConfigured}}">
-        <view class="freight-row">
-          <text class="fr-label">总件数</text>
-          <text class="fr-value">{{totalPieces}} 件</text>
-        </view>
-        <view class="freight-row">
-          <text class="fr-label">单件价格</text>
-          <text class="fr-value">¥{{logisticsRule.pricePerPiece}}/件</text>
-        </view>
-        <view class="freight-row freight-row-placeholder">
-          <text class="fr-label">占位</text>
-          <text class="fr-value">占位</text>
-        </view>
-        <view class="freight-row freight-highlight">
-          <text class="fr-label">运费</text>
-          <text class="fr-value">¥{{logisticsFreight}}</text>
-        </view>
-        <view class="freight-total">
-          <text class="ft-label">自提总价（含税）</text>
-          <text class="ft-value">¥{{logisticsTotal}}</text>
-        </view>
-        <view class="freight-total freight-total-notax">
-          <text class="ft-label">自提总价（不含税）</text>
-          <text class="ft-value-notax">¥{{logisticsTotalNoTax}}</text>
-        </view>
-      </view>
-      <view class="freight-body freight-empty" wx:else>
-        <text class="fr-empty">暂未配置</text>
+    <view wx:if="{{quoteMode !== 'foreign'}}" class="panel detail-panel">
+      <button class="disclosure" bindtap="onToggleQuoteDetails">{{uiDetailsOpen ? '收起计价明细与配送对比 ⌃' : '查看计价明细与配送对比 ›'}}</button>
+      <view wx:if="{{uiDetailsOpen}}">
+        <view class="summary-row"><text>产品原价合计</text><text>¥{{productTotal}}</text></view>
+        <view class="summary-row"><text>产品折后合计</text><text>¥{{discountedTotal}}</text></view>
+        <view class="summary-row"><text>产品不含税合计</text><text>¥{{noTaxTotal}}</text></view>
+        <view class="summary-row"><text>客户折扣</text><text>{{discount === 1 ? '无' : discountDisplay + ' 折'}}</text></view>
+        <view class="summary-row"><text>总重量</text><text>{{totalWeight}} kg</text></view>
+        <view class="summary-row"><text>{{quoteMode === 'fixed' ? '总根数' : '总件数'}}</text><text>{{totalPieces}} {{quoteMode === 'fixed' ? '根' : '件'}}</text></view>
+        <view class="line-detail" wx:for="{{productList}}" wx:key="id"><text class="detail-title">{{item.spec}}{{item.quoteType === 'fixed' ? ' ' + item.fixedLength + '米/根' : ''}}</text><view class="summary-row"><text>重量</text><text>{{item.rowWeight}} kg</text></view><view class="summary-row"><text>原价小计</text><text>¥{{item.subtotal}}</text></view><view wx:if="{{discount !== 1}}" class="summary-row"><text>折后金额</text><text>¥{{item.dsubtotal}}</text></view></view>
+        <block wx:if="{{includeFreight}}">
+          <view class="freight-detail"><text class="detail-title">快运送货</text><block wx:if="{{expressConfigured}}"><view class="summary-row"><text>总重量</text><text>{{totalWeight}} kg</text></view><view class="summary-row"><text>起步价</text><text>¥{{freightRule.startPrice}}</text></view><view class="summary-row"><text>重量单价</text><text>¥{{freightRule.pricePerKg}}/kg</text></view><view class="summary-row"><text>运费</text><text>¥{{expressFreight}}</text></view><view class="summary-row"><text>含税含运费</text><text>¥{{expressTotal}}</text></view><view class="summary-row"><text>不含税含运费</text><text>¥{{expressTotalNoTax}}</text></view></block><text wx:else class="helper-text">暂未配置</text></view>
+          <view wx:if="{{quoteMode !== 'fixed'}}" class="freight-detail"><text class="detail-title">物流自提</text><block wx:if="{{logisticsConfigured}}"><view class="summary-row"><text>总件数</text><text>{{totalPieces}} 件</text></view><view class="summary-row"><text>每件运费</text><text>¥{{logisticsRule.pricePerPiece}}</text></view><view class="summary-row"><text>运费</text><text>¥{{logisticsFreight}}</text></view><view class="summary-row"><text>含税含运费</text><text>¥{{logisticsTotal}}</text></view><view class="summary-row"><text>不含税含运费</text><text>¥{{logisticsTotalNoTax}}</text></view></block><text wx:else class="helper-text">暂未配置</text></view>
+        </block>
       </view>
     </view>
-  </view>
-
-  <view class="info-bar" wx:if="{{!loading && quoteMode !== 'foreign'}}">
-    <view class="info-row">
-      <text class="info-icon">折</text>
-      <text wx:if="{{discount === 1}}">客户折扣：无</text>
-      <text wx:else>客户折扣：{{discountDisplay}}折</text>
-    </view>
-    <view class="info-row" wx:if="{{includeFreight}}">
-      <text class="info-icon">址</text>
-      <text>收货地址：{{province}} {{city}}</text>
-    </view>
-  </view>
-
-  <view class="action-area" wx:if="{{!loading}}">
-    <button class="copy-btn" bindtap="onCopy">{{quoteMode === 'foreign' ? 'Copy Quotation' : '复制报价单'}}</button>
-    <button class="image-btn" bindtap="onGenerateImage">{{quoteMode === 'foreign' ? 'Generate Image' : '生成报价单图片'}}</button>
-  </view>
-
+    <view class="action-area"><button class="primary-button" bindtap="onGenerateImage">{{quoteMode === 'foreign' ? 'Generate Image' : '生成报价图片'}}</button><button class="secondary-button" bindtap="onCopy">{{quoteMode === 'foreign' ? 'Copy Quotation' : '复制报价'}}</button></view>
+  </block>
   <canvas type="2d" id="quoteCanvas" class="hidden-canvas"></canvas>
 </view>

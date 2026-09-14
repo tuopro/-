@@ -1,399 +1,170 @@
 <view class="page">
+  <view class="brand-bar">
+    <view><text class="brand-name">CNDES 德赛线槽</text><text class="brand-sub">厂家报价工具</text></view>
+    <button wx:if="{{isAdmin}}" class="text-button admin-entry" bindtap="goAdmin">管理</button>
+  </view>
+  <view class="mode-tabs">
+    <button class="mode-tab {{quoteMode === 'standard' ? 'is-active' : ''}}" data-mode="standard" bindtap="onQuoteModeTap">标准报价</button>
+    <button class="mode-tab {{quoteMode === 'fixed' ? 'is-active' : ''}}" data-mode="fixed" bindtap="onQuoteModeTap">定长报价</button>
+    <button class="mode-tab {{quoteMode === 'foreign' ? 'is-active' : ''}}" data-mode="foreign" bindtap="onQuoteModeTap">外贸 FOB</button>
+  </view>
+  <view class="section-tabs">
+    <button class="section-tab {{uiSection === 'select' ? 'is-current' : ''}}" data-section="select" bindtap="onUISectionTap">快速选品</button>
+    <button class="section-tab {{uiSection === 'cart' ? 'is-current' : ''}}" data-section="cart" bindtap="onUISectionTap">报价清单<text class="count">{{cart.length}}</text></button>
+  </view>
 
-  <view class="taste-shell">
-    <view class="top-nav">
-      <view class="brand-copy">
-        <text class="brand-name">CNDES 德赛线槽</text>
-        <text class="brand-sub">线槽厂家报价工具</text>
+  <view hidden="{{uiSection !== 'select'}}" class="{{uiSection !== 'select' ? 'ui-hidden' : ''}}">
+    <view class="search-row">
+      <view class="search-field {{uiSearchActive ? 'search-field-active' : ''}}">
+        <view class="search-icon"></view>
+        <input class="search-input" type="text" value="{{uiSpecQuery}}" maxlength="40" placeholder="搜索规格：6040 / 60×40" placeholder-class="input-placeholder" confirm-type="search" bindfocus="onSpecSearchFocus" bindinput="onSpecSearchInput" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="24"/>
+        <button wx:if="{{uiSpecQuery}}" class="clear-search" bindtap="onSpecSearchClear" aria-label="清空搜索">×</button>
       </view>
-      <view class="admin-entry" wx:if="{{isAdmin}}" bindtap="goAdmin">
-        <text class="admin-entry-icon">管理</text>
-      </view>
+      <button wx:if="{{uiSearchActive}}" class="text-button search-cancel" bindtap="onSpecSearchCancel">取消</button>
+    </view>
+    <view wx:if="{{uiSearchActive}}" class="search-panel">
+      <text wx:if="{{!uiSpecQuery}}" class="helper-text">输入高×宽，支持 6040、60×40、60x40</text>
+      <block wx:else>
+        <text class="helper-text">{{uiSpecResults.length ? '匹配到 ' + uiSpecResults.length + ' 个规格' : '未找到该规格'}}</text>
+        <scroll-view wx:if="{{uiSpecResults.length}}" class="search-results" style="height: {{uiSpecResults.length === 1 ? 228 : 480}}rpx;" scroll-y>
+          <button wx:for="{{uiSpecResults}}" wx:key="key" class="search-result" data-height="{{item.height}}" data-width="{{item.width}}" bindtap="onSpecSearchSelect">
+            <view class="result-heading"><text class="result-spec">{{item.spec}} mm</text><text class="link-text">选择 ›</text></view>
+            <text class="dimension-label">{{item.dimensionLabel}}</text>
+            <text class="helper-text result-teeth">{{item.teethLabel}}</text>
+          </button>
+        </scroll-view>
+        <text wx:else class="helper-text empty-explanation">请检查高宽顺序，或使用下方手动选择。</text>
+      </block>
+      <button class="manual-link" bindtap="onShowManualSpecs">改用高度、宽度选择 ›</button>
     </view>
 
-    <view class="brand-hero">
-      <view class="hero-copy">
-        <text class="hero-kicker">CNDES FACTORY</text>
-        <text class="hero-title">好线槽选德赛</text>
-        <text class="hero-desc">选规格，填数量，算运费，得报价</text>
+    <view hidden="{{uiSearchActive}}" class="{{uiSearchActive ? 'ui-hidden' : ''}}">
+      <view class="panel spec-panel">
+        <view class="panel-heading"><text class="panel-title">选择产品</text><button class="text-button" bindtap="onToggleDimensionsHelp">尺寸怎么看 {{uiDimensionsHelp ? '⌃' : '›'}}</button></view>
+        <view wx:if="{{uiDimensionsHelp}}" class="help-note">规格按“高度 × 宽度”表示，单位为 mm。例如 60×40 表示高 60 mm、宽 40 mm；与 40×60 是不同规格。</view>
+        <view wx:if="{{uiCompactSpec && sampleSpec}}" class="selected-spec">
+          <view><text class="result-spec">已选 {{sampleSpec}} mm</text><text class="dimension-label">高 {{selectedHeight}} × 宽 {{selectedWidth}} mm</text></view>
+          <button class="text-button" bindtap="onShowManualSpecs">更换规格 ›</button>
+        </view>
+        <view wx:else>
+          <text class="field-label">高度 <text class="unit">mm</text></text>
+          <view class="dimension-options"><button wx:for="{{heightList}}" wx:key="*this" class="option {{selectedHeight === item ? 'option-selected' : ''}}" data-value="{{item}}" bindtap="onHeightTap">{{item}}</button></view>
+          <block wx:if="{{widthList.length}}">
+            <text class="field-label">宽度 <text class="unit">mm</text></text>
+            <view class="dimension-options"><button wx:for="{{widthList}}" wx:key="*this" class="option {{selectedWidth === item ? 'option-selected' : ''}}" data-value="{{item}}" bindtap="onWidthTap">{{item}}</button></view>
+          </block>
+          <view wx:if="{{sampleSpec}}" class="dimension-note">当前规格：高 {{selectedHeight}} × 宽 {{selectedWidth}} mm</view>
+        </view>
+        <block wx:if="{{sampleTeeth.length}}">
+          <text class="field-label">齿形</text>
+          <view class="teeth-options"><button wx:for="{{sampleTeeth}}" wx:key="*this" class="option {{selectedTeeth === item ? 'option-selected' : ''}}" data-value="{{item}}" bindtap="onTeethTap">{{item}}</button></view>
+        </block>
+        <view wx:if="{{sampleColors.length > 1}}">
+          <text class="field-label">颜色</text>
+          <view class="teeth-options"><button wx:for="{{sampleColors}}" wx:key="*this" class="option {{selectedColor === item ? 'option-selected' : ''}}" data-value="{{item}}" bindtap="onColorTap">{{item}}</button></view>
+        </view>
+        <text wx:elif="{{sampleColors.length === 1}}" class="single-color">颜色：{{sampleColors[0]}}</text>
+        <view wx:if="{{sampleSpec && selectedTeeth}}" class="current-price"><text>{{quoteMode === 'foreign' ? '人民币内部米价' : '当前米价（折扣前）'}}</text><text class="price-text">¥{{samplePrice}} / 米</text></view>
       </view>
-      <view class="hero-product-card">
-        <image class="hero-product" src="/assets/product-hero.png" mode="aspectFill"></image>
-      </view>
-    </view>
-
-    <view class="quote-mode-tabs">
-      <view class="quote-mode-tab {{quoteMode === 'standard' ? 'quote-mode-tab-active' : ''}}"
-            data-mode="standard"
-            bindtap="onQuoteModeTap">标准报价</view>
-      <view class="quote-mode-tab {{quoteMode === 'fixed' ? 'quote-mode-tab-active' : ''}}"
-            data-mode="fixed"
-            bindtap="onQuoteModeTap">定长报价</view>
-      <view class="quote-mode-tab {{quoteMode === 'foreign' ? 'quote-mode-tab-active' : ''}}"
-            data-mode="foreign"
-            bindtap="onQuoteModeTap">外贸报价</view>
-    </view>
-
-    <view class="spec-overview" wx:if="{{sampleSpec && selectedTeeth}}">
-      <view>
-        <text class="overview-label">当前规格</text>
-        <text class="overview-spec">{{sampleSpec}} {{selectedTeeth}}{{selectedColor ? ' ' + selectedColor : ''}}</text>
-      </view>
-      <view class="overview-price-wrap">
-        <text class="overview-label">{{quoteMode === 'foreign' ? '人民币内部米价' : (quoteMode === 'fixed' ? '米价' : '单价')}}</text>
-        <text class="overview-price">¥{{samplePrice}}</text>
+      <view class="panel quantity-panel" wx:if="{{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1)}}">
+        <block wx:if="{{quoteMode !== 'fixed'}}">
+          <text class="panel-title">采购数量</text>
+          <view class="number-field"><input type="digit" value="{{sampleMeters}}" placeholder="请输入米数" bindinput="onMetersInput" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="100"/><text>米</text></view>
+          <text class="helper-text">{{sampleBoxMeters}} 米 / 箱</text>
+          <text wx:if="{{sampleMeterHint}}" class="helper-text meter-hint">{{sampleMeterHint}}</text>
+          <text wx:if="{{quoteMode === 'foreign'}}" class="helper-text meter-hint">宁波港口运费 ¥20/箱，按每箱米数摊入单价</text>
+        </block>
+        <block wx:else>
+          <text class="panel-title">定长输入</text>
+          <text class="field-label">单根长度</text>
+          <view class="number-field"><input type="digit" value="{{fixedLength}}" placeholder="请输入单根长度" bindinput="onFixedLengthInput" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="100"/><text>米/根</text></view>
+          <text class="field-label">采购数量</text>
+          <view class="number-field"><input type="number" value="{{fixedQuantity}}" placeholder="请输入根数" bindinput="onFixedQuantityInput" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="100"/><text>根</text></view>
+          <text class="helper-text">单根长度不超过 2 米</text>
+          <text wx:if="{{fixedLengthHint}}" class="helper-text meter-hint">{{fixedLengthHint}}</text>
+        </block>
+        <button class="primary-button add-button" bindtap="addToCart">{{quoteMode === 'fixed' ? '加入定长报价' : (quoteMode === 'foreign' ? '加入 FOB 报价' : '加入报价清单')}}</button>
       </view>
     </view>
   </view>
 
-  <view class="quote-bento {{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1) ? 'quote-bento-active' : ''}}">
-  <view class="card spec-card {{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1) ? 'spec-card-compact' : 'spec-card-full'}}">
-    <view class="card-title">规格选择</view>
-
-    <view class="step-label">选择高度（mm）</view>
-    <scroll-view class="btn-scroll" scroll-x>
-      <view class="btn-scroll-inner">
-        <view class="spec-btn {{selectedHeight === item ? 'spec-btn-active' : ''}}"
-              wx:for="{{heightList}}"
-              wx:key="*this"
-              data-value="{{item}}"
-              bindtap="onHeightTap">{{item}}</view>
+  <view hidden="{{uiSection !== 'cart'}}" class="{{uiSection !== 'cart' ? 'ui-hidden' : ''}}">
+    <view id="quote-items" class="list-heading"><text class="panel-title">已选 {{cart.length}} 项产品</text><button class="text-button" data-section="select" bindtap="onUISectionTap">继续添加 ›</button></view>
+    <view wx:if="{{!cart.length}}" class="panel empty-state"><text class="panel-title">报价清单还是空的</text><text class="helper-text">先搜索规格或按高度、宽度选择产品。</text><button class="primary-button" data-section="select" bindtap="onUISectionTap">去选产品</button></view>
+    <view wx:for="{{cart}}" wx:key="id" class="panel cart-item">
+      <view class="item-heading"><view class="item-identity"><text class="item-spec">{{quoteMode === 'foreign' ? item.specification + ' mm' : item.height + '×' + item.width + ' mm'}}</text><text class="helper-text">{{item.teeth}} · {{item.color}}</text><text wx:if="{{item.quoteType === 'fixed'}}" class="helper-text">{{item.fixedLength}} 米/根</text></view><button class="delete-button" data-id="{{item.id}}" bindtap="removeCartItem">删除</button></view>
+      <view class="item-pricing">
+        <view class="quantity-field"><input wx:if="{{item.quoteType !== 'fixed'}}" type="digit" value="{{item.meters}}" data-id="{{item.id}}" bindblur="onCartMetersInput" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="110"/><input wx:else type="number" value="{{item.quantity}}" data-id="{{item.id}}" bindblur="onCartFixedQuantityInput" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="110"/><text>{{item.quoteType === 'fixed' ? '根' : '米'}}</text></view>
+        <view class="item-amount"><text class="helper-text">{{quoteMode === 'foreign' ? 'Amount (USD)' : '原价小计'}}</text><text class="price-text">{{quoteMode === 'foreign' ? '$' + item.amountUsd : '¥' + item.subtotal}}</text></view>
       </view>
-    </scroll-view>
-
-    <view class="step-label" wx:if="{{widthList.length > 0}}">选择宽度（mm）</view>
-    <scroll-view class="btn-scroll" scroll-x wx:if="{{widthList.length > 0}}">
-      <view class="btn-scroll-inner">
-        <view class="spec-btn {{selectedWidth === item ? 'spec-btn-active' : ''}}"
-              wx:for="{{widthList}}"
-              wx:key="*this"
-              data-value="{{item}}"
-              bindtap="onWidthTap">{{item}}</view>
-      </view>
-    </scroll-view>
-
-    <view class="step-label" wx:if="{{sampleTeeth.length > 0}}">选择齿形</view>
-    <scroll-view class="btn-scroll" scroll-x wx:if="{{sampleTeeth.length > 0}}">
-      <view class="btn-scroll-inner">
-        <view class="spec-btn {{selectedTeeth === item ? 'spec-btn-active' : ''}}"
-              wx:for="{{sampleTeeth}}"
-              wx:key="*this"
-              data-value="{{item}}"
-              bindtap="onTeethTap">{{item}}</view>
-      </view>
-    </scroll-view>
-
-    <view class="step-label" wx:if="{{sampleColors.length > 1}}">选择颜色</view>
-    <view class="color-row" wx:if="{{sampleColors.length > 1}}">
-      <view class="color-item {{selectedColor === item ? 'color-item-active' : ''}}"
-            wx:for="{{sampleColors}}"
-            wx:key="*this"
-            data-value="{{item}}"
-            bindtap="onColorTap">{{item}}</view>
+      <text class="helper-text unit-price">{{quoteMode === 'foreign' ? '$' + item.fobUnitPriceUsd + ' / m' : '¥' + item.unitPrice + (item.quoteType === 'fixed' ? ' / 根' : ' / 米')}}</text>
     </view>
-
+    <view class="panel" wx:if="{{quoteMode !== 'foreign'}}">
+      <picker mode="selector" range="{{discountOptions}}" range-key="label" value="{{discountTypeIndex}}" bindchange="onDiscountTypeChange"><view class="setting-row"><text>客户折扣</text><text class="setting-value">{{discountOptions[discountTypeIndex].label}} ›</text></view></picker>
+      <view wx:if="{{discountOptions[discountTypeIndex].value === -1}}" class="custom-discount"><input class="setting-input" type="digit" value="{{discountInput}}" placeholder="例如 9.5 表示 9.5 折" bindblur="onDiscountBlur" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="110"/><text wx:if="{{discountCoefficient < 1}}" class="helper-text">折后系数：{{discountCoefficient}}</text></view>
+    </view>
+    <view class="panel" wx:if="{{quoteMode === 'foreign'}}">
+      <text class="panel-title">外贸内部参数</text>
+      <text class="field-label">美元兑人民币汇率</text>
+      <view class="exchange-row"><text>1 USD =</text><input class="setting-input rate-input" type="digit" value="{{foreignExchangeRate}}" bindblur="onForeignExchangeRateBlur" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="110"/><text>RMB</text></view>
+      <picker mode="selector" range="{{foreignDiscountOptions}}" range-key="label" value="{{foreignDiscountTypeIndex}}" bindchange="onForeignDiscountTypeChange"><view class="setting-row"><text>客户折扣（内部）</text><text class="setting-value">{{foreignDiscountOptions[foreignDiscountTypeIndex].label}} ›</text></view></picker>
+      <input wx:if="{{foreignDiscountOptions[foreignDiscountTypeIndex].value === -1}}" class="setting-input" type="digit" value="{{foreignDiscountInput}}" placeholder="例如 8.8 表示 8.8 折" bindblur="onForeignDiscountBlur" bindkeyboardheightchange="onUIKeyboardChange" adjust-position cursor-spacing="110"/>
+      <text class="helper-text internal-note">汇率、折扣及人民币价格不会显示在客户报价单中</text>
+    </view>
+    <view id="delivery-settings" class="panel delivery-panel" wx:if="{{quoteMode !== 'foreign'}}">
+      <text class="panel-title">配送设置</text>
+      <picker wx:if="{{includeFreight}}" mode="region" value="{{region}}" bindchange="onRegionChange"><view class="setting-row region-row"><text>收货地区</text><text class="setting-value {{province ? '' : 'muted'}}">{{province ? province + ' ' + city : '请选择省 / 市'}} ›</text></view></picker>
+      <text class="field-label">配送方式</text>
+      <button class="delivery-option {{includeFreight && transportType === 'express' ? 'delivery-selected' : ''}}" data-value="express" bindtap="onUIDeliveryTap"><view class="radio-mark {{includeFreight && transportType === 'express' ? 'radio-selected' : ''}}"></view><view class="delivery-copy"><text>快运送货</text><text class="helper-text">送货上门</text></view><text class="delivery-price">{{!includeFreight ? '选择后计算' : !province || !cart.length ? '待计算' : (freightRule ? '¥' + expressFreight : '暂未配置')}}</text></button>
+      <button wx:if="{{quoteMode !== 'fixed'}}" class="delivery-option {{includeFreight && transportType === 'logistics' ? 'delivery-selected' : ''}}" data-value="logistics" bindtap="onUIDeliveryTap"><view class="radio-mark {{includeFreight && transportType === 'logistics' ? 'radio-selected' : ''}}"></view><view class="delivery-copy"><text>物流自提</text><text class="helper-text">到当地物流网点提货</text></view><text class="delivery-price">{{!includeFreight ? '选择后计算' : !province || !cart.length ? '待计算' : (logisticsRule ? '¥' + logisticsFreight : '暂未配置')}}</text></button>
+      <button class="delivery-option {{!includeFreight ? 'delivery-selected' : ''}}" data-value="none" bindtap="onUIDeliveryTap"><view class="radio-mark {{!includeFreight ? 'radio-selected' : ''}}"></view><view class="delivery-copy"><text>不计运费</text><text class="helper-text">报价不包含运输费用</text></view></button>
+    </view>
+    <view class="panel" wx:if="{{cart.length}}">
+      <view wx:if="{{quoteMode === 'foreign'}}" class="summary-row"><text>FOB Ningbo Total (USD)</text><text class="price-text">${{foreignTotalUsd}}</text></view>
+      <block wx:else>
+        <view class="summary-row"><text>{{discountCoefficient < 1 ? '产品折后合计' : '产品总价（含税）'}}</text><text class="price-text">¥{{discountedTotal}}</text></view>
+        <view class="summary-row secondary"><text>产品不含税合计</text><text>¥{{noTaxTotal}}</text></view>
+        <button class="disclosure" bindtap="onToggleQuoteDetails">{{uiDetailsOpen ? '收起计价明细 ⌃' : '查看计价明细 ›'}}</button>
+        <view wx:if="{{uiDetailsOpen}}" class="quote-details">
+          <view class="summary-row"><text>产品原价合计</text><text>¥{{productTotal}}</text></view>
+          <view class="summary-row"><text>总重量</text><text>{{totalWeight}} kg</text></view>
+          <view class="summary-row"><text>{{quoteMode === 'fixed' ? '总根数' : '总件数'}}</text><text>{{totalPieces}} {{quoteMode === 'fixed' ? '根' : '件'}}</text></view>
+          <block wx:if="{{includeFreight}}">
+            <text class="detail-title">快运送货</text>
+            <block wx:if="{{freightRule}}">
+              <view class="summary-row"><text>起步价 / 重量单价</text><text>¥{{freightRule.startPrice}} / ¥{{freightRule.pricePerKg}}/kg</text></view>
+              <view class="summary-row"><text>运费</text><text>¥{{expressFreight}}</text></view>
+              <view class="summary-row"><text>含税含运费</text><text>¥{{expressTotal}}</text></view>
+              <view class="summary-row"><text>不含税含运费</text><text>¥{{expressTotalNoTax}}</text></view>
+            </block>
+            <text wx:else class="helper-text">{{province ? '暂未配置' : '请选择收货地区'}}</text>
+            <block wx:if="{{quoteMode !== 'fixed'}}">
+              <text class="detail-title">物流自提</text>
+              <block wx:if="{{logisticsRule}}">
+                <view class="summary-row"><text>每件运费</text><text>¥{{logisticsRule.pricePerPiece}}</text></view>
+                <view class="summary-row"><text>运费</text><text>¥{{logisticsFreight}}</text></view>
+                <view class="summary-row"><text>含税含运费</text><text>¥{{logisticsTotal}}</text></view>
+                <view class="summary-row"><text>不含税含运费</text><text>¥{{logisticsTotalNoTax}}</text></view>
+              </block>
+              <text wx:else class="helper-text">{{province ? '暂未配置' : '请选择收货地区'}}</text>
+            </block>
+          </block>
+        </view>
+      </block>
+    </view>
   </view>
 
-  <view class="card quantity-card" wx:if="{{sampleSpec && selectedTeeth && (selectedColor || sampleColors.length <= 1)}}">
-    <block wx:if="{{quoteMode !== 'fixed'}}">
-      <view class="card-title">输入数量</view>
-      <view class="meter-input-row">
-        <text class="meter-label">米数</text>
-        <input class="meter-input"
-               type="digit"
-               value="{{sampleMeters}}"
-               placeholder="请输入米数"
-               bindinput="onMetersInput"/>
-      </view>
-      <view class="meter-hint" wx:if="{{sampleMeterHint}}">{{sampleMeterHint}}</view>
-      <view class="box-info">整箱 {{sampleBoxMeters}} 米</view>
-      <view class="box-info foreign-port-note" wx:if="{{quoteMode === 'foreign'}}">宁波港口运费 ¥20/箱，按每箱米数摊入单价</view>
-    </block>
-
+  <view wx:if="{{!uiSearchActive && !uiKeyboardHeight}}" class="bottom-dock">
+    <block wx:if="{{uiSection === 'select'}}"><view class="dock-copy"><text class="dock-label">已选 {{cart.length}} 项产品</text><text class="helper-text">可连续添加多个规格</text></view><button class="primary-button dock-button" data-section="cart" bindtap="onUISectionTap">查看清单</button></block>
     <block wx:else>
-      <view class="card-title">定长输入</view>
-      <view class="meter-input-row fixed-input-row">
-        <text class="meter-label">长度</text>
-        <input class="meter-input"
-               type="digit"
-               value="{{fixedLength}}"
-               placeholder="米/根"
-               bindinput="onFixedLengthInput"/>
+      <view class="dock-copy">
+        <block wx:if="{{quoteMode === 'foreign'}}"><text class="helper-text">FOB Ningbo · USD</text><text class="dock-total">${{foreignTotalUsd}}</text></block>
+        <block wx:elif="{{!includeFreight}}"><text class="helper-text">产品合计 · 含税未含运费</text><text class="dock-total">¥{{discountedTotal}}</text></block>
+        <block wx:elif="{{!province}}"><text class="helper-text">产品含税合计 · 运费待计算</text><text class="dock-total">¥{{discountedTotal}}</text></block>
+        <block wx:elif="{{transportType === 'express' ? freightRule : logisticsRule}}"><text class="helper-text">含税含运费</text><text class="dock-total">¥{{transportType === 'express' ? expressTotal : logisticsTotal}}</text></block>
+        <block wx:else><text class="helper-text">产品含税合计 ¥{{discountedTotal}}</text><text class="dock-warning">运费暂未配置</text></block>
       </view>
-      <view class="meter-input-row fixed-input-row fixed-input-row-second">
-        <text class="meter-label">数量</text>
-        <input class="meter-input"
-               type="number"
-               value="{{fixedQuantity}}"
-               placeholder="根"
-               bindinput="onFixedQuantityInput"/>
-      </view>
-      <view class="meter-hint fixed-hint" wx:if="{{fixedLengthHint}}">{{fixedLengthHint}}</view>
-      <view class="box-info">单根长度不超过 2 米</view>
+      <button class="primary-button dock-button" bindtap="onSubmit">预览报价</button>
     </block>
-
-    <view class="add-cart-btn" bindtap="addToCart">{{quoteMode === 'fixed' ? '+ 加入定长报价' : (quoteMode === 'foreign' ? '+ Add to FOB Quote' : '+ 加入报价清单')}}</view>
-  </view>
-  </view>
-
-  <view class="card" wx:if="{{cart.length > 0}}">
-    <view class="card-title">报价清单</view>
-    <view class="cart-table">
-      <view class="table-header">
-        <text class="tcol-spec">规格</text>
-        <text class="tcol-price">{{quoteMode === 'foreign' ? 'USD/m' : '单价'}}</text>
-        <text class="tcol-meters">{{quoteMode === 'fixed' ? '长度/数量' : '米数'}}</text>
-        <text class="tcol-sub">{{quoteMode === 'foreign' ? 'Amount' : '小计'}}</text>
-        <text class="tcol-del"></text>
-      </view>
-      <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
-            wx:for="{{cart}}"
-            wx:key="id">
-        <text class="tcol-spec">{{quoteMode === 'foreign' ? item.specification + ' ' + item.typeEn : item.spec}}</text>
-        <text class="tcol-price">{{quoteMode === 'foreign' ? '$' + item.fobUnitPriceUsd : '¥' + item.unitPrice}}</text>
-        <input wx:if="{{item.quoteType !== 'fixed'}}"
-               class="tcol-meters cart-meters-input"
-               type="digit"
-               value="{{item.meters}}"
-               data-id="{{item.id}}"
-               bindblur="onCartMetersInput"/>
-        <view wx:else class="tcol-meters fixed-qty-cell">
-          <text class="fixed-length-text">{{item.fixedLength}}米/根</text>
-          <view class="fixed-qty-input-wrap">
-            <input class="fixed-qty-input"
-                   type="number"
-                   value="{{item.quantity}}"
-                   data-id="{{item.id}}"
-                   bindblur="onCartFixedQuantityInput"/>
-            <text class="fixed-qty-unit">根</text>
-          </view>
-        </view>
-        <text class="tcol-sub">{{quoteMode === 'foreign' ? '$' + item.amountUsd : '¥' + item.subtotal}}</text>
-        <view class="tcol-del" data-id="{{item.id}}" bindtap="removeCartItem">×</view>
-      </view>
-    </view>
-  </view>
-
-  <view class="card" wx:if="{{quoteMode !== 'foreign'}}">
-    <picker mode="selector"
-            range="{{discountOptions}}"
-            range-key="label"
-            value="{{discountTypeIndex}}"
-            bindchange="onDiscountTypeChange">
-      <view class="discount-row">
-        <text class="discount-label">客户折扣</text>
-        <view class="discount-value-wrap">
-          <text class="discount-value">{{discountOptions[discountTypeIndex].label}}</text>
-          <text class="arrow">▸</text>
-        </view>
-      </view>
-    </picker>
-
-    <view class="discount-input-wrap" wx:if="{{discountOptions[discountTypeIndex].value === -1}}">
-      <input class="discount-input"
-             type="digit"
-             value="{{discountInput}}"
-             placeholder="请输入折扣，例如 9.5 表示 9.5折"
-             bindblur="onDiscountBlur"/>
-      <text class="discount-hint" wx:if="{{discountCoefficient < 1}}">
-        折后系数：{{discountCoefficient}}
-      </text>
-    </view>
-  </view>
-
-  <view class="card" wx:if="{{quoteMode === 'foreign'}}">
-    <view class="card-title">外贸内部参数</view>
-    <view class="foreign-rate-row">
-      <text class="discount-label">美元兑人民币汇率</text>
-      <view class="foreign-rate-input-wrap">
-        <text>1 USD =</text>
-        <input class="foreign-rate-input"
-               type="digit"
-               value="{{foreignExchangeRate}}"
-               bindblur="onForeignExchangeRateBlur"/>
-        <text>RMB</text>
-      </view>
-    </view>
-    <picker mode="selector"
-            range="{{foreignDiscountOptions}}"
-            range-key="label"
-            value="{{foreignDiscountTypeIndex}}"
-            bindchange="onForeignDiscountTypeChange">
-      <view class="discount-row foreign-discount-row">
-        <text class="discount-label">客户折扣（内部）</text>
-        <view class="discount-value-wrap">
-          <text class="discount-value">{{foreignDiscountOptions[foreignDiscountTypeIndex].label}}</text>
-          <text class="arrow">▸</text>
-        </view>
-      </view>
-    </picker>
-    <view class="discount-input-wrap" wx:if="{{foreignDiscountOptions[foreignDiscountTypeIndex].value === -1}}">
-      <input class="discount-input"
-             type="digit"
-             value="{{foreignDiscountInput}}"
-             placeholder="请输入折扣，例如 8.8 表示 8.8折"
-             bindblur="onForeignDiscountBlur"/>
-    </view>
-    <view class="foreign-private-note">汇率、折扣及人民币价格不会显示在客户报价单中</view>
-  </view>
-
-  <view class="card" wx:if="{{quoteMode !== 'foreign'}}">
-    <view class="switch-row">
-      <text class="switch-label">含运费</text>
-      <switch checked="{{includeFreight}}"
-              bindchange="onFreightSwitch"
-              color="#0A84FF"/>
-    </view>
-
-    <view class="transport-row" wx:if="{{includeFreight && quoteMode !== 'fixed'}}">
-      <text class="switch-label">运输方式</text>
-      <radio-group class="radio-group" bindchange="onTransportChange">
-        <label class="radio-label">
-          <radio value="express" checked="{{transportType === 'express'}}" color="#0A84FF"/>
-          <text>快运（送货上门）</text>
-        </label>
-        <label class="radio-label">
-          <radio value="logistics" checked="{{transportType === 'logistics'}}" color="#0A84FF"/>
-          <text>物流自提</text>
-        </label>
-      </radio-group>
-    </view>
-    <view class="transport-row fixed-transport-row" wx:if="{{includeFreight && quoteMode === 'fixed'}}">
-      <text class="switch-label">运输方式</text>
-      <text class="fixed-transport">快运（送货上门）</text>
-    </view>
-  </view>
-
-  <view class="card" wx:if="{{quoteMode !== 'foreign' && includeFreight}}">
-    <view class="card-title">收货地址</view>
-    <picker mode="region"
-            value="{{region}}"
-            bindchange="onRegionChange">
-      <view class="region-display {{province ? '' : 'region-placeholder'}}">
-        <text>{{province ? province + ' ' + city : '请选择省/市'}}</text>
-        <text class="arrow">▸</text>
-      </view>
-    </picker>
-  </view>
-
-  <view class="card" wx:if="{{cart.length > 0}}">
-    <view class="card-title">报价结果</view>
-
-    <view class="result-table">
-      <view class="table-header">
-        <text class="rcol-spec">规格</text>
-        <text class="rcol-price">{{quoteMode === 'foreign' ? 'USD/m' : '单价'}}</text>
-        <text class="rcol-meters">{{quoteMode === 'fixed' ? '长度/数量' : '米数'}}</text>
-        <text class="rcol-sub">{{quoteMode === 'foreign' ? 'Amount' : '小计'}}</text>
-      </view>
-      <view class="table-row {{index % 2 === 1 ? 'table-row-even' : ''}}"
-            wx:for="{{cart}}"
-            wx:key="id">
-        <text class="rcol-spec">{{quoteMode === 'foreign' ? item.specification + ' ' + item.typeEn : item.spec}}</text>
-        <text class="rcol-price">{{quoteMode === 'foreign' ? '$' + item.fobUnitPriceUsd : '¥' + item.unitPrice}}</text>
-        <view wx:if="{{item.quoteType === 'fixed'}}" class="rcol-meters fixed-qty-cell">
-          <text class="fixed-length-text">{{item.fixedLength}}米/根</text>
-          <text class="fixed-qty-text">{{item.quantity}}根</text>
-        </view>
-        <text wx:else class="rcol-meters">{{item.meters}}</text>
-        <text class="rcol-sub">{{quoteMode === 'foreign' ? '$' + item.amountUsd : '¥' + item.subtotal}}</text>
-      </view>
-    </view>
-
-    <view class="result-summary" wx:if="{{quoteMode === 'foreign'}}">
-      <view class="summary-row summary-main">
-        <text class="summary-label">FOB Ningbo Total (USD)</text>
-        <text class="summary-value summary-value-main">${{foreignTotalUsd}}</text>
-      </view>
-    </view>
-
-    <view class="result-summary" wx:else>
-      <view class="summary-row" wx:if="{{discountCoefficient < 1}}">
-        <text class="summary-label">产品原价合计</text>
-        <text class="summary-value original">¥{{productTotal}}</text>
-      </view>
-      <view class="summary-row summary-main">
-        <text class="summary-label">{{discountCoefficient < 1 ? '产品折后合计' : '产品总价（含税）'}}</text>
-        <text class="summary-value summary-value-main">¥{{discountedTotal}}</text>
-      </view>
-      <view class="summary-row summary-sub">
-        <text class="summary-label">产品不含税总价</text>
-        <text class="summary-value summary-value-sub">¥{{noTaxTotal}}</text>
-      </view>
-    </view>
-
-    <view class="freight-compare" wx:if="{{quoteMode !== 'foreign' && includeFreight && province}}">
-      <view class="freight-card freight-card-express">
-        <view class="freight-header freight-express">快递配送</view>
-        <view class="freight-body">
-          <view class="freight-row">
-            <text class="fr-label">总重量</text>
-            <text class="fr-value">{{totalWeight}} kg</text>
-          </view>
-          <view class="freight-row">
-            <text class="fr-label">起步价</text>
-            <text class="fr-value">¥{{freightRule.startPrice}}</text>
-          </view>
-          <view class="freight-row">
-            <text class="fr-label">续重单价</text>
-            <text class="fr-value">¥{{freightRule.pricePerKg}}/kg</text>
-          </view>
-          <view class="freight-row freight-highlight">
-            <text class="fr-label">运费</text>
-            <text class="fr-value">¥{{expressFreight}}</text>
-          </view>
-          <view class="freight-total">
-            <text class="ft-label">快递总价（含税）</text>
-            <text class="ft-value">¥{{expressTotal}}</text>
-          </view>
-          <view class="freight-total freight-total-notax">
-            <text class="ft-label">快递总价（不含税）</text>
-            <text class="ft-value-notax">¥{{expressTotalNoTax}}</text>
-          </view>
-        </view>
-      </view>
-
-      <view class="freight-card freight-card-logistics" wx:if="{{quoteMode !== 'fixed'}}">
-        <view class="freight-header freight-logistics">物流自提</view>
-        <view class="freight-body">
-          <view class="freight-row">
-            <text class="fr-label">总件数</text>
-            <text class="fr-value">{{totalPieces}} 件</text>
-          </view>
-          <view class="freight-row">
-            <text class="fr-label">单件价格</text>
-            <text class="fr-value">¥{{logisticsRule.pricePerPiece}}/件</text>
-          </view>
-          <view class="freight-row freight-row-placeholder">
-            <text class="fr-label">占位</text>
-            <text class="fr-value">占位</text>
-          </view>
-          <view class="freight-row freight-highlight">
-            <text class="fr-label">运费</text>
-            <text class="fr-value">¥{{logisticsFreight}}</text>
-          </view>
-          <view class="freight-total">
-            <text class="ft-label">自提总价（含税）</text>
-            <text class="ft-value">¥{{logisticsTotal}}</text>
-          </view>
-          <view class="freight-total freight-total-notax">
-            <text class="ft-label">自提总价（不含税）</text>
-            <text class="ft-value-notax">¥{{logisticsTotalNoTax}}</text>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <view class="freight-empty-hint" wx:if="{{quoteMode !== 'foreign' && includeFreight && !province}}">
-      <text>请选择收货地址后自动计算运费</text>
-    </view>
-  </view>
-
-  <view class="slogan-bar" wx:if="{{cart.length > 0}}">
-    <text>{{quoteMode === 'foreign' ? 'CNDES PVC Wiring Duct · FOB Ningbo' : '品质线槽，选择 CNDES 德赛'}}</text>
-  </view>
-
-  <view class="submit-area">
-    <button class="submit-btn" bindtap="onSubmit">查看完整报价单</button>
   </view>
 </view>

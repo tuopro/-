@@ -7,6 +7,8 @@ const CONTENT_W = CANVAS_W - PAD_X * 2
 
 Page({
   data: {
+    uiTransportType: 'express',
+    uiDetailsOpen: false,
     loading: true,
     productList: [],
     quoteMode: 'standard',
@@ -31,6 +33,28 @@ Page({
     logisticsTotalNoTax: 0,
     logisticsConfigured: false,
     foreignTotalUsd: '0.00'
+  },
+
+  // Read only the existing delivery choice for presentation; quote payload/exports stay unchanged.
+  onShow() {
+    const pages = getCurrentPages()
+    const previous = pages[pages.length - 2]
+    if (previous && previous.route === 'pages/quote/quote') {
+      this.setData({ uiTransportType: previous.data.quoteMode === 'fixed' ? 'express' : previous.data.transportType })
+    }
+  },
+
+  onToggleQuoteDetails() {
+    this.setData({ uiDetailsOpen: !this.data.uiDetailsOpen })
+  },
+
+  onReturnToEdit(e) {
+    const pages = getCurrentPages()
+    const previous = pages[pages.length - 2]
+    if (previous && previous.route === 'pages/quote/quote' && typeof previous.requestQuoteEdit === 'function') {
+      previous.requestQuoteEdit(e.currentTarget.dataset.target)
+    }
+    wx.navigateBack({ delta: 1 })
   },
 
   onLoad() {

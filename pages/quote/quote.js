@@ -2,6 +2,7 @@ const app = getApp()
 const products = require('../../data/products')
 const freightRules = require('../../data/freightRules')
 const logisticsRules = require('../../data/logisticsRules')
+const { searchSpecs } = require('../../utils/specSearch')
 const {
   recalculateForeignCart,
   translateTeeth,
@@ -10,6 +11,15 @@ const {
 
 Page({
   data: {
+    uiSection: 'select',
+    uiSpecQuery: '',
+    uiSpecResults: [],
+    uiSearchActive: false,
+    uiCompactSpec: false,
+    uiDimensionsHelp: false,
+    uiDetailsOpen: false,
+    uiKeyboardHeight: 0,
+    uiPendingScroll: '',
     sampleTeeth: [],
     sampleColors: [],
     sampleSpec: '',
@@ -67,6 +77,79 @@ Page({
     logisticsTotalNoTax: 0,
     freightRule: null,
     logisticsRule: null
+  },
+
+  // UI adapters deliberately call the existing selection/delivery handlers below.
+  onSpecSearchFocus() {
+    this.setData({ uiSearchActive: true })
+  },
+
+  onSpecSearchInput(e) {
+    const query = e.detail.value
+    this.setData({ uiSpecQuery: query, uiSpecResults: searchSpecs(query), uiSearchActive: true })
+  },
+
+  onSpecSearchClear() {
+    this.setData({ uiSpecQuery: '', uiSpecResults: [] })
+  },
+
+  onSpecSearchCancel() {
+    this.setData({ uiSearchActive: false, uiSpecQuery: '', uiSpecResults: [], uiKeyboardHeight: 0 })
+    wx.hideKeyboard()
+  },
+
+  onSpecSearchSelect(e) {
+    const height = Number(e.currentTarget.dataset.height)
+    const width = Number(e.currentTarget.dataset.width)
+    if (!this.data.uiSpecResults.some(item => item.height === height && item.width === width)) return
+    this.onHeightTap({ currentTarget: { dataset: { value: height } } })
+    this.onWidthTap({ currentTarget: { dataset: { value: width } } })
+    this.setData({ uiSearchActive: false, uiSpecQuery: '', uiSpecResults: [], uiCompactSpec: true, uiKeyboardHeight: 0 })
+    wx.hideKeyboard()
+  },
+
+  onShowManualSpecs() {
+    this.onSpecSearchCancel()
+    this.setData({ uiCompactSpec: false })
+  },
+
+  onToggleDimensionsHelp() {
+    this.setData({ uiDimensionsHelp: !this.data.uiDimensionsHelp })
+  },
+
+  onUIKeyboardChange(e) {
+    this.setData({ uiKeyboardHeight: e.detail.height || 0 })
+  },
+
+  onUISectionTap(e) {
+    const section = e.currentTarget.dataset.section
+    if (section !== 'select' && section !== 'cart') return
+    this.onSpecSearchCancel()
+    this.setData({ uiSection: section }, () => wx.pageScrollTo({ scrollTop: 0, duration: 0 }))
+  },
+
+  onUIDeliveryTap(e) {
+    const value = e.currentTarget.dataset.value
+    if (!['express', 'logistics', 'none'].includes(value)) return
+    if (this.data.quoteMode === 'foreign' || (this.data.quoteMode === 'fixed' && value === 'logistics')) return
+    if (this.data.includeFreight !== (value !== 'none')) {
+      this.onFreightSwitch({ detail: { value: value !== 'none' } })
+    }
+    if (value !== 'none') this.onTransportChange({ detail: { value } })
+  },
+
+  onToggleQuoteDetails() {
+    this.setData({ uiDetailsOpen: !this.data.uiDetailsOpen })
+  },
+
+  requestQuoteEdit(target) {
+    this.setData({ uiSection: 'cart', uiPendingScroll: target === 'delivery' ? '#delivery-settings' : '#quote-items' })
+  },
+
+  onShow() {
+    if (!this.data.uiPendingScroll) return
+    const selector = this.data.uiPendingScroll
+    this.setData({ uiPendingScroll: '' }, () => wx.nextTick(() => wx.pageScrollTo({ selector, duration: 0 })))
   },
 
   onLoad() {

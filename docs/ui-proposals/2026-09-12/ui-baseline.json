@@ -1,0 +1,2928 @@
+{
+  "commit": "e994214326df45de12c4c17899bd1f299fe6032e",
+  "capturedAt": "2026-09-12T08:59:52.921Z",
+  "initialGitStatus": "?? CHrnSI_aaxurd7feff4a1461f635cc550f3cf659de0f.jpg\n?? PREFERENCES.md\n?? Vo8YpoY9A4j3c54ac5566815c85eef8db684f806a40b.jpg\n?? assets/line-trunking.png\n?? assets/quote-image-preview.png\n?? docs/superpowers/plans/2026-06-02-apple-business-ui.md\n?? docs/ui-proposals/\n?? scripts/\n?? tests/helpers/uiRegressionHarness.js\n?? tmp_quote_preview.py\n",
+  "existingTests": {
+    "command": "node --test tests/*.test.js",
+    "passed": 27,
+    "failed": 0
+  },
+  "editable": [
+    "pages/quote/quote.js",
+    "pages/quoteResult/quoteResult.js",
+    "pages/quote/quote.wxml",
+    "pages/quote/quote.wxss",
+    "pages/quoteResult/quoteResult.wxml",
+    "pages/quoteResult/quoteResult.wxss"
+  ],
+  "hashes": {
+    ".gitignore": "ad2f204d9ee295b48107a6b46f686532ad110e91c5c74eebbb20d61e48f29cf4",
+    "app.js": "757d31456e96d26ea9350d9525dec036ecdad7d03b0356add5a9b0ad19b64554",
+    "app.json": "5ab74e9f34b267a31a10fb799a6800225c038d7c736d3e1219443c2255f58a00",
+    "app.wxss": "7be9a4a9289498b581c95ee241339ccdc963ad1463a3ee7a24abed614ffe89f0",
+    "assets/product-hero.png": "a2f82a5cdf3dc11fc07141f74f3670e02477763ac1b64bde6081cbcedbf8652a",
+    "cloudfunctions/getAllUsers/index.js": "291e2faec60dc890e8ee4795555d95e3ddb416b03e6b091f164f8add75e6c473",
+    "cloudfunctions/getAllUsers/package.json": "e8ec874120491af4965fecc37ee20d55e9c2c92a844f26e37726eca5a4c66995",
+    "cloudfunctions/getOpenid/index.js": "66a8a3e6df62592546d3cdd6b81a2bc16b966967571c1ae3ebd4498901c94e40",
+    "cloudfunctions/getOpenid/package.json": "a74063c49702b9ce5893b077785b7bdde37e58c1aa0c659f608133e210b6baee",
+    "cloudfunctions/updateUserStatus/index.js": "3fedcc465859c62891c7444d0c0783f901901a2a1dee778fe51c956f4ebbd0e1",
+    "cloudfunctions/updateUserStatus/package.json": "ab38e2e28c2cf96456f917ee745c23855f7cb88ecf0f7831c02b7a24068f97b6",
+    "data/freightRules.js": "81464afb8f550a93d155fe40be446e0c43be2779fdc24315206767fe7e6c206c",
+    "data/logisticsRules.js": "afe628e60e26a765b0a25200496315adfca09e1d298f2d97e7f9136e943e5938",
+    "data/products.js": "9f7daaca586d0b05feb9b385bbe0d80efced6d56d97f74d0b6172ad9376e8efd",
+    "docs/superpowers/plans/2026-06-29-fixed-length-quote.md": "d1a4a6596f9e9616ea437304cb2fe63d4e39d72b62039e5d470fe3a092e403b4",
+    "docs/superpowers/plans/2026-07-09-foreign-trade-quote.md": "9697dec8bfac0e9208765b440602b2aca4d446ec65c845e651e60754376a199e",
+    "docs/superpowers/specs/2026-06-02-apple-business-ui-design.md": "bf0e89be0f730f921bb5a31f7b995e7d5297ed6ca481359a61442fc5da3f6aa0",
+    "docs/superpowers/specs/2026-06-29-fixed-length-quote-design.md": "9730ea17141d1d011100152466847b8bb5016cccd45276eb59d3d89051a8cb53",
+    "docs/superpowers/specs/2026-07-09-foreign-trade-quote-design.md": "f3f678b7320062050e9ecf8dc1bfa17615bc4326f52df8c68dbee36a5b902371",
+    "pages/admin/admin.js": "7e090bc5364e7945a96a04c75e20ac8965029fee048d9d17b30af9c4a36e234c",
+    "pages/admin/admin.json": "05a5e1e7987da1453ef2b26d04812da100b17e9e1a36cd708aa60d941167d283",
+    "pages/admin/admin.wxml": "8fed3ca283fa1eac369125937eef0b5cc74ab8454a437e66f7b04c56ea49f008",
+    "pages/admin/admin.wxss": "212666abf62c2ebec450520a70b29bb04f4ed499c45c0e025d88a818a07a3c99",
+    "pages/apply/apply.js": "0884e5e76ef44611d6589b89780dc5f09808f98131904dc82794150aa7c1307c",
+    "pages/apply/apply.json": "fddcddf9fb8bbb221fcda90913c321773f84a64dbb6fb5f1888492501de8b391",
+    "pages/apply/apply.wxml": "4bc75d830f1da82241b9182bf5f355971e3e75ae7842abd081074504182155e5",
+    "pages/apply/apply.wxss": "d219c74725c46d41b1769464f13a4d35e5234ea6936a9ecbe73a95038da45e03",
+    "pages/pending/pending.js": "877fa8a441d4c1854adb5ea3175d628e357e9d57a1832fc41597a1afc7e18652",
+    "pages/pending/pending.json": "202ab5f7bd767c3070c99f93eed92ab26c37f678a627d253a0bf17eadf02ef9f",
+    "pages/pending/pending.wxml": "3f4731918d9382b00749cae36be6e3de3c80688e75590b36fb9b45786c5fe4ab",
+    "pages/pending/pending.wxss": "4db2a6ef27415489c81d32b32c79a0fb05de5464cc7687633c5ad07bb5925208",
+    "pages/quote/quote.js": "fdb99ece53e65f5223451ebc68eeace32236d5671ffd40268621dbadefca8ea2",
+    "pages/quote/quote.json": "fddcddf9fb8bbb221fcda90913c321773f84a64dbb6fb5f1888492501de8b391",
+    "pages/quote/quote.wxml": "a24e4660b2d08186e99176e2b509c3ed0a0de06bf95825bfddaae887dda6bb1d",
+    "pages/quote/quote.wxss": "f8f1ff2eba274bf98f4a91aef1aeef866fce98ee3cadfc7e37cffe196a007669",
+    "pages/quoteResult/quoteResult.js": "cc6acf1130d985913f92363ef3265ae7969030d0a64824e1e229e5842ba4c686",
+    "pages/quoteResult/quoteResult.json": "699b425313c2c2e4d3217cae999e46fb71f29eee47d2a835308c41b950f0869f",
+    "pages/quoteResult/quoteResult.wxml": "d6cfc5139f15ad3006d3dc57f9e6a0da990a48d2339bbe86bab7df073c4902ba",
+    "pages/quoteResult/quoteResult.wxss": "db8efad55eed2244e811340d725ab1e185d7d23275173a4b60c9e1bfc427bb22",
+    "project.config.json": "e26d9ae4dd943e1cff49d6077c4bd8860cc93767f92d6db613d292de38f40496",
+    "sitemap.json": "3552173b6e45a4127d0377edd9262bbbac300490f9af3dca75f22029f0b120be",
+    "tests/domesticQuoteRegression.test.js": "2fca8e18733f1214880cc6488a7a7921c7793cafb2670569758bd60a073b7ae9",
+    "tests/foreignQuote.test.js": "9c89da1934633b2955c24387d05080e58832ab76e6d4653608018a53159a3372",
+    "tests/foreignQuotePage.test.js": "85b4c37d261db4c707ded9191cd77b56ba09027391efb5f536029c6139e3efb2",
+    "tests/foreignQuoteResult.test.js": "7c36fbc430c2d9dd001ea1a5d4cbeefff0b0da18b77df0f59f40251485a8a618",
+    "tests/foreignQuoteText.test.js": "877b3bc7e352e2e774cab2ab4ec1765dbafa45231ffe918840dd24340c3ba4c7",
+    "tests/helpers/loadMiniProgramPage.js": "183e12a42d15211c08d3aa1e2206ecc1c4b0ecf6ee5d60b3c8d5258601d25e0d",
+    "tests/privacyCompliance.test.js": "8cfd3515643d25552b01873fd358a6526d3e0d80516f52c9b783dca9896786f0",
+    "utils/foreignQuote.js": "a35df83c9a47b6226b53bdf34bdede2209fffc6318458d6e1e14fa99e6338b5d"
+  },
+  "methods": {
+    "pages/quote/quote.js": {
+      "onLoad": "d647976f49347a55943ec47f23084586a12f2980ac6f43a0077be8a39279723d",
+      "goAdmin": "1464459764a60164fa7317ede9e2a71a04141d17badaa443f47ad6d752f8bc40",
+      "onQuoteModeTap": "8c8e57c55ced32a335f031c9b9a594b0d42d7f026cb99632c44a31b573656281",
+      "applyQuoteMode": "4ad87d2ff5d51f0a99a7582ce88608a4fe4ab6bf8037ab6690d5230c90e4b55f",
+      "onHeightTap": "24a531f71a6d9f177ba5b8cf494808712313ae6e54b8f313fa18f65302c5acf9",
+      "onWidthTap": "5000a6587850481836c3b82ef75ac820d1124b03109cb1664e72ad43ec752b67",
+      "onTeethTap": "a04fa9cdb60f84ea723246bfa347c316b81369808a97519b3a4ca4b830884cda",
+      "onColorTap": "a361906d05adc28ae82bfec026ed9ba3ec5cd4ec012c659b3104377b6722c66b",
+      "onMetersInput": "6662dae327c605d7bb7bbbda6a33404b8d8a85bb0e44508a7a30f57a3d2b6eac",
+      "onFixedLengthInput": "b31abc0029c3d1daeedbb98cdaaad0834c482b863c43a255e6d5c5e72d8a824c",
+      "onFixedQuantityInput": "404f3d248d05f6496f5a2e140446fe40de832ca2f10f66dc069b02c199a3dfc1",
+      "updateMeterHint": "dad1664cc972a4bd1213fb2866b02f25be80d679a4e93eb8341ae3149731e49c",
+      "addToCart": "c1bfa777c190ce1d6dd6975dde567f3031e6964699cf7ccbd5b1e28e3b0004d3",
+      "calculateFixedQuote": "fb1eba805e110940775ade65df898b2f4d7b157dba51ec5e90846f71bd883eae",
+      "addFixedToCart": "8a617c2ad69f0f8ad71c66671d57049418937c40842c6e523ec433fbfc7ffe84",
+      "addForeignToCart": "0d516f1f0bd33787e6f16f1fa630b0a913370abdc64ef6ee367adc93392a2da6",
+      "onCartMetersInput": "abc9409a006b13d8f1ab10f50e8a09ee7bad33da34df8465f97caab1e17411dc",
+      "onCartFixedQuantityInput": "a84df11a1642ca79b9ed782a5eb72f0d6bfc6f388c22961e0c8e3570c2694849",
+      "removeCartItem": "2f09e78ffbcf70d3ec00c8aad78175f0c065d3fd363ae21ac7715f208f576a75",
+      "onRegionChange": "6705e4ac84c7b8001dcc531de32726a80c1d26c188b36fdcaeb41b953d24ec46",
+      "onFreightSwitch": "0ebdd07e49827d911b4d7cca2912aabaa6e0ebfe7a90330e539c3ec30305c20f",
+      "onTransportChange": "5fbdf00e9bd24d7d7fe11c6db0f3a9e721d592d17626dd3bfacac51d8969da97",
+      "onDiscountTypeChange": "a9d263d3d2db646fa5cb5aa2cdb1e1a96c13e0a649abeb3861e4c6d3525cf826",
+      "onDiscountBlur": "809cba3722980b9fc66029810a7020db68daaeb5fc5549c94e2aa6eacedca062",
+      "onForeignExchangeRateBlur": "427c90f4e50f184bad6cfbcfc9fd610edac83f274f4aa79ee904a592d372308b",
+      "onForeignDiscountTypeChange": "48aeff96315dd07ab574a6322bee68e8a4767a94abf254ae1147661fffac99fe",
+      "onForeignDiscountBlur": "f8291d25536b76c5871fbfc542beae0c169d8726560f6953968552860c0cd29e",
+      "recalc": "48db2e809e6bf5ee8f2fbbd6f354b4b8fe9d62ce33c17a44e356f0369119d64c",
+      "recalcForeign": "0501927e66c0716462fb4c756b3316bc8492b61ca240add1dd326d36eb4d027f",
+      "matchRule": "05234e840c9e7d60f0f448814ab13bf89479ed4abad9439f622e4e741c810b4a",
+      "onSubmit": "a9bc6d113b13c24e5da4a3c9c1b7dd8d9055ba00dc0ef7e908927841b30d6d7e",
+      "navigateToResult": "008a5ad588685e7e3d28b44e659dd7ccf4cc77aae848ce4a0cc17ff6fde17606"
+    },
+    "pages/quoteResult/quoteResult.js": {
+      "onLoad": "74735bbef348f9f6a99b3cc334661f8448581ac79f2122bfea5dda311b75b589",
+      "initData": "62336b6c3f4a41667fb5bf9338933d18de4bf4d315c6a472dcd7cd4691e1f6d6",
+      "onCopy": "c0c28865ec4d7f2f5aaa930df4630ca622d84ff231d6459a87381c7aa20c4a74",
+      "onGenerateImage": "7563925aced667a9264e343a258895e043350059f3cac908f8f8265ee8d080c1",
+      "calcCanvasHeight": "e3888a9b9c9b9602862c9411b52dda899ffe8b96319299b9b1e29e41e90537f2",
+      "drawQuoteByMode": "b14db29602e104a5c6b4700784699105c45a8b11be9deb67b44f3292074286b0",
+      "drawForeignQuote": "fefbcbedbe0f7dae7dc76dcd377e8d15fc1ee97d6d6f9b13c6925004d269a41e",
+      "drawQuote": "fd25b6f5dd7fc81ae187ee3f4c31c88fb327c075bf0ecb7396bcde1db07a5554",
+      "drawSep": "15dcc982e9b799718ccdf93cf1c944b276e0c7445c17d6da8a3d14569e0f25bc",
+      "previewOrSave": "ab9b0f03e06ea558631c8fe48c38660f8703bab8d3c02c8366b59c8c5aee3ba9",
+      "saveToAlbum": "ace947fa60c6bb0cfd141f271576079756c8e23c3fc722dbdc97b655f0c1f43d"
+    }
+  },
+  "scenarios": {
+    "standard-design-example": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "standard",
+            "spec": "60×40 粗齿 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 5.98,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 598,
+            "boxCount": 1,
+            "rowWeight": 51,
+            "pieces": 1
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 1078,
+        "discountedTotal": 1056.44,
+        "noTaxTotal": 960.4,
+        "totalWeight": 93,
+        "totalPieces": 2,
+        "expressFreight": 65.1,
+        "expressTotal": 1121.54,
+        "expressTotalNoTax": 1025.5,
+        "logisticsFreight": 30,
+        "logisticsTotal": 1086.44,
+        "logisticsTotalNoTax": 990.4,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "standard",
+            "spec": "60×40 粗齿 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 5.98,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 598,
+            "boxCount": 1,
+            "rowWeight": 51,
+            "pieces": 1
+          }
+        ],
+        "productTotal": 1078,
+        "discountedTotal": 1056.44,
+        "noTaxTotal": 960.4,
+        "totalWeight": 93,
+        "totalPieces": 2,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 65.1,
+        "expressTotal": 1121.54,
+        "expressTotalNoTax": 1025.5,
+        "logisticsFreight": 30,
+        "logisticsTotal": 1086.44,
+        "logisticsTotalNoTax": 990.4,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 100米  = ¥480 → 折后 ¥470.4\n60×40 粗齿 灰色  ¥5.98/米 × 100米  = ¥598 → 折后 ¥586.04\n产品原价合计：¥1078\n产品折后合计：¥1056.44\n客户折扣：9.8折\n总重量：93kg  总件数：2件\n产品不含税总价：¥960.4\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥65.1，总价（含税）¥1121.54，不含税¥1025.5\n【物流自提】2件 × ¥15/件，运费¥30，总价（含税）¥1086.44，不含税¥990.4\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 680,
+      "canvasDrawHash": "dfe0db2eeaf51df0aadb27b5f8d0ad57e32f9b0b730766428c3d7a59c8f7acf6"
+    },
+    "standard-example-logistics": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "standard",
+            "spec": "60×40 粗齿 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 5.98,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 598,
+            "boxCount": 1,
+            "rowWeight": 51,
+            "pieces": 1
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "logistics",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 1078,
+        "discountedTotal": 1056.44,
+        "noTaxTotal": 960.4,
+        "totalWeight": 93,
+        "totalPieces": 2,
+        "expressFreight": 65.1,
+        "expressTotal": 1121.54,
+        "expressTotalNoTax": 1025.5,
+        "logisticsFreight": 30,
+        "logisticsTotal": 1086.44,
+        "logisticsTotalNoTax": 990.4,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "standard",
+            "spec": "60×40 粗齿 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 5.98,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 598,
+            "boxCount": 1,
+            "rowWeight": 51,
+            "pieces": 1
+          }
+        ],
+        "productTotal": 1078,
+        "discountedTotal": 1056.44,
+        "noTaxTotal": 960.4,
+        "totalWeight": 93,
+        "totalPieces": 2,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "logistics",
+        "expressFreight": 65.1,
+        "expressTotal": 1121.54,
+        "expressTotalNoTax": 1025.5,
+        "logisticsFreight": 30,
+        "logisticsTotal": 1086.44,
+        "logisticsTotalNoTax": 990.4,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 100米  = ¥480 → 折后 ¥470.4\n60×40 粗齿 灰色  ¥5.98/米 × 100米  = ¥598 → 折后 ¥586.04\n产品原价合计：¥1078\n产品折后合计：¥1056.44\n客户折扣：9.8折\n总重量：93kg  总件数：2件\n产品不含税总价：¥960.4\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥65.1，总价（含税）¥1121.54，不含税¥1025.5\n【物流自提】2件 × ¥15/件，运费¥30，总价（含税）¥1086.44，不含税¥990.4\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 680,
+      "canvasDrawHash": "dfe0db2eeaf51df0aadb27b5f8d0ad57e32f9b0b730766428c3d7a59c8f7acf6"
+    },
+    "standard-non-full-boxes": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "80×50 粗齿 灰色",
+            "height": 80,
+            "width": 50,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 7.95,
+            "meters": 125.5,
+            "boxMeters": 60,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 997.73,
+            "boxCount": 2.091666666666667,
+            "rowWeight": 87.85,
+            "pieces": 3
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "standard",
+            "spec": "60×40 封口 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "封口",
+            "color": "灰色",
+            "unitPrice": 6.08,
+            "meters": 201,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 1222.08,
+            "boxCount": 2.01,
+            "rowWeight": 102.51,
+            "pieces": 3
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 2219.81,
+        "discountedTotal": 2175.41,
+        "noTaxTotal": 1977.65,
+        "totalWeight": 190.36,
+        "totalPieces": 6,
+        "expressFreight": 133.25,
+        "expressTotal": 2308.66,
+        "expressTotalNoTax": 2110.9,
+        "logisticsFreight": 90,
+        "logisticsTotal": 2265.41,
+        "logisticsTotalNoTax": 2067.65,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "80×50 粗齿 灰色",
+            "height": 80,
+            "width": 50,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 7.95,
+            "meters": 125.5,
+            "boxMeters": 60,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 997.73,
+            "boxCount": 2.091666666666667,
+            "rowWeight": 87.85,
+            "pieces": 3
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "standard",
+            "spec": "60×40 封口 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "封口",
+            "color": "灰色",
+            "unitPrice": 6.08,
+            "meters": 201,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 1222.08,
+            "boxCount": 2.01,
+            "rowWeight": 102.51,
+            "pieces": 3
+          }
+        ],
+        "productTotal": 2219.81,
+        "discountedTotal": 2175.41,
+        "noTaxTotal": 1977.65,
+        "totalWeight": 190.36,
+        "totalPieces": 6,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 133.25,
+        "expressTotal": 2308.66,
+        "expressTotalNoTax": 2110.9,
+        "logisticsFreight": 90,
+        "logisticsTotal": 2265.41,
+        "logisticsTotalNoTax": 2067.65,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n80×50 粗齿 灰色  ¥7.95/米 × 125.5米  = ¥997.73 → 折后 ¥977.78\n60×40 封口 灰色  ¥6.08/米 × 201米  = ¥1222.08 → 折后 ¥1197.64\n产品原价合计：¥2219.81\n产品折后合计：¥2175.41\n客户折扣：9.8折\n总重量：190.36kg  总件数：6件\n产品不含税总价：¥1977.65\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥133.25，总价（含税）¥2308.66，不含税¥2110.9\n【物流自提】6件 × ¥15/件，运费¥90，总价（含税）¥2265.41，不含税¥2067.65\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 680,
+      "canvasDrawHash": "cc57d1f69645b06faea194a4309b6da4e9264f8df39a6047438599172cdbfb2c"
+    },
+    "standard-minimum-freight": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 1,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 4.8,
+            "boxCount": 0.01,
+            "rowWeight": 0.42,
+            "pieces": 1
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 4.8,
+        "discountedTotal": 4.7,
+        "noTaxTotal": 4.27,
+        "totalWeight": 0.42,
+        "totalPieces": 1,
+        "expressFreight": 35,
+        "expressTotal": 39.7,
+        "expressTotalNoTax": 39.27,
+        "logisticsFreight": 15,
+        "logisticsTotal": 19.7,
+        "logisticsTotalNoTax": 19.27,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 1,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 4.8,
+            "boxCount": 0.01,
+            "rowWeight": 0.42,
+            "pieces": 1
+          }
+        ],
+        "productTotal": 4.8,
+        "discountedTotal": 4.7,
+        "noTaxTotal": 4.27,
+        "totalWeight": 0.42,
+        "totalPieces": 1,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 35,
+        "expressTotal": 39.7,
+        "expressTotalNoTax": 39.27,
+        "logisticsFreight": 15,
+        "logisticsTotal": 19.7,
+        "logisticsTotalNoTax": 19.27,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 1米  = ¥4.8 → 折后 ¥4.7\n产品原价合计：¥4.8\n产品折后合计：¥4.7\n客户折扣：9.8折\n总重量：0.42kg  总件数：1件\n产品不含税总价：¥4.27\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥35，总价（含税）¥39.7，不含税¥39.27\n【物流自提】1件 × ¥15/件，运费¥15，总价（含税）¥19.7，不含税¥19.27\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 654,
+      "canvasDrawHash": "35f065168626b5197ac43f847343789a3fca384885c6c3a8f61cd1d27bda216d"
+    },
+    "standard-no-freight": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": false,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 480,
+        "discountedTotal": 470.4,
+        "noTaxTotal": 427.64,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "productTotal": 480,
+        "discountedTotal": 470.4,
+        "noTaxTotal": 427.64,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "province": "",
+        "city": "",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": false,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 100米  = ¥480 → 折后 ¥470.4\n产品原价合计：¥480\n产品折后合计：¥470.4\n客户折扣：9.8折\n总重量：42kg  总件数：1件\n产品不含税总价：¥427.64\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 654,
+      "canvasDrawHash": "80025750df0a7245d6ee27c8eb7bf8041f5987ef67f41c85a29bb47916fc0946"
+    },
+    "standard-unconfigured-region": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "province": "香港特别行政区",
+        "city": "杭州市",
+        "region": [
+          "香港特别行政区",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 480,
+        "discountedTotal": 470.4,
+        "noTaxTotal": 427.64,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "productTotal": 480,
+        "discountedTotal": 470.4,
+        "noTaxTotal": 427.64,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "province": "香港特别行政区",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 100米  = ¥480 → 折后 ¥470.4\n产品原价合计：¥480\n产品折后合计：¥470.4\n客户折扣：9.8折\n总重量：42kg  总件数：1件\n产品不含税总价：¥427.64\n【快递配送】暂未配置\n【物流自提】暂未配置\n收货地址：香港特别行政区 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 654,
+      "canvasDrawHash": "50d9eb20f337f6195f2d7477c0e2022334ad2cafef0eeaff7608d1a6d3c4df76"
+    },
+    "standard-no-discount": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 1,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 1,
+        "productTotal": 480,
+        "discountedTotal": 480,
+        "noTaxTotal": 436.36,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "expressFreight": 35,
+        "expressTotal": 515,
+        "expressTotalNoTax": 471.36,
+        "logisticsFreight": 15,
+        "logisticsTotal": 495,
+        "logisticsTotalNoTax": 451.36,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "productTotal": 480,
+        "discountedTotal": 480,
+        "noTaxTotal": 436.36,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 1,
+        "discountDisplay": "",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 35,
+        "expressTotal": 515,
+        "expressTotalNoTax": 471.36,
+        "logisticsFreight": 15,
+        "logisticsTotal": 495,
+        "logisticsTotalNoTax": 451.36,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 100米  = ¥480\n产品总价：¥480\n总重量：42kg  总件数：1件\n产品不含税总价：¥436.36\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥35，总价（含税）¥515，不含税¥471.36\n【物流自提】1件 × ¥15/件，运费¥15，总价（含税）¥495，不含税¥451.36\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 654,
+      "canvasDrawHash": "b1729a2c058e4c86bfff521d1d00a64a38b28b9bd2d48de0b07ea80b05b45150"
+    },
+    "standard-custom-discount": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 2,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "9.1",
+        "discountCoefficient": 0.91,
+        "productTotal": 480,
+        "discountedTotal": 436.8,
+        "noTaxTotal": 397.09,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "expressFreight": 35,
+        "expressTotal": 471.8,
+        "expressTotalNoTax": 432.09,
+        "logisticsFreight": 15,
+        "logisticsTotal": 451.8,
+        "logisticsTotalNoTax": 412.09,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 100,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 480,
+            "boxCount": 1,
+            "rowWeight": 42,
+            "pieces": 1
+          }
+        ],
+        "productTotal": 480,
+        "discountedTotal": 436.8,
+        "noTaxTotal": 397.09,
+        "totalWeight": 42,
+        "totalPieces": 1,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.91,
+        "discountDisplay": "9.1",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 35,
+        "expressTotal": 471.8,
+        "expressTotalNoTax": 432.09,
+        "logisticsFreight": 15,
+        "logisticsTotal": 451.8,
+        "logisticsTotalNoTax": 412.09,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 100米  = ¥480 → 折后 ¥436.8\n产品原价合计：¥480\n产品折后合计：¥436.8\n客户折扣：9.1折\n总重量：42kg  总件数：1件\n产品不含税总价：¥397.09\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥35，总价（含税）¥471.8，不含税¥432.09\n【物流自提】1件 × ¥15/件，运费¥15，总价（含税）¥451.8，不含税¥412.09\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 654,
+      "canvasDrawHash": "7b667d859ed05b59d41f86bad6528855afb9f905acda6299a2bcb457ee2eac96"
+    },
+    "standard-full-seal-weight": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 全封闭 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "全封闭",
+            "color": "灰色",
+            "unitPrice": 5.66,
+            "meters": 150,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 849,
+            "boxCount": 1.5,
+            "rowWeight": 74.4,
+            "pieces": 2
+          }
+        ],
+        "province": "北京市",
+        "city": "杭州市",
+        "region": [
+          "北京市",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 849,
+        "discountedTotal": 832.02,
+        "noTaxTotal": 756.38,
+        "totalWeight": 74.4,
+        "totalPieces": 2,
+        "expressFreight": 111.6,
+        "expressTotal": 943.62,
+        "expressTotalNoTax": 867.98,
+        "logisticsFreight": 70,
+        "logisticsTotal": 902.02,
+        "logisticsTotalNoTax": 826.38,
+        "freightRule": {
+          "province": "北京市",
+          "startPrice": 50,
+          "pricePerKg": 1.5
+        },
+        "logisticsRule": {
+          "province": "北京市",
+          "pricePerPiece": 35
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 全封闭 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "全封闭",
+            "color": "灰色",
+            "unitPrice": 5.66,
+            "meters": 150,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 849,
+            "boxCount": 1.5,
+            "rowWeight": 74.4,
+            "pieces": 2
+          }
+        ],
+        "productTotal": 849,
+        "discountedTotal": 832.02,
+        "noTaxTotal": 756.38,
+        "totalWeight": 74.4,
+        "totalPieces": 2,
+        "province": "北京市",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 111.6,
+        "expressTotal": 943.62,
+        "expressTotalNoTax": 867.98,
+        "logisticsFreight": 70,
+        "logisticsTotal": 902.02,
+        "logisticsTotalNoTax": 826.38,
+        "freightRule": {
+          "province": "北京市",
+          "startPrice": 50,
+          "pricePerKg": 1.5
+        },
+        "logisticsRule": {
+          "province": "北京市",
+          "pricePerPiece": 35
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 全封闭 灰色  ¥5.66/米 × 150米  = ¥849 → 折后 ¥832.02\n产品原价合计：¥849\n产品折后合计：¥832.02\n客户折扣：9.8折\n总重量：74.4kg  总件数：2件\n产品不含税总价：¥756.38\n【快递配送】起步价¥50，续重¥1.5/kg，运费¥111.6，总价（含税）¥943.62，不含税¥867.98\n【物流自提】2件 × ¥35/件，运费¥70，总价（含税）¥902.02，不含税¥826.38\n收货地址：北京市 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 654,
+      "canvasDrawHash": "aec912db537ea8a5acf5ae5c5d91adeebf5a262693abed13b4e37e95e29e2958"
+    },
+    "standard-edit-delete": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "standard",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 137,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 657.6,
+            "boxCount": 1.37,
+            "rowWeight": 57.54,
+            "pieces": 2
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 657.6,
+        "discountedTotal": 644.45,
+        "noTaxTotal": 585.86,
+        "totalWeight": 57.54,
+        "totalPieces": 2,
+        "expressFreight": 40.28,
+        "expressTotal": 684.73,
+        "expressTotalNoTax": 626.14,
+        "logisticsFreight": 30,
+        "logisticsTotal": 674.45,
+        "logisticsTotalNoTax": 615.86,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "standard",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 4.8,
+            "meters": 137,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 657.6,
+            "boxCount": 1.37,
+            "rowWeight": 57.54,
+            "pieces": 2
+          }
+        ],
+        "productTotal": 657.6,
+        "discountedTotal": 644.45,
+        "noTaxTotal": 585.86,
+        "totalWeight": 57.54,
+        "totalPieces": 2,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "standard",
+        "transportType": "express",
+        "expressFreight": 40.28,
+        "expressTotal": 684.73,
+        "expressTotalNoTax": 626.14,
+        "logisticsFreight": 30,
+        "logisticsTotal": 674.45,
+        "logisticsTotalNoTax": 615.86,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽报价单】\n40×40 粗齿 灰色  ¥4.8/米 × 137米  = ¥657.6 → 折后 ¥644.45\n产品原价合计：¥657.6\n产品折后合计：¥644.45\n客户折扣：9.8折\n总重量：57.54kg  总件数：2件\n产品不含税总价：¥585.86\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥40.28，总价（含税）¥684.73，不含税¥626.14\n【物流自提】2件 × ¥15/件，运费¥30，总价（含税）¥674.45，不含税¥615.86\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 654,
+      "canvasDrawHash": "9dfda6efddb553bd2940aef995c49eb3543350e84f9aa9601b9253519757a71d"
+    },
+    "fixed-0.6": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "fixed",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 3.84,
+            "baseMeterPrice": 4.8,
+            "fixedLength": 0.6,
+            "quantity": 10,
+            "meters": 6,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 38.4,
+            "boxCount": 0.06,
+            "rowWeight": 2.52,
+            "weightPerMeter": 0.42,
+            "weightPerPiece": 0.252,
+            "pieces": 10,
+            "piecesPerTwoMeter": 3,
+            "twoMeterCutPrice": 11.52,
+            "cuttingRate": 1.2
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 38.4,
+        "discountedTotal": 37.63,
+        "noTaxTotal": 34.21,
+        "totalWeight": 2.52,
+        "totalPieces": 10,
+        "expressFreight": 35,
+        "expressTotal": 72.63,
+        "expressTotalNoTax": 69.21,
+        "logisticsFreight": 150,
+        "logisticsTotal": 187.63,
+        "logisticsTotalNoTax": 184.21,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 3.84,
+            "baseMeterPrice": 4.8,
+            "fixedLength": 0.6,
+            "quantity": 10,
+            "meters": 6,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 38.4,
+            "boxCount": 0.06,
+            "rowWeight": 2.52,
+            "weightPerMeter": 0.42,
+            "weightPerPiece": 0.252,
+            "pieces": 10,
+            "piecesPerTwoMeter": 3,
+            "twoMeterCutPrice": 11.52,
+            "cuttingRate": 1.2
+          }
+        ],
+        "productTotal": 38.4,
+        "discountedTotal": 37.63,
+        "noTaxTotal": 34.21,
+        "totalWeight": 2.52,
+        "totalPieces": 10,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "fixed",
+        "transportType": "express",
+        "expressFreight": 35,
+        "expressTotal": 72.63,
+        "expressTotalNoTax": 69.21,
+        "logisticsFreight": 150,
+        "logisticsTotal": 187.63,
+        "logisticsTotalNoTax": 184.21,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽定长报价单】\n40×40 粗齿 灰色  ¥3.84/根 × 10根（0.6米/根） = ¥38.4 → 折后 ¥37.63\n产品原价合计：¥38.4\n产品折后合计：¥37.63\n客户折扣：9.8折\n总重量：2.52kg  总根数：10根\n产品不含税总价：¥34.21\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥35，总价（含税）¥72.63，不含税¥69.21\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 550,
+      "canvasDrawHash": "5603876b6e4b2692aa984d64051c201933f143c6ce88fe286a37da6e9f4438a2"
+    },
+    "fixed-full-seal": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "fixed",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "40×40 全封闭 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "全封闭",
+            "color": "灰色",
+            "unitPrice": 4.53,
+            "baseMeterPrice": 5.66,
+            "fixedLength": 0.6,
+            "quantity": 10,
+            "meters": 6,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 45.3,
+            "boxCount": 0.06,
+            "rowWeight": 2.98,
+            "weightPerMeter": 0.496,
+            "weightPerPiece": 0.2976,
+            "pieces": 10,
+            "piecesPerTwoMeter": 3,
+            "twoMeterCutPrice": 13.58,
+            "cuttingRate": 1.2
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 45.3,
+        "discountedTotal": 44.39,
+        "noTaxTotal": 40.35,
+        "totalWeight": 2.98,
+        "totalPieces": 10,
+        "expressFreight": 35,
+        "expressTotal": 79.39,
+        "expressTotalNoTax": 75.35,
+        "logisticsFreight": 150,
+        "logisticsTotal": 194.39,
+        "logisticsTotalNoTax": 190.35,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "40×40 全封闭 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "全封闭",
+            "color": "灰色",
+            "unitPrice": 4.53,
+            "baseMeterPrice": 5.66,
+            "fixedLength": 0.6,
+            "quantity": 10,
+            "meters": 6,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 45.3,
+            "boxCount": 0.06,
+            "rowWeight": 2.98,
+            "weightPerMeter": 0.496,
+            "weightPerPiece": 0.2976,
+            "pieces": 10,
+            "piecesPerTwoMeter": 3,
+            "twoMeterCutPrice": 13.58,
+            "cuttingRate": 1.2
+          }
+        ],
+        "productTotal": 45.3,
+        "discountedTotal": 44.39,
+        "noTaxTotal": 40.35,
+        "totalWeight": 2.98,
+        "totalPieces": 10,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "fixed",
+        "transportType": "express",
+        "expressFreight": 35,
+        "expressTotal": 79.39,
+        "expressTotalNoTax": 75.35,
+        "logisticsFreight": 150,
+        "logisticsTotal": 194.39,
+        "logisticsTotalNoTax": 190.35,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽定长报价单】\n40×40 全封闭 灰色  ¥4.53/根 × 10根（0.6米/根） = ¥45.3 → 折后 ¥44.39\n产品原价合计：¥45.3\n产品折后合计：¥44.39\n客户折扣：9.8折\n总重量：2.98kg  总根数：10根\n产品不含税总价：¥40.35\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥35，总价（含税）¥79.39，不含税¥75.35\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 550,
+      "canvasDrawHash": "c09e588ffc4cbb5953a939fd02a737ec8a5e4ac2292a23e14675584d94f950ab"
+    },
+    "fixed-non-divisor": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "fixed",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "60×40 粗齿 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 7.18,
+            "baseMeterPrice": 5.98,
+            "fixedLength": 0.7,
+            "quantity": 101,
+            "meters": 70.7,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 725.18,
+            "boxCount": 0.707,
+            "rowWeight": 36.06,
+            "weightPerMeter": 0.51,
+            "weightPerPiece": 0.357,
+            "pieces": 101,
+            "piecesPerTwoMeter": 2,
+            "twoMeterCutPrice": 14.35,
+            "cuttingRate": 1.2
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 725.18,
+        "discountedTotal": 710.68,
+        "noTaxTotal": 646.07,
+        "totalWeight": 36.06,
+        "totalPieces": 101,
+        "expressFreight": 35,
+        "expressTotal": 745.68,
+        "expressTotalNoTax": 681.07,
+        "logisticsFreight": 1515,
+        "logisticsTotal": 2225.68,
+        "logisticsTotalNoTax": 2161.07,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "60×40 粗齿 灰色",
+            "height": 60,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 7.18,
+            "baseMeterPrice": 5.98,
+            "fixedLength": 0.7,
+            "quantity": 101,
+            "meters": 70.7,
+            "boxMeters": 100,
+            "boxWeight": 51,
+            "boxWeightFullSeal": 60.2,
+            "subtotal": 725.18,
+            "boxCount": 0.707,
+            "rowWeight": 36.06,
+            "weightPerMeter": 0.51,
+            "weightPerPiece": 0.357,
+            "pieces": 101,
+            "piecesPerTwoMeter": 2,
+            "twoMeterCutPrice": 14.35,
+            "cuttingRate": 1.2
+          }
+        ],
+        "productTotal": 725.18,
+        "discountedTotal": 710.68,
+        "noTaxTotal": 646.07,
+        "totalWeight": 36.06,
+        "totalPieces": 101,
+        "province": "浙江省",
+        "city": "杭州市",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": true,
+        "quoteMode": "fixed",
+        "transportType": "express",
+        "expressFreight": 35,
+        "expressTotal": 745.68,
+        "expressTotalNoTax": 681.07,
+        "logisticsFreight": 1515,
+        "logisticsTotal": 2225.68,
+        "logisticsTotalNoTax": 2161.07,
+        "freightRule": {
+          "province": "浙江省",
+          "startPrice": 35,
+          "pricePerKg": 0.7
+        },
+        "logisticsRule": {
+          "province": "浙江省",
+          "pricePerPiece": 15
+        }
+      },
+      "copiedText": "【CNDES德赛线槽定长报价单】\n60×40 粗齿 灰色  ¥7.18/根 × 101根（0.7米/根） = ¥725.18 → 折后 ¥710.68\n产品原价合计：¥725.18\n产品折后合计：¥710.68\n客户折扣：9.8折\n总重量：36.06kg  总根数：101根\n产品不含税总价：¥646.07\n【快递配送】起步价¥35，续重¥0.7/kg，运费¥35，总价（含税）¥745.68，不含税¥681.07\n收货地址：浙江省 杭州市\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 550,
+      "canvasDrawHash": "9381148b3cc892e7d27cb9b9818471f154362804711df2ee1050d93ab994aa6f"
+    },
+    "fixed-no-freight-edit": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "fixed",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "0.00",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 11.52,
+            "baseMeterPrice": 4.8,
+            "fixedLength": 2,
+            "quantity": 137,
+            "meters": 274,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 1578.24,
+            "boxCount": 2.74,
+            "rowWeight": 115.08,
+            "weightPerMeter": 0.42,
+            "weightPerPiece": 0.84,
+            "pieces": 137,
+            "piecesPerTwoMeter": 1,
+            "twoMeterCutPrice": 11.52,
+            "cuttingRate": 1.2
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": false,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 1578.24,
+        "discountedTotal": 1546.68,
+        "noTaxTotal": 1406.07,
+        "totalWeight": 115.08,
+        "totalPieces": 137,
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "payload": {
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "fixed",
+            "spec": "40×40 粗齿 灰色",
+            "height": 40,
+            "width": 40,
+            "teeth": "粗齿",
+            "color": "灰色",
+            "unitPrice": 11.52,
+            "baseMeterPrice": 4.8,
+            "fixedLength": 2,
+            "quantity": 137,
+            "meters": 274,
+            "boxMeters": 100,
+            "boxWeight": 42,
+            "boxWeightFullSeal": 49.6,
+            "subtotal": 1578.24,
+            "boxCount": 2.74,
+            "rowWeight": 115.08,
+            "weightPerMeter": 0.42,
+            "weightPerPiece": 0.84,
+            "pieces": 137,
+            "piecesPerTwoMeter": 1,
+            "twoMeterCutPrice": 11.52,
+            "cuttingRate": 1.2
+          }
+        ],
+        "productTotal": 1578.24,
+        "discountedTotal": 1546.68,
+        "noTaxTotal": 1406.07,
+        "totalWeight": 115.08,
+        "totalPieces": 137,
+        "province": "",
+        "city": "",
+        "discount": 0.98,
+        "discountDisplay": "9.8",
+        "includeFreight": false,
+        "quoteMode": "fixed",
+        "transportType": "express",
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "copiedText": "【CNDES德赛线槽定长报价单】\n40×40 粗齿 灰色  ¥11.52/根 × 137根（2米/根） = ¥1578.24 → 折后 ¥1546.68\n产品原价合计：¥1578.24\n产品折后合计：¥1546.68\n客户折扣：9.8折\n总重量：115.08kg  总根数：137根\n产品不含税总价：¥1406.07\n\n品质线槽，选择CNDES德赛",
+      "canvasHeight": 550,
+      "canvasDrawHash": "e24a8278859c97e9c5c49ff709dda9d448ec0a82384a18bf2f2e77bb3a123aad"
+    },
+    "foreign-default": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "foreign",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "147.56",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "foreign",
+            "specification": "40×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "teeth": "粗齿",
+            "color": "灰色",
+            "rmbUnitPrice": 4.8,
+            "unitPrice": 4.8,
+            "boxMeters": 100,
+            "meters": 100,
+            "discountedRmbUnitPrice": 4.224,
+            "portFreightPerMeterRmb": 0.2,
+            "fobUnitPriceUsdRaw": 0.6602985074626866,
+            "amountUsdRaw": 66.02985074626866,
+            "fobUnitPriceUsd": "0.660",
+            "amountUsd": "66.03"
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "foreign",
+            "specification": "60×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "teeth": "粗齿",
+            "color": "灰色",
+            "rmbUnitPrice": 5.98,
+            "unitPrice": 5.98,
+            "boxMeters": 100,
+            "meters": 100,
+            "discountedRmbUnitPrice": 5.2624,
+            "portFreightPerMeterRmb": 0.2,
+            "fobUnitPriceUsdRaw": 0.8152835820895523,
+            "amountUsdRaw": 81.52835820895523,
+            "fobUnitPriceUsd": "0.815",
+            "amountUsd": "81.53"
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 0,
+        "discountedTotal": 0,
+        "noTaxTotal": 0,
+        "totalWeight": 0,
+        "totalPieces": 0,
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "payload": {
+        "quoteMode": "foreign",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "specification": "40×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "meters": 100,
+            "fobUnitPriceUsd": "0.660",
+            "amountUsd": "66.03",
+            "amountUsdRaw": 66.02985074626866
+          },
+          {
+            "id": 1789185600001,
+            "specification": "60×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "meters": 100,
+            "fobUnitPriceUsd": "0.815",
+            "amountUsd": "81.53",
+            "amountUsdRaw": 81.52835820895523
+          }
+        ],
+        "foreignTotalUsd": "147.56"
+      },
+      "copiedText": "CNDES PVC Wiring Duct - FOB Ningbo Quotation\n\nSpecification | Type | Color | Unit Price (USD/m) | Quantity (m) | Amount (USD)\n40×40 | Wide Slot | Grey | 0.660 | 100 | 66.03\n60×40 | Wide Slot | Grey | 0.815 | 100 | 81.53\n\nFOB Ningbo Total (USD): 147.56\n\nCNDES PVC Wiring Duct",
+      "canvasHeight": 430,
+      "canvasDrawHash": "e967ff95f93208a0d2b66c8e37de0eb55f51ab564602e3365f1421224fde7f22"
+    },
+    "foreign-non-full-box": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "foreign",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "6.7",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 0,
+        "foreignDiscountInput": "",
+        "foreignDiscountCoefficient": 0.88,
+        "foreignTotalUsd": "166.18",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "foreign",
+            "specification": "40×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "teeth": "粗齿",
+            "color": "灰色",
+            "rmbUnitPrice": 4.8,
+            "unitPrice": 4.8,
+            "boxMeters": 100,
+            "meters": 151.5,
+            "discountedRmbUnitPrice": 4.224,
+            "portFreightPerMeterRmb": 0.2,
+            "fobUnitPriceUsdRaw": 0.6602985074626866,
+            "amountUsdRaw": 100.03522388059702,
+            "fobUnitPriceUsd": "0.660",
+            "amountUsd": "100.04"
+          },
+          {
+            "id": 1789185600001,
+            "quoteType": "foreign",
+            "specification": "80×80",
+            "typeEn": "Solid Wall",
+            "colorEn": "Grey",
+            "teeth": "全封闭",
+            "color": "灰色",
+            "rmbUnitPrice": 12.98,
+            "unitPrice": 12.98,
+            "boxMeters": 36,
+            "meters": 37,
+            "discountedRmbUnitPrice": 11.4224,
+            "portFreightPerMeterRmb": 0.5555555555555556,
+            "fobUnitPriceUsdRaw": 1.7877545605306797,
+            "amountUsdRaw": 66.14691873963515,
+            "fobUnitPriceUsd": "1.788",
+            "amountUsd": "66.15"
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 0,
+        "discountedTotal": 0,
+        "noTaxTotal": 0,
+        "totalWeight": 0,
+        "totalPieces": 0,
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "payload": {
+        "quoteMode": "foreign",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "specification": "40×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "meters": 151.5,
+            "fobUnitPriceUsd": "0.660",
+            "amountUsd": "100.04",
+            "amountUsdRaw": 100.03522388059702
+          },
+          {
+            "id": 1789185600001,
+            "specification": "80×80",
+            "typeEn": "Solid Wall",
+            "colorEn": "Grey",
+            "meters": 37,
+            "fobUnitPriceUsd": "1.788",
+            "amountUsd": "66.15",
+            "amountUsdRaw": 66.14691873963515
+          }
+        ],
+        "foreignTotalUsd": "166.18"
+      },
+      "copiedText": "CNDES PVC Wiring Duct - FOB Ningbo Quotation\n\nSpecification | Type | Color | Unit Price (USD/m) | Quantity (m) | Amount (USD)\n40×40 | Wide Slot | Grey | 0.660 | 151.5 | 100.04\n80×80 | Solid Wall | Grey | 1.788 | 37 | 66.15\n\nFOB Ningbo Total (USD): 166.18\n\nCNDES PVC Wiring Duct",
+      "canvasHeight": 430,
+      "canvasDrawHash": "4d9f53e6b8b3a4457e16f4466379d9e73bd599beaea0ee6243b29aeea9f8a04e"
+    },
+    "foreign-rate-discount-edit": {
+      "state": {
+        "sampleTeeth": [],
+        "sampleColors": [],
+        "sampleSpec": "",
+        "samplePrice": 0,
+        "sampleBoxMeters": 0,
+        "sampleBoxWeight": 0,
+        "sampleBoxWeightFullSeal": null,
+        "sampleBasePrice": 0,
+        "sampleMeters": "",
+        "sampleMeterHint": "",
+        "quoteMode": "foreign",
+        "fixedLength": "",
+        "fixedQuantity": "",
+        "fixedLengthHint": "",
+        "foreignExchangeRate": "7.25",
+        "foreignDiscountOptions": [
+          {
+            "label": "8.8折",
+            "value": 0.88
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "foreignDiscountTypeIndex": 2,
+        "foreignDiscountInput": "9.1",
+        "foreignDiscountCoefficient": 0.91,
+        "foreignTotalUsd": "86.32",
+        "heightList": [],
+        "widthList": [],
+        "selectedHeight": 0,
+        "selectedWidth": 0,
+        "selectedTeeth": "",
+        "selectedColor": "",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "quoteType": "foreign",
+            "specification": "40×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "teeth": "粗齿",
+            "color": "灰色",
+            "rmbUnitPrice": 4.8,
+            "unitPrice": 4.8,
+            "boxMeters": 100,
+            "meters": 137,
+            "discountedRmbUnitPrice": 4.368,
+            "portFreightPerMeterRmb": 0.2,
+            "fobUnitPriceUsdRaw": 0.6300689655172415,
+            "amountUsdRaw": 86.31944827586207,
+            "fobUnitPriceUsd": "0.630",
+            "amountUsd": "86.32"
+          }
+        ],
+        "province": "浙江省",
+        "city": "杭州市",
+        "region": [
+          "浙江省",
+          "杭州市",
+          ""
+        ],
+        "includeFreight": true,
+        "transportType": "express",
+        "discountTypeIndex": 0,
+        "discountOptions": [
+          {
+            "label": "9.8折",
+            "value": 0.98
+          },
+          {
+            "label": "无折扣",
+            "value": 1
+          },
+          {
+            "label": "自定义折扣",
+            "value": -1
+          }
+        ],
+        "discountInput": "",
+        "discountCoefficient": 0.98,
+        "productTotal": 0,
+        "discountedTotal": 0,
+        "noTaxTotal": 0,
+        "totalWeight": 0,
+        "totalPieces": 0,
+        "expressFreight": 0,
+        "expressTotal": 0,
+        "expressTotalNoTax": 0,
+        "logisticsFreight": 0,
+        "logisticsTotal": 0,
+        "logisticsTotalNoTax": 0,
+        "freightRule": null,
+        "logisticsRule": null
+      },
+      "payload": {
+        "quoteMode": "foreign",
+        "cart": [
+          {
+            "id": 1789185600000,
+            "specification": "40×40",
+            "typeEn": "Wide Slot",
+            "colorEn": "Grey",
+            "meters": 137,
+            "fobUnitPriceUsd": "0.630",
+            "amountUsd": "86.32",
+            "amountUsdRaw": 86.31944827586207
+          }
+        ],
+        "foreignTotalUsd": "86.32"
+      },
+      "copiedText": "CNDES PVC Wiring Duct - FOB Ningbo Quotation\n\nSpecification | Type | Color | Unit Price (USD/m) | Quantity (m) | Amount (USD)\n40×40 | Wide Slot | Grey | 0.630 | 137 | 86.32\n\nFOB Ningbo Total (USD): 86.32\n\nCNDES PVC Wiring Duct",
+      "canvasHeight": 430,
+      "canvasDrawHash": "f2a67aa88b54bffcc2c51e1dc787dd935627f4c0ecd15879aaa409c2862b668e"
+    }
+  }
+}
