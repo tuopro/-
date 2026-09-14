@@ -34,7 +34,56 @@
   "compileType": "miniprogram",
   "simulatorPluginLibVersion": {},
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "docs"
+      },
+      {
+        "type": "folder",
+        "value": "tests"
+      },
+      {
+        "type": "folder",
+        "value": "scripts"
+      },
+      {
+        "type": "folder",
+        "value": ".superpowers"
+      },
+      {
+        "type": "folder",
+        "value": ".worktrees"
+      },
+      {
+        "type": "file",
+        "value": "PREFERENCES.md"
+      },
+      {
+        "type": "file",
+        "value": "tmp_quote_preview.py"
+      },
+      {
+        "type": "file",
+        "value": "CHrnSI_aaxurd7feff4a1461f635cc550f3cf659de0f.jpg"
+      },
+      {
+        "type": "file",
+        "value": "Vo8YpoY9A4j3c54ac5566815c85eef8db684f806a40b.jpg"
+      },
+      {
+        "type": "file",
+        "value": "assets/line-trunking.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/quote-image-preview.png"
+      },
+      {
+        "type": "file",
+        "value": ".DS_Store"
+      }
+    ],
     "include": []
   },
   "editorSetting": {},

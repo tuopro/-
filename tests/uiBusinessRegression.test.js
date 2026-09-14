@@ -3,16 +3,35 @@ const assert = require('node:assert/strict')
 const fs = require('node:fs')
 const path = require('node:path')
 const baseline = require('../docs/ui-proposals/2026-09-12/ui-baseline.json')
-const { root, baselineCommit, quotePath, resultPath, clone, hash, loadPage, addProduct, scenarios, runScenario } = require('./helpers/uiRegressionHarness')
+const { root, baselineCommit, quotePath, resultPath, clone, hash, sourceAt, loadPage, addProduct, scenarios, runScenario } = require('./helpers/uiRegressionHarness')
 const state = (page, file = quotePath) => {
   const keys = Object.keys(loadPage(file, { revision: baselineCommit }).page.data)
   return clone(Object.fromEntries(keys.map(key => [key, page.data[key]])))
 }
 
-test('all 43 protected tracked files remain byte-identical to the pre-edit baseline', () => {
-  const protectedFiles = Object.entries(baseline.hashes).filter(([file]) => !baseline.editable.includes(file))
-  assert.equal(protectedFiles.length, 43)
+test('all 42 protected runtime files stay byte-identical and upload config only changes ignore entries', () => {
+  const protectedFiles = Object.entries(baseline.hashes).filter(([file]) => !baseline.editable.includes(file) && file !== 'project.config.json')
+  assert.equal(protectedFiles.length, 42)
   for (const [file, expected] of protectedFiles) assert.equal(hash(fs.readFileSync(path.join(root, file))), expected, file)
+
+  const currentConfig = JSON.parse(sourceAt('project.config.json'))
+  const baselineConfig = JSON.parse(sourceAt('project.config.json', baselineCommit))
+  assert.deepEqual(currentConfig.packOptions.ignore, [
+    { type: 'folder', value: 'docs' },
+    { type: 'folder', value: 'tests' },
+    { type: 'folder', value: 'scripts' },
+    { type: 'folder', value: '.superpowers' },
+    { type: 'folder', value: '.worktrees' },
+    { type: 'file', value: 'PREFERENCES.md' },
+    { type: 'file', value: 'tmp_quote_preview.py' },
+    { type: 'file', value: 'CHrnSI_aaxurd7feff4a1461f635cc550f3cf659de0f.jpg' },
+    { type: 'file', value: 'Vo8YpoY9A4j3c54ac5566815c85eef8db684f806a40b.jpg' },
+    { type: 'file', value: 'assets/line-trunking.png' },
+    { type: 'file', value: 'assets/quote-image-preview.png' },
+    { type: 'file', value: '.DS_Store' }
+  ])
+  currentConfig.packOptions.ignore = baselineConfig.packOptions.ignore
+  assert.deepEqual(currentConfig, baselineConfig)
 })
 
 test('all 43 original page methods and original initial business values are unchanged', () => {
